@@ -1,14 +1,14 @@
 {
     "repository": {
-        "name": "appmaker-organizations\n",
-        "branch": "dev\n",
+        "name": "appmaker-organizations",
+        "branch": "dev",
         "manifest": "\/Users\/louis\/Projects\/appmaker-organizations\/dist\/data\/manifest.json",
         "host": {
-            "git": "git@github.com:LouisOuellet\/appmaker-organizations.git\n"
+            "git": "git@github.com:LouisOuellet\/appmaker-organizations.git"
         }
     },
-    "name": "appmaker-organizations\n",
+    "name": "appmaker-organizations",
     "status": false,
     "build": 1,
-    "version": "21.09-dev\n"
+    "version": "21.09-dev"
 }
