@@ -436,7 +436,7 @@ class organizationsAPI extends CRUDAPI {
 			if(isset($data['organization'])){ $data['name'] = $data['organization']; }
 			if(isset($data['client'])){ $data['name'] = $data['client']; }
 			if(isset($data['lead'])){ $data['name'] = $data['lead']; }
-			if(isset($data['name'])){ $create = true; }
+			if(isset($data['name'])){ $create = true; } else { $create = false; }
 			// Lookup for an existing Entity
 			if(isset($data['name']) && is_numeric($data['name'])){
 				$organization = $this->Auth->read('organizations',$data['name']);
