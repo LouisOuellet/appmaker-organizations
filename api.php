@@ -432,6 +432,7 @@ class organizationsAPI extends CRUDAPI {
 	public function create($request = null, $data = null){
 		if($data != null){
 			if(!is_array($data)){ $data = json_decode($data, true); }
+			var_dump($data);
 			if(!isset($data['key'])){ $data['key'] = 'id'; }
 			if(isset($data['organization'])){ $data['name'] = $data['organization']; }
 			if(isset($data['client'])){ $data['name'] = $data['client']; }
