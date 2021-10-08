@@ -442,14 +442,19 @@ class organizationsAPI extends CRUDAPI {
 				$organization = $this->Auth->read('organizations',$data['name']);
 				if($organization != null){
 					$organization = $organization->all()[0];
-					$create = true;
+					$create = false;
+					var_dump($create);
+					var_dump($organization);
 				}
 			}
 			if($create){
+				var_dump($create);
 				// Create Entity
 				$result = $this->Auth->create('organizations',$this->convertToDB($data));
+				var_dump($result);
 				// Fetch Entity
 				$organization = $this->Auth->read('organizations',$result)->all()[0];
+				var_dump($organization);
 				// Init Subscriptions
 				$subscriptions = [];
 				// Init Subscribed
