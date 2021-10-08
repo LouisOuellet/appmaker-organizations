@@ -431,7 +431,6 @@ class organizationsAPI extends CRUDAPI {
 
 	public function create($request = null, $data = null){
 		if($data != null){
-			var_dump($data);
 			if(!is_array($data)){ $data = json_decode($data, true); }
 			if(!isset($data['key'])){ $data['key'] = 'id'; }
 			if(isset($data['organization'])){ $data['name'] = $data['organization']; }
@@ -444,18 +443,13 @@ class organizationsAPI extends CRUDAPI {
 				if($organization != null){
 					$organization = $organization->all()[0];
 					$create = false;
-					var_dump($create);
-					var_dump($organization);
 				}
 			}
 			if($create){
-				var_dump($create);
 				// Create Entity
 				$result = $this->Auth->create('organizations',$this->convertToDB($data));
-				var_dump($result);
 				// Fetch Entity
 				$organization = $this->Auth->read('organizations',$result)->all()[0];
-				var_dump($organization);
 				// Init Subscriptions
 				$subscriptions = [];
 				// Init Subscribed
