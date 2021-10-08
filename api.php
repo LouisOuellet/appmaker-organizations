@@ -625,15 +625,23 @@ class organizationsAPI extends CRUDAPI {
 				$this->Auth->update('organizations',$organization,$organization['id']);
 			}
 			// Return
-			$results = [
-				"success" => $this->Language->Field["Record successfully created"],
-				"request" => $request,
-				"data" => $data,
-				"output" => [
-					'results' => $this->convertToDOM($organization),
-					'raw' => $organization,
-				],
-			];
+			if(isset($organization)){
+				$results = [
+					"success" => $this->Language->Field["Record successfully created"],
+					"request" => $request,
+					"data" => $data,
+					"output" => [
+						'results' => $this->convertToDOM($organization),
+						'raw' => $organization,
+					],
+				];
+			} else {
+				$results = [
+					"error" => $this->Language->Field["Unable to complete the request"],
+					"request" => $request,
+					"data" => $data,
+				];
+			}
 		} else {
 			if(isset($data['name'])){
 				$results = [
