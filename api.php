@@ -442,7 +442,7 @@ class organizationsAPI extends CRUDAPI {
 				$organization = $this->Auth->read('organizations',$data['name']);
 				if($organization != null){
 					$organization = $organization->all()[0];
-					$create = false;
+					$create = true;
 				}
 			}
 			if($create){
