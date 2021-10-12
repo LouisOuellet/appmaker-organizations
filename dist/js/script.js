@@ -804,7 +804,7 @@ API.Plugins.organizations = {
 								assigned_to.dom = API.Helper.trim(dataset.output.this.dom.assigned_to,';').split(';');
 								for(var [key, id] of Object.entries(assigned_to.raw)){ users[id] = assigned_to.dom[key]; }
 								for(var [userID, username] of Object.entries(users)){
-									if(userID != '')
+									if(userID != ''){
 										var userHTML = '';
 										userHTML += '<div class="btn-group m-1" data-id="'+userID+'">';
 											userHTML += '<button type="button" data-id="'+userID+'" class="btn btn-xs btn-primary" data-action="details"><i class="fas fa-user mr-1"></i>'+username+'</button>';
