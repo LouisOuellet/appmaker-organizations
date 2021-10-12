@@ -66,7 +66,7 @@ class organizationsAPI extends CRUDAPI {
 				foreach($get['output']['details']['contacts']['raw'] as $contact){
 					$get['output']['details']['contacts']['subscriptions']['raw'][$contact['id']] = [];
 					$get['output']['details']['contacts']['subscriptions']['dom'][$contact['id']] = [];
-					$subscriptions = $this->Auth->query('SELECT * FROM `subscriptions` WHERE `relationship` = ? AND `link_to` = ?','contacts',$contact['id'])->fetchAll();
+					$subscriptions = $this->Auth->query('SELECT * FROM `subscriptions` WHERE `relationship` = ? AND `link_to` = ?','users',$contact['id'])->fetchAll();
 					if($subscriptions != null){
 						$subscriptions = $subscriptions->all();
 						foreach ($subscriptions as $subscription) {
