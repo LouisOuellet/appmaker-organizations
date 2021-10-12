@@ -804,14 +804,16 @@ API.Plugins.organizations = {
 								assigned_to.dom = API.Helper.trim(dataset.output.this.dom.assigned_to,';').split(';');
 								for(var [key, id] of Object.entries(assigned_to.raw)){ users[id] = assigned_to.dom[key]; }
 								for(var [userID, username] of Object.entries(users)){
-									var userHTML = '';
-									userHTML += '<div class="btn-group m-1" data-id="'+userID+'">';
-										userHTML += '<button type="button" data-id="'+userID+'" class="btn btn-xs btn-primary" data-action="details"><i class="fas fa-user mr-1"></i>'+username+'</button>';
-										if(API.Auth.validate('custom', 'organizations_users', 4)){
-											userHTML += '<button type="button" data-id="'+userID+'" class="btn btn-xs btn-danger" data-action="unassign"><i class="fas fa-user-minus"></i></button>';
-										}
-									userHTML += '</div>';
-									container.find('td[data-plugin="organizations"][data-key="assigned_to"]').append(userHTML);
+									if(userID != '')
+										var userHTML = '';
+										userHTML += '<div class="btn-group m-1" data-id="'+userID+'">';
+											userHTML += '<button type="button" data-id="'+userID+'" class="btn btn-xs btn-primary" data-action="details"><i class="fas fa-user mr-1"></i>'+username+'</button>';
+											if(API.Auth.validate('custom', 'organizations_users', 4)){
+												userHTML += '<button type="button" data-id="'+userID+'" class="btn btn-xs btn-danger" data-action="unassign"><i class="fas fa-user-minus"></i></button>';
+											}
+										userHTML += '</div>';
+										container.find('td[data-plugin="organizations"][data-key="assigned_to"]').append(userHTML);
+									}
 								}
 							}
 						}
