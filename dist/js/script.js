@@ -489,7 +489,7 @@ API.Plugins.organizations = {
 					// Adding Contacts and Employees Cards
 					if(API.Helper.isSet(dataset.output.details,['users','dom'])){
 						for(var [contactKey, contact] of Object.entries(dataset.output.details.users.dom)){
-							if(dataset.output.details.users.raw[contact.id].organization == dataset.output.this.raw.id){
+							if(contact.isContact||contact.isContact == "true"){
 								API.Plugins.organizations.GUI.contacts.add(container, dataset, {dom:contact,raw:dataset.output.details.users.raw[contact.id]});
 							}
 						}
