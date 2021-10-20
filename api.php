@@ -478,7 +478,7 @@ class organizationsAPI extends CRUDAPI {
 				}
 				// Adding Issues
 				foreach($this->Auth->read('statuses','1','order')->all() as $statuses){
-					if($statuses['type'] == 'issues'){ $status = $statuses; }
+					if($statuses['relationship'] == 'issues'){ $status = $statuses; }
 				}
 				foreach($issues as $issue){
 					$this->Auth->create('relationships',[
@@ -493,7 +493,7 @@ class organizationsAPI extends CRUDAPI {
 				// Create Status
 				if(isset($data['status'])){
 					foreach($this->Auth->read('statuses',$data['status'],'order')->all() as $statuses){
-						if($statuses['type'] == 'organizations'){ $status = $statuses; }
+						if($statuses['relationship'] == 'organizations'){ $status = $statuses; }
 					}
 					$this->Auth->create('relationships',[
 						'relationship_1' => 'organizations',
