@@ -6,14 +6,12 @@
         "host": {
             "git": "https:\/\/github.com\/LouisOuellet\/",
             "raw": "https:\/\/raw.githubusercontent.com\/LouisOuellet\/"
-        },
-        "branches": [
-            "main",
-            "beta",
-            "dev"
-        ]
+        }
     },
+    "table": [
+        "organizations"
+    ],
     "name": "organizations",
-    "build": 42,
+    "build": 43,
     "version": "21.10-dev"
 }

@@ -48,6 +48,7 @@ API.Plugins.organizations = {
 	},
 	init:function(){
 		API.GUI.Sidebar.Nav.add('Organizations', 'main_navigation');
+		if(!API.Helper.isSet(API.Plugins,['tags'])){ delete API.Plugins.organizations.forms.create.extra; }
 	},
 	load:{
 		index:function(){
