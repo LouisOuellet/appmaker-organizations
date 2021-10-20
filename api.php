@@ -88,7 +88,7 @@ class organizationsAPI extends CRUDAPI {
 			}
 			// Load Statuses
 			foreach(['issues','organizations','calls','containers'] as $statusType){
-				foreach($this->Auth->read('statuses',$statusType,'type')->all() as $status){
+				foreach($this->Auth->read('statuses',$statusType,'relationship')->all() as $status){
 					if(!isset($get['output']['details']['statuses']['raw'][$status['id']])){
 						$get['output']['details']['statuses']['raw'][$status['id']] = $status;
 						$get['output']['details']['statuses']['dom'][$status['id']] = $this->convertToDOM($get['output']['details']['statuses']['raw'][$status['id']]);
