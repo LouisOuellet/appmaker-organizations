@@ -545,8 +545,10 @@ class organizationsAPI extends CRUDAPI {
 						'relationship' => 'organizations',
 						'link_to' => $result,
 					];
-					$contactsAPI = new contactsAPI();
-					$contactsAPI->create('contacts',$contact);
+					if(class_exists('contactsAPI')){
+						$contactsAPI = new contactsAPI();
+						$contactsAPI->create('contacts',$contact);
+					}
 				}
 				// Fetch Linked Entity
 				if((isset($organization['organization']))&&($organization['organization'] != '')){
