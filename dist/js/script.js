@@ -88,6 +88,7 @@ API.Plugins.organizations = {
 			API.request(url.searchParams.get("p"),'get',{data:{id:id,key:'name'}},function(result){
 				var dataset = JSON.parse(result);
 				if(dataset.success != undefined){
+					console.log(dataset);
 					container.attr('data-id',dataset.output.this.raw.id);
 					// GUI
 					// Subscribe BTN
