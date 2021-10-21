@@ -67,7 +67,7 @@ API.Plugins.organizations = {
 							modal:true,
 							key:'name',
 							clickable:{ enable:true, view:'details'},
-							set:{status:1,active:"true"},
+							set:{status:1,isActive:"true"},
 							controls:{ toolbar:true},
 							import:{ key:'name', },
 							load:false,
