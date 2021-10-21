@@ -95,5 +95,11 @@
 		"SetCodeCCN": "CCN",
 		"SetCodeITMR4": "ITMR4",
 		"SetCodeHVS": "HVS",
-		"Company information": "Company Information"
+		"Company information": "Company Information",
+		"Iscustomsoffice": "Customs Office",
+		"Issublocation": "Sub Location",
+		"Setcodeccn": "Cargo Control Number",
+		"Setcodeitmr4": "ITMR4",
+		"Setcodehvs": "Transaction",
+		"Setcurrency": "Currency"
 }
