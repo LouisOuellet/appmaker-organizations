@@ -1221,6 +1221,7 @@ API.Plugins.organizations = {
 				    case"job_title": contactCSV += value.replace(',','').toLowerCase()+',';break;
 				  }
 				}
+				console.log(contact);
 				contact.dom.name = '';
 				if(contact.dom.first_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.first_name; }
 				if(contact.dom.middle_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.middle_name; }
