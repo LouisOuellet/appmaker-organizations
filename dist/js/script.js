@@ -88,7 +88,6 @@ API.Plugins.organizations = {
 			API.request(url.searchParams.get("p"),'get',{data:{id:id,key:'name'}},function(result){
 				var dataset = JSON.parse(result);
 				if(dataset.success != undefined){
-					console.log(dataset);
 					container.attr('data-id',dataset.output.this.raw.id);
 					// GUI
 					// Subscribe BTN
@@ -1222,7 +1221,6 @@ API.Plugins.organizations = {
 				    case"job_title": contactCSV += value.replace(',','').toLowerCase()+',';break;
 				  }
 				}
-				console.log(contact);
 				contact.dom.name = '';
 				if(contact.dom.first_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.first_name; }
 				if(contact.dom.middle_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.middle_name; }
