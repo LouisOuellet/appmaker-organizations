@@ -148,7 +148,7 @@ class organizationsAPI extends CRUDAPI {
 				"output" => [
 					'headers' => $headers,
 					'raw' => $raw,
-					'results' => $result,
+					'dom' => $result,
 				],
 			];
 		} else {
@@ -633,7 +633,7 @@ class organizationsAPI extends CRUDAPI {
 					"request" => $request,
 					"data" => $data,
 					"output" => [
-						'results' => $this->convertToDOM($organization),
+						'dom' => $this->convertToDOM($organization),
 						'raw' => $organization,
 					],
 				];
