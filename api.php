@@ -387,9 +387,9 @@ class organizationsAPI extends CRUDAPI {
 					'relationship_2' => $data['relationship']['relationship'],
 					'link_to_2' => $data['relationship']['link_to'],
 				];
-				$status = $this->Auth->query('SELECT * FROM `statuses` WHERE `type` = ? AND `order` = ?',$data['relationship']['relationship'],1)->fetchAll();
+				$status = $this->Auth->query('SELECT * FROM `statuses` WHERE `relationship` = ? AND `order` = ?',$data['relationship']['relationship'],1);
 				if($status != null){
-					$status = $status->all();
+					$status = $status->fetchAll()->all();
 					if(!empty($status)){
 						$new['relationship_3'] = 'statuses';
 						$new['link_to_3'] = $status[0]['id'];
