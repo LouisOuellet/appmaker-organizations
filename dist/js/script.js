@@ -59,9 +59,9 @@ API.Plugins.organizations = {
 				},function(result) {
 					var dataset = JSON.parse(result);
 					if(dataset.success != undefined){
-						for(var [key, value] of Object.entries(dataset.output.results)){ API.Helper.set(API.Contents,['data','dom','organizations',value.id],value); }
+						for(var [key, value] of Object.entries(dataset.output.dom)){ API.Helper.set(API.Contents,['data','dom','organizations',value.id],value); }
 						for(var [key, value] of Object.entries(dataset.output.raw)){ API.Helper.set(API.Contents,['data','raw','organizations',value.id],value); }
-						API.Builder.table(card.children('.card-body'), dataset.output.results, {
+						API.Builder.table(card.children('.card-body'), dataset.output.dom, {
 							headers:dataset.output.headers,
 							id:'OrganizationsIndex',
 							modal:true,
@@ -271,8 +271,8 @@ API.Plugins.organizations = {
 								API.request('calls','create',{data:newCall},function(result){
 									var data = JSON.parse(result);
 									if(typeof data.success !== 'undefined'){
-										API.Plugins.calls.Widgets.toast({dom:data.output.results,raw:data.output.raw},dataset.output.this,dataset.output.details.issues);
-										API.Plugins.organizations.GUI.calls.add(container,{dom:data.output.results,raw:data.output.raw},dataset.output.this,dataset.output.details.issues, true);
+										API.Plugins.calls.Widgets.toast({dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues);
+										API.Plugins.organizations.GUI.calls.add(container,{dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues, true);
 									}
 								});
 							});
@@ -372,7 +372,7 @@ API.Plugins.organizations = {
 											API.request('calls','create',{data:call},function(result){
 												var data = JSON.parse(result);
 												if(typeof data.success !== 'undefined'){
-													API.Plugins.organizations.GUI.calls.add(container,{dom:data.output.results,raw:data.output.raw},dataset.output.this,dataset.output.details.issues,true);
+													API.Plugins.organizations.GUI.calls.add(container,{dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues,true);
 												}
 											});
 											modal.modal('hide');
@@ -1640,8 +1640,8 @@ API.Plugins.organizations = {
 							API.request('calls','create',{data:newCall},function(result){
 								var data = JSON.parse(result);
 								if(typeof data.success !== 'undefined'){
-									API.Plugins.calls.Widgets.toast({dom:data.output.results,raw:data.output.raw},dataset.output.this,dataset.output.details.issues);
-									API.Plugins.organizations.GUI.calls.add(container,{dom:data.output.results,raw:data.output.raw},dataset.output.this,dataset.output.details.issues, true);
+									API.Plugins.calls.Widgets.toast({dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues);
+									API.Plugins.organizations.GUI.calls.add(container,{dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues, true);
 								}
 							});
 							break;
