@@ -1225,7 +1225,7 @@ API.Plugins.organizations = {
 				if(contact.dom.first_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.first_name; }
 				if(contact.dom.middle_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.middle_name; }
 				if(contact.dom.last_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.last_name; }
-				contact.raw.name += contact.dom.name;
+				contact.raw.name = contact.dom.name;
 				contactCSV += contact.dom.name.replace(',','').toLowerCase()+',';
 				var contactHTML = '';
 				contactHTML += '<div class="col-sm-12 col-md-6 contactCard" data-csv="'+contactCSV+'" data-type="contact" data-id="'+contact.dom.id+'" data-organization="'+contact.raw.organization+'">';
