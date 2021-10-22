@@ -1497,7 +1497,7 @@ API.Plugins.organizations = {
 							API.Plugins.calls.Events.start(call,organization,issues,function(data,objects){
 								call.raw.status = data.call.raw.status;
 								call.dom.status = data.call.dom.status;
-								container.find('ul.nav li.nav-item a[href*="calls"]').tab('show');
+								// container.find('ul.nav li.nav-item a[href*="calls"]').tab('show');
 								if(callback != null){ callback(data,objects); }
 							});
 							break;
@@ -1505,7 +1505,6 @@ API.Plugins.organizations = {
 							API.Plugins.calls.Events.cancel(call,organization,issues,function(data,objects){
 								call.raw.status = data.call.raw.status;
 								call.dom.status = data.call.dom.status;
-								container.find('ul.nav li.nav-item a[href*="calls"]').tab('show');
 								if(callback != null){ callback(data,objects); }
 							});
 							break;
@@ -1513,7 +1512,6 @@ API.Plugins.organizations = {
 							API.Plugins.calls.Events.reschedule(call,organization,issues,function(data,objects){
 								call.raw.status = data.call.raw.status;
 								call.dom.status = data.call.dom.status;
-								container.find('ul.nav li.nav-item a[href*="calls"]').tab('show');
 								if(callback != null){ callback(data,objects); }
 							});
 							break;
