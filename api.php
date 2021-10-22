@@ -395,34 +395,30 @@ class organizationsAPI extends CRUDAPI {
 						$new['link_to_3'] = $status[0]['id'];
 					}
 				}
-				$id = $this->Auth->create('relationships',$new);
+				$rel = $this->createRelationship($new);
 				$relation = $this->Auth->read($data['relationship']['relationship'],$data['relationship']['link_to']);
 				if($relation != null){
 					$relation = $relation->all()[0];
-					$rel = $this->Auth->read('relationships',$id);
-					if($rel != null){
-						$rel = $rel->all()[0];
-						$rel = $this->convertToDOM($rel);
-						// Return
-						$return = [
-							"success" => $this->Language->Field["Record successfully updated"],
-							"request" => $request,
-							"data" => $data,
-							"output" => [
+					$rel = $this->convertToDOM($rel);
+					// Return
+					$return = [
+						"success" => $this->Language->Field["Record successfully updated"],
+						"request" => $request,
+						"data" => $data,
+						"output" => [
+							'relationship' => $data['relationship']['relationship'],
+							'id' => $data['relationship']['link_to'],
+							'dom' => $this->convertToDOM($relation),
+							'raw' => $relation,
+							'timeline' => [
 								'relationship' => $data['relationship']['relationship'],
-								'id' => $data['relationship']['link_to'],
-								'dom' => $this->convertToDOM($relation),
-								'raw' => $relation,
-								'timeline' => [
-									'relationship' => $data['relationship']['relationship'],
-									'link_to' => $data['relationship']['link_to'],
-									'created' => $rel['created'],
-									'owner' => $rel['owner'],
-								],
+								'link_to' => $data['relationship']['link_to'],
+								'created' => $rel['created'],
+								'owner' => $rel['owner'],
 							],
-						];
-						if(isset($new['relationship_3'],$new['link_to_3'])){ $return['output']['timeline'][$new['relationship_3']] = $new['link_to_3']; }
-					}
+						],
+					];
+					if(isset($new['relationship_3'],$new['link_to_3'])){ $return['output']['timeline'][$new['relationship_3']] = $new['link_to_3']; }
 				}
 			}
 			return $return;
@@ -481,7 +477,7 @@ class organizationsAPI extends CRUDAPI {
 					if($statuses['relationship'] == 'issues'){ $status = $statuses; }
 				}
 				foreach($issues as $issue){
-					$this->Auth->create('relationships',[
+					$this->createRelationship([
 						'relationship_1' => 'organizations',
 						'link_to_1' => $organization['id'],
 						'relationship_2' => 'issues',
@@ -495,7 +491,7 @@ class organizationsAPI extends CRUDAPI {
 					foreach($this->Auth->read('statuses',$data['status'],'order')->all() as $statuses){
 						if($statuses['relationship'] == 'organizations'){ $status = $statuses; }
 					}
-					$this->Auth->create('relationships',[
+					$this->createRelationship([
 						'relationship_1' => 'organizations',
 						'link_to_1' => $organization['id'],
 						'relationship_2' => 'statuses',
@@ -512,7 +508,7 @@ class organizationsAPI extends CRUDAPI {
 								switch($subscription['relationship']){
 									case"users":
 										if(isset($users[$subscription['link_to']])){
-											$this->Auth->create('relationships',[
+											$this->createRelationship([
 												'relationship_1' => 'organizations',
 												'link_to_1' => $organization['id'],
 												'relationship_2' => $subscription['relationship'],
@@ -521,7 +517,7 @@ class organizationsAPI extends CRUDAPI {
 										}
 										break;
 									default:
-										$this->Auth->create('relationships',[
+										$this->createRelationship([
 											'relationship_1' => 'organizations',
 											'link_to_1' => $organization['id'],
 											'relationship_2' => $subscription['relationship'],
@@ -567,7 +563,7 @@ class organizationsAPI extends CRUDAPI {
 						}
 						// Create Linked Entity
 						if('organizations' != 'organizations'){
-							$this->Auth->create('relationships',[
+							$this->createRelationship([
 								'relationship_1' => 'organizations',
 								'link_to_1' => $organization['id'],
 								'relationship_2' => 'organizations',
