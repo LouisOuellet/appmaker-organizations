@@ -216,6 +216,8 @@ API.Plugins.organizations = {
 										for(var [subKey, subDetails] of Object.entries(data.details.issues.dom)){
 											var subHTML = '';
 											subHTML += '<div class="btn-group m-1" data-id="'+subDetails.id+'">';
+												console.log(issues);
+												console.log(subDetails);
 												subHTML += '<button type="button" data-id="'+subDetails.id+'" class="btn btn-xs bg-'+data.details.statuses.raw[issues[subDetails.id]].color+'" data-action="details"><i class="fas fa-gavel mr-1"></i>'+subDetails.id+' - '+subDetails.name+' - '+API.Contents.Language[data.details.statuses.raw[issues[subDetails.id]].name]+'</button>';
 												if(API.Auth.validate('custom', 'organizations_issues', 4)){
 													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subDetails.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
