@@ -531,7 +531,7 @@ API.Plugins.organizations = {
 							var footer = modal.find('.modal-footer');
 							header.find('button[data-control="hide"]').remove();
 							header.find('button[data-control="update"]').remove();
-							API.Builder.input(body, 'tag', null,{plugin:'tags'}, function(input){});
+							API.Builder.input(body, 'tag', null, function(input){});
 							footer.append('<button class="btn btn-secondary" data-action="tag"><i class="fas fa-tag mr-1"></i>'+API.Contents.Language['Tag']+'</button>');
 							footer.find('button[data-action="tag"]').click(function(){
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
