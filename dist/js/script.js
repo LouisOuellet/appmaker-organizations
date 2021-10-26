@@ -168,11 +168,11 @@ API.Plugins.organizations = {
 											subsHTML += '</div>';
 											tr.append(subsHTML);
 										}
-										if(API.Auth.validate('custom', 'organizations_organizations', 2)){
-											tr.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
-										}
-										API.Plugins.organizations.Events.subsidiaries(data,layout);
 									}
+									if(API.Auth.validate('custom', 'organizations_organizations', 2)){
+										tr.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
+									}
+									API.Plugins.organizations.Events.subsidiaries(data,layout);
 								});
 							}
 						}
