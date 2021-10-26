@@ -508,9 +508,6 @@ API.Plugins.organizations = {
 				var button = $(this);
 				if(button.attr('data-action') != "link"){ var tag = {raw:dataset.details.tags.raw[button.attr('data-id')],dom:dataset.details.tags.dom[button.attr('data-id')]}; }
 				switch(button.attr('data-action')){
-					case"details":
-						API.CRUD.read.show({ key:'name',keys:tag.dom, href:"?p=tags&v=details&id="+tag.raw.name, modal:true });
-						break;
 					case"untag":
 						API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'tags',link_to:tag.raw.id}}},function(result){
 							var sub_dataset = JSON.parse(result);
