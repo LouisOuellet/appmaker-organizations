@@ -70,7 +70,7 @@ API.Plugins.organizations = {
 					container.attr('data-id',dataset.output.this.raw.id);
 					// GUI
 					// Adding Layout
-					API.GUI.Layouts.details(container,dataset.output);
+					API.GUI.Layouts.details(container,dataset.output,{title:"Organization Details"});
 		// 			// GUI
 		// 			// Subscribe BTN
 		// 			// Hide Bell BTN
