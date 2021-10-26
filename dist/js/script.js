@@ -170,62 +170,80 @@ API.Plugins.organizations = {
 										}
 										if(API.Auth.validate('custom', 'organizations_organizations', 2)){
 											tr.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
-											tr.find('button[data-action="link"]').off().click(function(){
-												API.Builder.modal($('body'), {
-													title:'Link a subsidiary',
-													icon:'subsidiaries',
-													zindex:'top',
-													css:{ header: "bg-gray", body: "p-3"},
-												}, function(modal){
-													modal.on('hide.bs.modal',function(){ modal.remove(); });
-													var dialog = modal.find('.modal-dialog');
-													var header = modal.find('.modal-header');
-													var body = modal.find('.modal-body');
-													var footer = modal.find('.modal-footer');
-													header.find('button[data-control="hide"]').remove();
-													header.find('button[data-control="update"]').remove();
-													API.Builder.input(body, 'organization', null,{plugin:'organizations'}, function(input){});
-													footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>Link</button>');
-													footer.find('button[data-action="link"]').click(function(){
-														if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
-															API.request('organizations','link',{data:{id:data.this.dom.id,relationship:{relationship:'organizations',link_to:body.find('select').select2('val')}}},function(result){
-																var sub_dataset = JSON.parse(result);
-																if(sub_dataset.success != undefined){
-																	API.Helper.set(API.Contents,['sub_dataset','dom','organizations',sub_dataset.output.dom.id],sub_dataset.output.dom);
-																	API.Helper.set(API.Contents,['sub_dataset','raw','organizations',sub_dataset.output.raw.id],sub_dataset.output.raw);
-																	API.Helper.set(data.details,['organizations','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
-																	API.Helper.set(data.details,['organizations','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
-																	var subsHTML = '';
-																	subsHTML += '<div class="btn-group m-1" sub_dataset-id="'+sub_dataset.output.dom.id+'">';
-																		subsHTML += '<button type="button" class="btn btn-xs btn-primary" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="details"><i class="fas fa-building mr-1"></i>'+sub_dataset.output.dom.name+'</button>';
-																		if(API.Auth.validate('custom', 'organizations_organizations', 4)){
-																			subsHTML += '<button type="button" class="btn btn-xs btn-danger" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="unlink"><i class="fas fa-unlink"></i></button>';
-																		}
-																	subsHTML += '</div>';
-																	container.find('td[sub_dataset-plugin="organizations"][sub_dataset-key="subsidiaries"]').find('button[sub_dataset-action="link"]').before(subsHTML);
-																	API.Plugins.organizations.Events.subsidiaries(container,data);
-																	var detail = {};
-																	for(var [key, value] of Object.entries(data.details.organizations.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
-																	detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
-																	API.Builder.Timeline.add.client(container.find('#organizations_timeline'),detail);
-																}
-															});
-															modal.modal('hide');
-														} else {
-															body.find('.input-group').addClass('is-invalid');
-															alert('No organization were selected!');
-														}
-													});
-													modal.modal('show');
-												});
-											});
 										}
-										API.Plugins.organizations.Events.subsidiaries(container,dataset);
+										API.Plugins.organizations.Events.subsidiaries(data,layout);
 									}
 								});
 							}
 						}
 					});
+				}
+			});
+		},
+	},
+	GUI:{},
+	Events:{
+		subsidiaries:function(dataset,layout,options = {},callback = null){
+			if(options instanceof Function){ callback = options; options = {}; }
+			var defaults = {field: "name"};
+			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
+			var tr = layout.details.find('td[data-plugin="organizations"][data-key="subsidiaries"]');
+			tr.find('button').off().click(function(){
+				var button = $(this);
+				switch(button.attr('data-action')){
+					case"link":
+						API.Builder.modal($('body'), {
+							title:'Link a subsidiary',
+							icon:'subsidiaries',
+							zindex:'top',
+							css:{ header: "bg-gray", body: "p-3"},
+						}, function(modal){
+							modal.on('hide.bs.modal',function(){ modal.remove(); });
+							var dialog = modal.find('.modal-dialog');
+							var header = modal.find('.modal-header');
+							var body = modal.find('.modal-body');
+							var footer = modal.find('.modal-footer');
+							header.find('button[data-control="hide"]').remove();
+							header.find('button[data-control="update"]').remove();
+							API.Builder.input(body, 'organization', null,{plugin:'organizations'}, function(input){});
+							footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>Link</button>');
+							footer.find('button[data-action="link"]').click(function(){
+								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
+									API.request('organizations','link',{data:{id:data.this.dom.id,relationship:{relationship:'organizations',link_to:body.find('select').select2('val')}}},function(result){
+										var sub_dataset = JSON.parse(result);
+										if(sub_dataset.success != undefined){
+											API.Helper.set(API.Contents,['sub_dataset','dom','organizations',sub_dataset.output.dom.id],sub_dataset.output.dom);
+											API.Helper.set(API.Contents,['sub_dataset','raw','organizations',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											API.Helper.set(data.details,['organizations','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
+											API.Helper.set(data.details,['organizations','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											var subsHTML = '';
+											subsHTML += '<div class="btn-group m-1" sub_dataset-id="'+sub_dataset.output.dom.id+'">';
+												subsHTML += '<button type="button" class="btn btn-xs btn-primary" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="details"><i class="fas fa-building mr-1"></i>'+sub_dataset.output.dom.name+'</button>';
+												if(API.Auth.validate('custom', 'organizations_organizations', 4)){
+													subsHTML += '<button type="button" class="btn btn-xs btn-danger" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="unlink"><i class="fas fa-unlink"></i></button>';
+												}
+											subsHTML += '</div>';
+											container.find('td[sub_dataset-plugin="organizations"][sub_dataset-key="subsidiaries"]').find('button[sub_dataset-action="link"]').before(subsHTML);
+											API.Plugins.organizations.Events.subsidiaries(container,data);
+											var detail = {};
+											for(var [key, value] of Object.entries(data.details.organizations.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
+											detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
+											API.Builder.Timeline.add.client(container.find('#organizations_timeline'),detail);
+										}
+									});
+									modal.modal('hide');
+								} else {
+									body.find('.input-group').addClass('is-invalid');
+									alert('No organization were selected!');
+								}
+							});
+							modal.modal('show');
+						});
+						break;
+				}
+			});
+		},
+	},
 		// 			// GUI
 		// 			// Subscribe BTN
 		// 			// Hide Bell BTN
@@ -1335,590 +1353,569 @@ API.Plugins.organizations = {
 		// 					} else { alert('Note is empty'); }
 		// 				});
 		// 			} else { container.find('#organizations_comments').find('button[data-action="reply"]').remove(); }
-				}
-			});
-		},
-	},
-	GUI:{
-		details:{
-			area:function(layout,organization,options = {},callback = null){
-				if(options instanceof Function){ callback = options; options = {}; }
-				var html = '';
-				var defaults = {
-					field: "name",
-				};
-				if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
-				html +='<tr>';
-					html +='<td data-edit="'+defaults.field+'"><b>'+API.Contents.Language[defaults.field]+'</b></td>';
-					html +='<td data-plugin="organizations" data-key="'+defaults.field+'">'+organization.this.dom[defaults.field]+'</td>';
-				html +='</tr>';
-				layout.find().append(html);
-				if(callback != null){ callback(); }
-			},
-			control:{},
-		},
-		tabs:{
-			tab:{},
-			control:{},
-		},
-		contacts:{
-			add:function(container, dataset, contact, open = false){
-				var contactCSV = '';
-				for(var [key, value] of Object.entries(contact.dom)){
-					if(value == null){ value = '';contact.dom[key] = value; };
-				  switch(key){
-				    case"first_name":
-				    case"middle_name":
-				    case"last_name":
-				    case"email":
-						case"phone":
-						case"mobile":
-				    case"office_num":
-						case"other_num":
-				    case"about":
-				    case"job_title": contactCSV += value.replace(',','').toLowerCase()+',';break;
-				  }
-				}
-				contact.dom.name = '';
-				if(contact.dom.first_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.first_name; }
-				if(contact.dom.middle_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.middle_name; }
-				if(contact.dom.last_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.last_name; }
-				contact.raw.name = contact.dom.name;
-				contactCSV += contact.dom.name.replace(',','').toLowerCase()+',';
-				var contactHTML = '';
-				contactHTML += '<div class="col-sm-12 col-md-6 contactCard" data-csv="'+contactCSV+'" data-type="contact" data-id="'+contact.dom.id+'" data-organization="'+contact.raw.organization+'">';
-				  contactHTML += '<div class="card">';
-				    contactHTML += '<div class="card-header border-bottom-0">';
-				      contactHTML += '<b class="mr-1">Title:</b>'+contact.dom.job_title;
-				    contactHTML += '</div>';
-				    contactHTML += '<div class="card-body pt-0">';
-				      contactHTML += '<div class="row">';
-				        contactHTML += '<div class="col-7">';
-				          contactHTML += '<h2 class="lead"><b>'+contact.dom.name+'</b></h2>';
-				          contactHTML += '<p class="text-sm"><b>About: </b> '+contact.dom.about+' </p>';
-				          contactHTML += '<ul class="ml-4 mb-0 fa-ul">';
-				            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-at"></i></span><b class="mr-1">Email:</b><a href="mailto:'+contact.dom.email+'">'+contact.dom.email+'</a></li>';
-				            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span><b class="mr-1">Phone #:</b><a href="tel:'+contact.dom.phone+'">'+contact.dom.phone+'</a></li>';
-				            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span><b class="mr-1">Office #:</b><a href="tel:'+contact.dom.office_num+'">'+contact.dom.office_num+'</a></li>';
-				            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-mobile"></i></span><b class="mr-1">Mobile #:</b><a href="tel:'+contact.dom.mobile+'">'+contact.dom.mobile+'</a></li>';
-				            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span><b class="mr-1">Other #:</b><a href="tel:'+contact.dom.other_num+'">'+contact.dom.other_num+'</a></li>';
-				          contactHTML += '</ul>';
-				        contactHTML += '</div>';
-				        contactHTML += '<div class="col-5 text-center">';
-				          contactHTML += '<img src="/dist/img/default.png" alt="user-avatar" class="img-circle img-fluid">';
-				        contactHTML += '</div>';
-				      contactHTML += '</div>';
-				    contactHTML += '</div>';
-				    contactHTML += '<div class="card-footer">';
-				      contactHTML += '<div class="text-right">';
-				        contactHTML += '<div class="btn-group"></div>';
-				      contactHTML += '</div>';
-				    contactHTML += '</div>';
-				  contactHTML += '</div>';
-				contactHTML += '</div>';
-				contact.dom.organization = contact.raw.organization;
-				var contactInserted = false;
-				if((contact.dom.isActive)||(contact.dom.isActive == "true")){
-					if((API.Helper.isSet(API.Plugins,['contacts']))&&(API.Auth.validate('custom', 'organizations_contacts', 1))&&((contact.dom.isContact)||(contact.dom.isContact == "true"))){
-				  	container.find('#organizations_contacts').find('div.row').first().find('div.addContact').parent().before(contactHTML);
-						contactInserted = true;
-						var contactElement = container.find('#organizations_contacts').find('div[data-id="'+contact.dom.id+'"]');
-					}
-					if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees', 1))&&((contact.dom.isEmployee)||(contact.dom.isEmployee == "true"))){
-				  	container.find('#organizations_employees').find('div.row').first().find('div.addContact').parent().before(contactHTML);
-						employeeInserted = true;
-						var contactElement = container.find('#organizations_contacts').find('div[data-id="'+contact.dom.id+'"]');
-					}
-					if(open){
-						API.Builder.Timeline.add.contact(container.find('#organizations_timeline'),contact.dom,'address-card','secondary',function(item){
-							item.find('i').first().addClass('pointer');
-							item.find('i').first().off().click(function(){
-								if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees', 1))&&((item.attr('data-isEmployee'))||(item.attr('data-isEmployee') == 'true'))){
-									container.find('#organizations_employees_search').val(item.attr('data-name'));
-									container.find('ul.nav li.nav-item a[href*="employees"]').tab('show');
-									container.find('#organizations_employees').find('[data-csv]').hide();
-									container.find('#organizations_employees').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
-								}
-								else if((API.Helper.isSet(API.Plugins,['contacts']))&&(API.Auth.validate('custom', 'organizations_contacts', 1))&&((item.attr('data-isContact'))||(item.attr('data-isContact') == 'true'))){
-									container.find('#organizations_contacts_search').val(item.attr('data-name'));
-									container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
-									container.find('#organizations_contacts').find('[data-csv]').hide();
-									container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
-								}
-							});
-						});
-					}
-				} else {
-					if((API.Helper.isSet(API.Plugins,['contacts'])||API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_contacts_isActive', 1))&&((contact.dom.isContact)||(contact.dom.isContact == "true"))){
-				    container.find('#organizations_contacts').find('div.row').first().find('div.addContact').parent().before(contactHTML);
-						contactInserted = true;
-						var contactElement = container.find('#organizations_contacts').find('div[data-id="'+contact.dom.id+'"]');
-				    container.find('#organizations_contacts').find('[data-id="'+contact.dom.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
-				    if(open){
-							API.Builder.Timeline.add.contact(container.find('#organizations_timeline'),contact.dom,'address-card','secondary',function(item){
-								item.find('i').first().addClass('pointer');
-								item.find('i').first().off().click(function(){
-									if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees', 1))&&((item.attr('data-isEmployee'))||(item.attr('data-isEmployee') == 'true'))){
-										container.find('#organizations_employees_search').val(item.attr('data-name'));
-										container.find('ul.nav li.nav-item a[href*="employees"]').tab('show');
-										container.find('#organizations_employees').find('[data-csv]').hide();
-										container.find('#organizations_employees').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
-									}
-									else if((API.Helper.isSet(API.Plugins,['contacts']))&&(API.Auth.validate('custom', 'organizations_contacts', 1))&&((item.attr('data-isContact'))||(item.attr('data-isContact') == 'true'))){
-										container.find('#organizations_contacts_search').val(item.attr('data-name'));
-										container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
-										container.find('#organizations_contacts').find('[data-csv]').hide();
-										container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
-									}
-								});
-							});
-						}
-				  }
-				  if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees_isActive', 1))&&((contact.dom.isEmployee)||(contact.dom.isEmployee == "true"))){
-				    container.find('#organizations_employees').find('div.row').first().find('div.addContact').parent().before(contactHTML);
-						employeeInserted = true;
-						var contactElement = container.find('#organizations_contacts').find('div[data-id="'+contact.dom.id+'"]');
-				    container.find('#organizations_employees').find('[data-id="'+contact.dom.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
-				    if(open){
-							API.Builder.Timeline.add.contact(container.find('#organizations_timeline'),contact.dom,'address-card','secondary',function(item){
-								item.find('i').first().addClass('pointer');
-								item.find('i').first().off().click(function(){
-									if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees', 1))&&((item.attr('data-isEmployee'))||(item.attr('data-isEmployee') == 'true'))){
-										container.find('#organizations_employees_search').val(item.attr('data-name'));
-										container.find('ul.nav li.nav-item a[href*="employees"]').tab('show');
-										container.find('#organizations_employees').find('[data-csv]').hide();
-										container.find('#organizations_employees').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
-									}
-									else if((API.Helper.isSet(API.Plugins,['contacts']))&&API.Auth.validate('custom', 'organizations_contacts', 1)){
-										container.find('#organizations_contacts_search').val(item.attr('data-name'));
-										container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
-										container.find('#organizations_contacts').find('[data-csv]').hide();
-										container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
-									}
-								});
-							});
-						}
-				  }
-				}
-				if(contactInserted){
-					if((API.Helper.isSet(API.Plugins,['contacts']))&&API.Auth.validate('custom', 'organizations_contacts', 1)){
-						var contactHTML = '';
-						if(API.Auth.validate('custom', 'organizations_contacts_btn_details', 1)){
-							contactHTML += '<button class="btn btn-sm btn-primary" data-action="details"><i class="fas fa-eye mr-1"></i>Details</button>';
-						}
-						if(API.Auth.validate('custom', 'organizations_contacts_btn_call', 1)){
-							contactHTML += '<button class="btn btn-sm btn-success" data-action="call"><i class="fas fa-phone mr-1"></i>Call</button>';
-						}
-						if(API.Auth.validate('custom', 'organizations_contacts_btn_subscriptions', 1)){
-							contactHTML += '<button class="btn btn-sm bg-lightblue" data-action="subscriptions"><i class="fas fa-list-alt mr-1"></i>Subscriptions</button>';
-						}
-						if(API.Auth.validate('custom', 'organizations_contacts_btn_share', 1)){
-							contactHTML += '<button class="btn btn-sm bg-navy" data-action="share"><i class="fas fa-share-alt mr-1"></i>Share</button>';
-						}
-						if((API.Auth.validate('custom', 'organizations_contacts_btn_edit', 1))&&((!contact.dom.isUser)&&(contact.dom.isUser != 'true'))){
-							contactHTML += '<button class="btn btn-sm btn-warning" data-action="edit"><i class="fas fa-edit mr-1"></i>Edit</button>';
-						}
-						if((API.Auth.validate('custom', 'organizations_contacts_btn_delete', 1))&&((!contact.dom.isEmployee)&&(contact.dom.isEmployee != 'true'))){
-							contactHTML += '<button class="btn btn-sm btn-danger" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
-						}
-						if(contactHTML != ''){
-							contactElement.find('.btn-group').append(contactHTML);
-							API.Plugins.organizations.Events.contacts(container,container.find('#organizations_contacts'),dataset);
-						}
-					}
-					if((API.Helper.isSet(API.Plugins,['employees']))&&API.Auth.validate('custom', 'organizations_employees', 1)){
-						var contactHTML = '';
-						if(API.Auth.validate('custom', 'organizations_employees_btn_details', 1)){
-							contactHTML += '<button class="btn btn-sm btn-primary" data-action="details"><i class="fas fa-eye mr-1"></i>Details</button>';
-						}
-						if(API.Auth.validate('custom', 'organizations_employees_btn_call', 1)){
-							contactHTML += '<button class="btn btn-sm btn-success" data-action="call"><i class="fas fa-phone mr-1"></i>Call</button>';
-						}
-						if(API.Auth.validate('custom', 'organizations_employees_btn_subscriptions', 1)){
-							contactHTML += '<button class="btn btn-sm bg-lightblue" data-action="subscriptions"><i class="fas fa-list-alt mr-1"></i>Subscriptions</button>';
-						}
-						if(API.Auth.validate('custom', 'organizations_employees_btn_share', 1)){
-							contactHTML += '<button class="btn btn-sm bg-navy" data-action="share"><i class="fas fa-share-alt mr-1"></i>Share</button>';
-						}
-						if(API.Auth.validate('custom', 'organizations_employees_btn_edit', 1)){
-							contactHTML += '<button class="btn btn-sm btn-warning" data-action="edit"><i class="fas fa-edit mr-1"></i>Edit</button>';
-						}
-						if(API.Auth.validate('custom', 'organizations_employees_btn_delete', 1)){
-							contactHTML += '<button class="btn btn-sm btn-danger" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
-						}
-						if(contactHTML != ''){
-							employeeElement.find('.btn-group').append(contactHTML);
-							API.Plugins.organizations.Events.contacts(container,container.find('#organizations_employees'),dataset);
-						}
-					}
-				}
-			},
-		},
-		calls:{
-			add:function(container,call, organization, issues = {dom:[],raw:[]}, open = false){
-				var callCSV = '';
-				for(var [key, value] of Object.entries(call.dom)){
-					if(value == null){ value = '';call.dom[key] = value; };
-					switch(key){
-						case"date":
-						case"time":
-						case"contact":
-						case"phone":
-						case"organization":
-						case"assigned_to": callCSV += value.replace(',','').toLowerCase()+',';break;
-						case"status": callCSV += API.Contents.Statuses.calls[value].name.toLowerCase()+',';break;
-					}
-				}
-				var callHTML = '';
-				var schedule = '<span class="badge bg-primary mx-1"><i class="fas fa-calendar-check mr-1" aria-hidden="true"></i>'+call.dom.date+' at '+call.dom.time+'</span>';
-				var status = '<span class="mr-1 badge bg-'+API.Contents.Statuses.calls[call.raw.status].color+'"><i class="'+API.Contents.Statuses.calls[call.raw.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Language[API.Contents.Statuses.calls[call.raw.status].name]+'</span>';
-				if((call.dom.phone != '')&&(call.dom.phone != null)){
-					var phone = '<span class="badge bg-success mx-1"><i class="fas fa-phone mr-1" aria-hidden="true"></i>'+call.dom.phone+'</span>';
-				} else { var phone = ''; }
-				if((call.dom.contact != '')&&(call.dom.contact != null)){
-					var contact = '<span class="badge bg-secondary mx-1"><i class="fas fa-address-card mr-1" aria-hidden="true"></i>'+call.dom.contact+'</span>';
-				} else { var contact = ''; }
-				if((call.dom.assigned_to != '')&&(call.dom.assigned_to != null)){
-					var user = '<span class="badge bg-primary mx-1"><i class="fas fa-user mr-1" aria-hidden="true"></i>'+call.dom.assigned_to+'</span>';
-				} else { var user = ''; }
-				callHTML += '<tr data-csv="'+callCSV+'" data-id="'+call.dom.id+'" data-phone="'+call.dom.phone+'" data-organization="'+call.raw.organization+'" data-type="calls">';
-					callHTML += '<td class="pointer">'+schedule+'</td>';
-					callHTML += '<td class="pointer">'+status+'</td>';
-					if(API.Auth.validate('custom', 'organizations_calls_phone', 1)){ callHTML += '<td class="pointer">'+phone+'</td>'; } else { callHTML += '<td class="pointer" style="display:none;">'+phone+'</td>'; }
-					callHTML += '<td class="pointer">'+contact+'</td>';
-					callHTML += '<td class="pointer">'+user+'</td>';
-					if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Auth.Options.application.showInlineCallsControls.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Settings.customization.showInlineCallsControls.value))){
-						callHTML += '<td data-showInlineCallsControls="">';
-							callHTML += '<div class="btn-group btn-block m-0" style="display:none;">';
-								callHTML += '<button class="btn btn-xs btn-success" data-action="start"><i class="fas fa-phone mr-1"></i>Start</button>';
-								callHTML += '<button class="btn btn-xs btn-danger" data-action="cancel"><i class="fas fa-phone-slash mr-1"></i>Cancel</button>';
-								callHTML += '<button class="btn btn-xs btn-primary" data-action="reschedule"><i class="fas fa-calendar-day mr-1"></i>Re-Schedule</button>';
-							callHTML += '</div>';
-							callHTML += '<div class="btn-group btn-block m-0" style="display:none;">';
-								callHTML += '<button class="btn btn-xs btn-danger" data-action="end"><i class="fas fa-phone-slash mr-1"></i>End</button>';
-							callHTML += '</div>';
-						callHTML += '</td>';
-					} else { callHTML += '<td style="display:none;" data-showInlineCallsControls=""></td>'; }
-				callHTML += '</tr>';
-				if(call.raw.status > 2){
-					if(API.Helper.isSet(API.Plugins,['calls'])){
-						container.find('#organizations_calls').find('table').find('tbody').append(callHTML);
-					}
-					container.find('[data-id][data-type="calls"]').find('td').off().click(function(){
-						API.CRUD.read.show({ key:{id:$(this).parent().attr('data-id')}, title:$(this).parent().attr('data-phone'), href:"?p=calls&v=details&id="+$(this).parent().attr('data-id'), modal:true });
-					});
-					if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Auth.Options.application.showInlineCallsControls.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Settings.customization.showInlineCallsControls.value))){
-						container.find('[data-id][data-type="calls"]').find('td[data-showInlineCallsControls]').off();
-						API.Plugins.organizations.Events.calls(container,container.find('[data-id="'+call.dom.id+'"][data-type="calls"]'),call,organization,issues);
-						if(call.raw.status < 4){
-							container.find('[data-id="'+call.dom.id+'"][data-type="calls"]').find('button[data-action="end"]').parent().show();
-						}
-					}
-					if(open){
-						if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showCallWidget','value']))&&(!API.Contents.Auth.Options.application.showCallWidget.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showCallWidget','value']))&&(!API.Contents.Settings.customization.showCallWidget.value))){
-							API.CRUD.read.show({ key:{id:call.dom.id}, title:call.dom.phone, href:"?p=calls&v=details&id="+call.dom.id, modal:true });
-						}
-					}
-				} else {
-					if(API.Helper.isSet(API.Plugins,['callbacks'])){
-						container.find('#organizations_callbacks').find('table').find('tbody').append(callHTML);
-					}
-					container.find('[data-id][data-type="calls"]').find('td').off().click(function(){
-						API.CRUD.read.show({ key:{id:$(this).parent().attr('data-id')}, title:$(this).parent().attr('data-phone'), href:"?p=calls&v=details&id="+$(this).parent().attr('data-id'), modal:true });
-					});
-					if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Auth.Options.application.showInlineCallsControls.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Settings.customization.showInlineCallsControls.value))){
-						container.find('[data-id][data-type="calls"]').find('td[data-showInlineCallsControls]').off();
-						API.Plugins.organizations.Events.calls(container,container.find('[data-id="'+call.dom.id+'"][data-type="calls"]'),call,organization,issues);
-						container.find('[data-id="'+call.dom.id+'"][data-type="calls"]').find('button[data-action="start"]').parent().show();
-					}
-				}
-				if(open){
-					call.dom.organization = call.raw.organization;
-					API.Builder.Timeline.add.call(container.find('#organizations_timeline'),call.dom,'phone-square','olive',function(item){
-						item.find('i').first().addClass('pointer');
-						item.find('i').first().off().click(function(){
-							API.CRUD.read.show({ key:{id:call.dom.id}, title:call.dom.phone, href:"?p=calls&v=details&id="+call.dom.id, modal:true });
-						});
-					});
-				}
-			},
-		},
-	},
-	Events:{
-		calls:function(container,tr,call,organization,issues={dom:[],raw:[]}, options = {}, callback = null){
-			if(options instanceof Function){ callback = options; options = {}; }
-			if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Auth.Options.application.showInlineCallsControls.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Settings.customization.showInlineCallsControls.value))){
-				tr.find('[data-showInlineCallsControls]').find('button').off().click(function(){
-					var control = $(this), action = control.attr('data-action');
-					switch(action){
-						case"start":
-							API.Plugins.calls.Events.start(call,organization,issues,function(data,objects){
-								call.raw.status = data.call.raw.status;
-								call.dom.status = data.call.dom.status;
-								// container.find('ul.nav li.nav-item a[href*="calls"]').tab('show');
-								if(callback != null){ callback(data,objects); }
-							});
-							break;
-						case"cancel":
-							API.Plugins.calls.Events.cancel(call,organization,issues,function(data,objects){
-								call.raw.status = data.call.raw.status;
-								call.dom.status = data.call.dom.status;
-								if(callback != null){ callback(data,objects); }
-							});
-							break;
-						case"reschedule":
-							API.Plugins.calls.Events.reschedule(call,organization,issues,function(data,objects){
-								call.raw.status = data.call.raw.status;
-								call.dom.status = data.call.dom.status;
-								if(callback != null){ callback(data,objects); }
-							});
-							break;
-						case"end":
-							API.Plugins.calls.Events.end(call,organization,issues,function(data,objects){
-								call.raw.status = data.call.raw.status;
-								call.dom.status = data.call.dom.status;
-								if(callback != null){ callback(data,objects); }
-							});
-							break;
-					}
-				});
-			}
-		},
-		users:function(container, dataset){
-			container.find('td[data-plugin="organizations"][data-key="assigned_to"]').find('.btn-group button[data-action]').each(function(){
-				$(this).off().click(function(){
-					switch($(this).attr('data-action')){
-						case"details": API.CRUD.read.show({ key:'username',keys:dataset.output.details.users.dom[$(this).attr('data-id')], href:"?p=users&v=details&id="+dataset.output.details.users.dom[$(this).attr('data-id')].username, modal:true });break;
-						case"unassign":
-							API.request('organizations','unassign',{data:{id:dataset.output.this.dom.id,user:$(this).attr('data-id')}},function(result){
-								var data = JSON.parse(result);
-								if(data.success != undefined){
-									dataset.output.this.dom.assigned_to = data.output.organization.dom.assigned_to;
-									dataset.output.this.raw.assigned_to = data.output.organization.raw.assigned_to;
-									container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="assigned_to"]').find('.btn-group[data-id="'+data.output.user+'"]').remove();
-								}
-							});
-							break;
-					}
-				});
-			});
-		},
-		tags:function(container, dataset){
-			container.find('td[data-plugin="organizations"][data-key="tags"]').find('.btn-group button[data-action]').each(function(){
-				$(this).off().click(function(){
-					switch($(this).attr('data-action')){
-						case"untag":
-							API.request('organizations','untag',{data:{id:dataset.output.this.dom.id,tag:$(this).attr('data-id')}},function(result){
-								var data = JSON.parse(result);
-								if(data.success != undefined){
-									dataset.output.this.dom.tags = data.output.organization.dom.tags;
-									dataset.output.this.raw.tags = data.output.organization.raw.tags;
-									container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="tags"]').find('.btn-group[data-id="'+data.output.tag+'"]').remove();
-								}
-							});
-							break;
-					}
-				});
-			});
-		},
-		services:function(container, dataset){
-			container.find('td[data-plugin="organizations"][data-key="services"]').find('.btn-group button[data-action]').each(function(){
-				$(this).off().click(function(){
-					switch($(this).attr('data-action')){
-						case"details": API.CRUD.read.show({ key:'name',keys:dataset.output.details.services.dom[$(this).attr('data-id')], href:"?p=services&v=details&id="+dataset.output.details.services.dom[$(this).attr('data-id')].id, modal:true });break;
-						case"unlink":
-							API.request('organizations','unlink',{data:{id:dataset.output.this.dom.id,relationship:{relationship:'services',link_to:$(this).attr('data-id')}}},function(result){
-								var data = JSON.parse(result);
-								if(data.success != undefined){
-									container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="services"]').find('.btn-group[data-id="'+data.output.id+'"]').remove();
-									container.find('#organizations_timeline').find('[data-type="hand-holding-usd"][data-id="'+data.output.id+'"]').remove();
-								}
-							});
-							break;
-					}
-				});
-			});
-		},
-		issues:function(container, dataset){
-			container.find('td[data-plugin="organizations"][data-key="issues"]').find('.btn-group button[data-action]').each(function(){
-				$(this).off().click(function(){
-					switch($(this).attr('data-action')){
-						case"details": API.CRUD.read.show({ key:'name',keys:dataset.output.details.issues.dom[$(this).attr('data-id')], href:"?p=issues&v=details&id="+dataset.output.details.issues.dom[$(this).attr('data-id')].id, modal:true });break;
-						case"unlink":
-							API.request('organizations','unlink',{data:{id:dataset.output.this.dom.id,relationship:{relationship:'issues',link_to:$(this).attr('data-id')}}},function(result){
-								var data = JSON.parse(result);
-								if(data.success != undefined){
-									container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="issues"]').find('.btn-group[data-id="'+data.output.id+'"]').remove();
-									container.find('#organizations_timeline').find('[data-type="gavel"][data-id="'+data.output.id+'"]').remove();
-								}
-							});
-							break;
-					}
-				});
-			});
-		},
-		subsidiaries:function(container, dataset){
-			container.find('td[data-plugin="organizations"][data-key="subsidiaries"]').find('.btn-group button[data-action]').each(function(){
-				$(this).off().click(function(){
-					switch($(this).attr('data-action')){
-						case"details": API.CRUD.read.show({ key:'name',keys:dataset.output.details.organizations.dom[$(this).attr('data-id')], href:"?p=organizations&v=details&id="+dataset.output.details.organizations.dom[$(this).attr('data-id')].name, modal:true });break;
-						case"unlink":
-							API.request('organizations','unlink',{data:{id:dataset.output.this.dom.id,relationship:{relationship:'organizations',link_to:$(this).attr('data-id')}}},function(result){
-								var data = JSON.parse(result);
-								if(data.success != undefined){
-									container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="subsidiaries"]').find('.btn-group[data-id="'+data.output.id+'"]').remove();
-									container.find('#organizations_timeline').find('[data-type="building"][data-id="'+data.output.id+'"]').remove();
-								}
-							});
-							break;
-					}
-				});
-			});
-		},
-		contacts:function(container,contactsCTN,dataset){
-			contactsCTN.find('[data-csv]').each(function(){
-				var id = $(this).attr('data-id');
-				var call = {};
-				for(var [key, value] of Object.entries(API.Contents.Settings.Structure.calls)){ call[key] = ''; }
-				$(this).find('button').off().click(function(){
-					switch($(this).attr('data-action')){
-						case"call":
-							var now = new Date();
-							var newCall = {
-								date:now,
-								time:now,
-								contact:id,
-								status:3,
-								assigned_to:API.Contents.Auth.User.id,
-								relationship:'organizations',
-								link_to:dataset.output.this.raw.id,
-							};
-							API.request('calls','create',{data:newCall},function(result){
-								var data = JSON.parse(result);
-								if(typeof data.success !== 'undefined'){
-									API.Plugins.calls.Widgets.toast({dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues);
-									API.Plugins.organizations.GUI.calls.add(container,{dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues, true);
-								}
-							});
-							break;
-						case"edit":
-						API.CRUD.update.show({ keys:dataset.output.details.users.raw[id], modal:true, plugin:'contacts' },function(contact){
-							dataset.output.details.users.raw[contact.raw.id] = contact.raw;
-							dataset.output.details.users.dom[contact.dom.id] = contact.dom;
-							container.find('div[data-type="contact"][data-id="'+contact.raw.id+'"][data-organization="'+contact.raw.organization+'"]').remove();
-							API.Plugins.organizations.GUI.contacts.add(container, dataset, {dom:contact.dom,raw:contact.raw}, true);
-						});break;
-						case"delete":
-							var thiscontact = {};
-							for(var [key, value] of Object.entries(dataset.output.details.users.raw[id])){ thiscontact[key] = value; }
-							thiscontact.organization = dataset.output.this.raw.id;
-							API.CRUD.delete.show({ keys:thiscontact,key:'name', modal:true, plugin:'contacts' },function(record){
-								if((dataset.output.details.users.raw[id].isActive == 'true')&&(record.isActive != 'true')&&(API.Auth.validate('custom', contactsCTN.attr('id')+'_isActive', 1))){
-									contactsCTN.find('[data-id="'+record.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
-								} else {
-									contactsCTN.find('[data-id="'+record.id+'"]').remove();
-								}
-							});
-							break;
-						case"details":
-							API.Builder.modal($('body'), {
-								title:'Details',
-								icon:'details',
-								zindex:'top',
-								css:{ header: "bg-primary"},
-							}, function(modal){
-								modal.on('hide.bs.modal',function(){ modal.remove(); });
-								var dialog = modal.find('.modal-dialog');
-								var header = modal.find('.modal-header');
-								var body = modal.find('.modal-body');
-								var footer = modal.find('.modal-footer');
-								header.find('button[data-control="hide"]').remove();
-								header.find('button[data-control="update"]').remove();
-								modal.modal('show');
-							});
-							break;
-						case"share":
-							API.Builder.modal($('body'), {
-								title:'Share',
-								icon:'share',
-								zindex:'top',
-								css:{ header: "bg-navy"},
-							}, function(modal){
-								modal.on('hide.bs.modal',function(){ modal.remove(); });
-								var dialog = modal.find('.modal-dialog');
-								var header = modal.find('.modal-header');
-								var body = modal.find('.modal-body');
-								var footer = modal.find('.modal-footer');
-								header.find('button[data-control="hide"]').remove();
-								header.find('button[data-control="update"]').remove();
-								modal.modal('show');
-							});
-							break;
-						case"subscriptions":
-							API.Builder.modal($('body'), {
-								title:'Subscriptions',
-								icon:'subscriptions',
-								zindex:'top',
-								css:{ header: "bg-lightblue"},
-							}, function(modal){
-								modal.on('hide.bs.modal',function(){ modal.remove(); });
-								var dialog = modal.find('.modal-dialog');
-								var header = modal.find('.modal-header');
-								var body = modal.find('.modal-body');
-								var footer = modal.find('.modal-footer');
-								header.find('button[data-control="hide"]').remove();
-								header.find('button[data-control="update"]').remove();
-								body.addClass('p-0');
-								var tableHTML = '<div class="table-responsive"><table class="table dt-responsive table-hover table-bordered" style="width:100%"><thead class="thead-dark"></thead></table></div>';
-								body.html(tableHTML);
-								var table = body.find('table');
-								var cols = [];
-								cols.push({ name: "select", title: "", data: "select", width: "25px", defaultContent: '', targets: 0, orderable: false, className: 'select-checkbox'});
-								cols.push({ name: "Category", title: "Category", data: "category", defaultContent: '', targets: 1 });
-								cols.push({ name: "Sub Category", title: "Sub Category", data: "sub_category", defaultContent: '', targets: 2 });
-								if(!API.Helper.isSet(dataset.output.details,['contacts','subscriptions','dom',id])){
-									API.Helper.set(dataset.output.details,['contacts','subscriptions','dom',id],[]);
-								}
-								table.DataTable({
-									data: dataset.output.details.users.subscriptions.dom[id],
-									searching: true,
-									paging: true,
-									pageLength: 10,
-									lengthChange: true,
-									lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-									ordering: true,
-									info: true,
-									autoWidth: true,
-									processing: true,
-									scrolling: false,
-									buttons: [
-										{ extend: 'selectAll' },
-										{ extend: 'selectNone' },
-									],
-									language: {
-										buttons: {
-											selectAll: API.Contents.Language["All"],
-											selectNone: API.Contents.Language["None"],
-										},
-										info: ", Total _TOTAL_ entries",
-									},
-									dom: '<"dtbl-toolbar"Bf>rt<"dtbl-btoolbar"lip>',
-									columnDefs: cols,
-									select: {
-										style: 'multi',
-										selector: 'td:first-child'
-									},
-									order: [[ 1, "asc" ]]
-								});
-								modal.modal('show');
-							});
-							break;
-					}
-				});
-			});
-		},
-	},
-	extend:{},
+	// 			}
+	// 		});
+	// 	},
+	// },
+	// GUI:{
+	// 	contacts:{
+	// 		add:function(container, dataset, contact, open = false){
+	// 			var contactCSV = '';
+	// 			for(var [key, value] of Object.entries(contact.dom)){
+	// 				if(value == null){ value = '';contact.dom[key] = value; };
+	// 			  switch(key){
+	// 			    case"first_name":
+	// 			    case"middle_name":
+	// 			    case"last_name":
+	// 			    case"email":
+	// 					case"phone":
+	// 					case"mobile":
+	// 			    case"office_num":
+	// 					case"other_num":
+	// 			    case"about":
+	// 			    case"job_title": contactCSV += value.replace(',','').toLowerCase()+',';break;
+	// 			  }
+	// 			}
+	// 			contact.dom.name = '';
+	// 			if(contact.dom.first_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.first_name; }
+	// 			if(contact.dom.middle_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.middle_name; }
+	// 			if(contact.dom.last_name != ''){ if(contact.dom.name != ''){ contact.dom.name += ' '; } contact.dom.name += contact.dom.last_name; }
+	// 			contact.raw.name = contact.dom.name;
+	// 			contactCSV += contact.dom.name.replace(',','').toLowerCase()+',';
+	// 			var contactHTML = '';
+	// 			contactHTML += '<div class="col-sm-12 col-md-6 contactCard" data-csv="'+contactCSV+'" data-type="contact" data-id="'+contact.dom.id+'" data-organization="'+contact.raw.organization+'">';
+	// 			  contactHTML += '<div class="card">';
+	// 			    contactHTML += '<div class="card-header border-bottom-0">';
+	// 			      contactHTML += '<b class="mr-1">Title:</b>'+contact.dom.job_title;
+	// 			    contactHTML += '</div>';
+	// 			    contactHTML += '<div class="card-body pt-0">';
+	// 			      contactHTML += '<div class="row">';
+	// 			        contactHTML += '<div class="col-7">';
+	// 			          contactHTML += '<h2 class="lead"><b>'+contact.dom.name+'</b></h2>';
+	// 			          contactHTML += '<p class="text-sm"><b>About: </b> '+contact.dom.about+' </p>';
+	// 			          contactHTML += '<ul class="ml-4 mb-0 fa-ul">';
+	// 			            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-at"></i></span><b class="mr-1">Email:</b><a href="mailto:'+contact.dom.email+'">'+contact.dom.email+'</a></li>';
+	// 			            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span><b class="mr-1">Phone #:</b><a href="tel:'+contact.dom.phone+'">'+contact.dom.phone+'</a></li>';
+	// 			            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span><b class="mr-1">Office #:</b><a href="tel:'+contact.dom.office_num+'">'+contact.dom.office_num+'</a></li>';
+	// 			            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-mobile"></i></span><b class="mr-1">Mobile #:</b><a href="tel:'+contact.dom.mobile+'">'+contact.dom.mobile+'</a></li>';
+	// 			            contactHTML += '<li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span><b class="mr-1">Other #:</b><a href="tel:'+contact.dom.other_num+'">'+contact.dom.other_num+'</a></li>';
+	// 			          contactHTML += '</ul>';
+	// 			        contactHTML += '</div>';
+	// 			        contactHTML += '<div class="col-5 text-center">';
+	// 			          contactHTML += '<img src="/dist/img/default.png" alt="user-avatar" class="img-circle img-fluid">';
+	// 			        contactHTML += '</div>';
+	// 			      contactHTML += '</div>';
+	// 			    contactHTML += '</div>';
+	// 			    contactHTML += '<div class="card-footer">';
+	// 			      contactHTML += '<div class="text-right">';
+	// 			        contactHTML += '<div class="btn-group"></div>';
+	// 			      contactHTML += '</div>';
+	// 			    contactHTML += '</div>';
+	// 			  contactHTML += '</div>';
+	// 			contactHTML += '</div>';
+	// 			contact.dom.organization = contact.raw.organization;
+	// 			var contactInserted = false;
+	// 			if((contact.dom.isActive)||(contact.dom.isActive == "true")){
+	// 				if((API.Helper.isSet(API.Plugins,['contacts']))&&(API.Auth.validate('custom', 'organizations_contacts', 1))&&((contact.dom.isContact)||(contact.dom.isContact == "true"))){
+	// 			  	container.find('#organizations_contacts').find('div.row').first().find('div.addContact').parent().before(contactHTML);
+	// 					contactInserted = true;
+	// 					var contactElement = container.find('#organizations_contacts').find('div[data-id="'+contact.dom.id+'"]');
+	// 				}
+	// 				if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees', 1))&&((contact.dom.isEmployee)||(contact.dom.isEmployee == "true"))){
+	// 			  	container.find('#organizations_employees').find('div.row').first().find('div.addContact').parent().before(contactHTML);
+	// 					employeeInserted = true;
+	// 					var contactElement = container.find('#organizations_contacts').find('div[data-id="'+contact.dom.id+'"]');
+	// 				}
+	// 				if(open){
+	// 					API.Builder.Timeline.add.contact(container.find('#organizations_timeline'),contact.dom,'address-card','secondary',function(item){
+	// 						item.find('i').first().addClass('pointer');
+	// 						item.find('i').first().off().click(function(){
+	// 							if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees', 1))&&((item.attr('data-isEmployee'))||(item.attr('data-isEmployee') == 'true'))){
+	// 								container.find('#organizations_employees_search').val(item.attr('data-name'));
+	// 								container.find('ul.nav li.nav-item a[href*="employees"]').tab('show');
+	// 								container.find('#organizations_employees').find('[data-csv]').hide();
+	// 								container.find('#organizations_employees').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+	// 							}
+	// 							else if((API.Helper.isSet(API.Plugins,['contacts']))&&(API.Auth.validate('custom', 'organizations_contacts', 1))&&((item.attr('data-isContact'))||(item.attr('data-isContact') == 'true'))){
+	// 								container.find('#organizations_contacts_search').val(item.attr('data-name'));
+	// 								container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
+	// 								container.find('#organizations_contacts').find('[data-csv]').hide();
+	// 								container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+	// 							}
+	// 						});
+	// 					});
+	// 				}
+	// 			} else {
+	// 				if((API.Helper.isSet(API.Plugins,['contacts'])||API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_contacts_isActive', 1))&&((contact.dom.isContact)||(contact.dom.isContact == "true"))){
+	// 			    container.find('#organizations_contacts').find('div.row').first().find('div.addContact').parent().before(contactHTML);
+	// 					contactInserted = true;
+	// 					var contactElement = container.find('#organizations_contacts').find('div[data-id="'+contact.dom.id+'"]');
+	// 			    container.find('#organizations_contacts').find('[data-id="'+contact.dom.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
+	// 			    if(open){
+	// 						API.Builder.Timeline.add.contact(container.find('#organizations_timeline'),contact.dom,'address-card','secondary',function(item){
+	// 							item.find('i').first().addClass('pointer');
+	// 							item.find('i').first().off().click(function(){
+	// 								if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees', 1))&&((item.attr('data-isEmployee'))||(item.attr('data-isEmployee') == 'true'))){
+	// 									container.find('#organizations_employees_search').val(item.attr('data-name'));
+	// 									container.find('ul.nav li.nav-item a[href*="employees"]').tab('show');
+	// 									container.find('#organizations_employees').find('[data-csv]').hide();
+	// 									container.find('#organizations_employees').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+	// 								}
+	// 								else if((API.Helper.isSet(API.Plugins,['contacts']))&&(API.Auth.validate('custom', 'organizations_contacts', 1))&&((item.attr('data-isContact'))||(item.attr('data-isContact') == 'true'))){
+	// 									container.find('#organizations_contacts_search').val(item.attr('data-name'));
+	// 									container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
+	// 									container.find('#organizations_contacts').find('[data-csv]').hide();
+	// 									container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+	// 								}
+	// 							});
+	// 						});
+	// 					}
+	// 			  }
+	// 			  if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees_isActive', 1))&&((contact.dom.isEmployee)||(contact.dom.isEmployee == "true"))){
+	// 			    container.find('#organizations_employees').find('div.row').first().find('div.addContact').parent().before(contactHTML);
+	// 					employeeInserted = true;
+	// 					var contactElement = container.find('#organizations_contacts').find('div[data-id="'+contact.dom.id+'"]');
+	// 			    container.find('#organizations_employees').find('[data-id="'+contact.dom.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
+	// 			    if(open){
+	// 						API.Builder.Timeline.add.contact(container.find('#organizations_timeline'),contact.dom,'address-card','secondary',function(item){
+	// 							item.find('i').first().addClass('pointer');
+	// 							item.find('i').first().off().click(function(){
+	// 								if((API.Helper.isSet(API.Plugins,['employees']))&&(API.Auth.validate('custom', 'organizations_employees', 1))&&((item.attr('data-isEmployee'))||(item.attr('data-isEmployee') == 'true'))){
+	// 									container.find('#organizations_employees_search').val(item.attr('data-name'));
+	// 									container.find('ul.nav li.nav-item a[href*="employees"]').tab('show');
+	// 									container.find('#organizations_employees').find('[data-csv]').hide();
+	// 									container.find('#organizations_employees').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+	// 								}
+	// 								else if((API.Helper.isSet(API.Plugins,['contacts']))&&API.Auth.validate('custom', 'organizations_contacts', 1)){
+	// 									container.find('#organizations_contacts_search').val(item.attr('data-name'));
+	// 									container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
+	// 									container.find('#organizations_contacts').find('[data-csv]').hide();
+	// 									container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+	// 								}
+	// 							});
+	// 						});
+	// 					}
+	// 			  }
+	// 			}
+	// 			if(contactInserted){
+	// 				if((API.Helper.isSet(API.Plugins,['contacts']))&&API.Auth.validate('custom', 'organizations_contacts', 1)){
+	// 					var contactHTML = '';
+	// 					if(API.Auth.validate('custom', 'organizations_contacts_btn_details', 1)){
+	// 						contactHTML += '<button class="btn btn-sm btn-primary" data-action="details"><i class="fas fa-eye mr-1"></i>Details</button>';
+	// 					}
+	// 					if(API.Auth.validate('custom', 'organizations_contacts_btn_call', 1)){
+	// 						contactHTML += '<button class="btn btn-sm btn-success" data-action="call"><i class="fas fa-phone mr-1"></i>Call</button>';
+	// 					}
+	// 					if(API.Auth.validate('custom', 'organizations_contacts_btn_subscriptions', 1)){
+	// 						contactHTML += '<button class="btn btn-sm bg-lightblue" data-action="subscriptions"><i class="fas fa-list-alt mr-1"></i>Subscriptions</button>';
+	// 					}
+	// 					if(API.Auth.validate('custom', 'organizations_contacts_btn_share', 1)){
+	// 						contactHTML += '<button class="btn btn-sm bg-navy" data-action="share"><i class="fas fa-share-alt mr-1"></i>Share</button>';
+	// 					}
+	// 					if((API.Auth.validate('custom', 'organizations_contacts_btn_edit', 1))&&((!contact.dom.isUser)&&(contact.dom.isUser != 'true'))){
+	// 						contactHTML += '<button class="btn btn-sm btn-warning" data-action="edit"><i class="fas fa-edit mr-1"></i>Edit</button>';
+	// 					}
+	// 					if((API.Auth.validate('custom', 'organizations_contacts_btn_delete', 1))&&((!contact.dom.isEmployee)&&(contact.dom.isEmployee != 'true'))){
+	// 						contactHTML += '<button class="btn btn-sm btn-danger" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
+	// 					}
+	// 					if(contactHTML != ''){
+	// 						contactElement.find('.btn-group').append(contactHTML);
+	// 						API.Plugins.organizations.Events.contacts(container,container.find('#organizations_contacts'),dataset);
+	// 					}
+	// 				}
+	// 				if((API.Helper.isSet(API.Plugins,['employees']))&&API.Auth.validate('custom', 'organizations_employees', 1)){
+	// 					var contactHTML = '';
+	// 					if(API.Auth.validate('custom', 'organizations_employees_btn_details', 1)){
+	// 						contactHTML += '<button class="btn btn-sm btn-primary" data-action="details"><i class="fas fa-eye mr-1"></i>Details</button>';
+	// 					}
+	// 					if(API.Auth.validate('custom', 'organizations_employees_btn_call', 1)){
+	// 						contactHTML += '<button class="btn btn-sm btn-success" data-action="call"><i class="fas fa-phone mr-1"></i>Call</button>';
+	// 					}
+	// 					if(API.Auth.validate('custom', 'organizations_employees_btn_subscriptions', 1)){
+	// 						contactHTML += '<button class="btn btn-sm bg-lightblue" data-action="subscriptions"><i class="fas fa-list-alt mr-1"></i>Subscriptions</button>';
+	// 					}
+	// 					if(API.Auth.validate('custom', 'organizations_employees_btn_share', 1)){
+	// 						contactHTML += '<button class="btn btn-sm bg-navy" data-action="share"><i class="fas fa-share-alt mr-1"></i>Share</button>';
+	// 					}
+	// 					if(API.Auth.validate('custom', 'organizations_employees_btn_edit', 1)){
+	// 						contactHTML += '<button class="btn btn-sm btn-warning" data-action="edit"><i class="fas fa-edit mr-1"></i>Edit</button>';
+	// 					}
+	// 					if(API.Auth.validate('custom', 'organizations_employees_btn_delete', 1)){
+	// 						contactHTML += '<button class="btn btn-sm btn-danger" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
+	// 					}
+	// 					if(contactHTML != ''){
+	// 						employeeElement.find('.btn-group').append(contactHTML);
+	// 						API.Plugins.organizations.Events.contacts(container,container.find('#organizations_employees'),dataset);
+	// 					}
+	// 				}
+	// 			}
+	// 		},
+	// 	},
+	// 	calls:{
+	// 		add:function(container,call, organization, issues = {dom:[],raw:[]}, open = false){
+	// 			var callCSV = '';
+	// 			for(var [key, value] of Object.entries(call.dom)){
+	// 				if(value == null){ value = '';call.dom[key] = value; };
+	// 				switch(key){
+	// 					case"date":
+	// 					case"time":
+	// 					case"contact":
+	// 					case"phone":
+	// 					case"organization":
+	// 					case"assigned_to": callCSV += value.replace(',','').toLowerCase()+',';break;
+	// 					case"status": callCSV += API.Contents.Statuses.calls[value].name.toLowerCase()+',';break;
+	// 				}
+	// 			}
+	// 			var callHTML = '';
+	// 			var schedule = '<span class="badge bg-primary mx-1"><i class="fas fa-calendar-check mr-1" aria-hidden="true"></i>'+call.dom.date+' at '+call.dom.time+'</span>';
+	// 			var status = '<span class="mr-1 badge bg-'+API.Contents.Statuses.calls[call.raw.status].color+'"><i class="'+API.Contents.Statuses.calls[call.raw.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Language[API.Contents.Statuses.calls[call.raw.status].name]+'</span>';
+	// 			if((call.dom.phone != '')&&(call.dom.phone != null)){
+	// 				var phone = '<span class="badge bg-success mx-1"><i class="fas fa-phone mr-1" aria-hidden="true"></i>'+call.dom.phone+'</span>';
+	// 			} else { var phone = ''; }
+	// 			if((call.dom.contact != '')&&(call.dom.contact != null)){
+	// 				var contact = '<span class="badge bg-secondary mx-1"><i class="fas fa-address-card mr-1" aria-hidden="true"></i>'+call.dom.contact+'</span>';
+	// 			} else { var contact = ''; }
+	// 			if((call.dom.assigned_to != '')&&(call.dom.assigned_to != null)){
+	// 				var user = '<span class="badge bg-primary mx-1"><i class="fas fa-user mr-1" aria-hidden="true"></i>'+call.dom.assigned_to+'</span>';
+	// 			} else { var user = ''; }
+	// 			callHTML += '<tr data-csv="'+callCSV+'" data-id="'+call.dom.id+'" data-phone="'+call.dom.phone+'" data-organization="'+call.raw.organization+'" data-type="calls">';
+	// 				callHTML += '<td class="pointer">'+schedule+'</td>';
+	// 				callHTML += '<td class="pointer">'+status+'</td>';
+	// 				if(API.Auth.validate('custom', 'organizations_calls_phone', 1)){ callHTML += '<td class="pointer">'+phone+'</td>'; } else { callHTML += '<td class="pointer" style="display:none;">'+phone+'</td>'; }
+	// 				callHTML += '<td class="pointer">'+contact+'</td>';
+	// 				callHTML += '<td class="pointer">'+user+'</td>';
+	// 				if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Auth.Options.application.showInlineCallsControls.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Settings.customization.showInlineCallsControls.value))){
+	// 					callHTML += '<td data-showInlineCallsControls="">';
+	// 						callHTML += '<div class="btn-group btn-block m-0" style="display:none;">';
+	// 							callHTML += '<button class="btn btn-xs btn-success" data-action="start"><i class="fas fa-phone mr-1"></i>Start</button>';
+	// 							callHTML += '<button class="btn btn-xs btn-danger" data-action="cancel"><i class="fas fa-phone-slash mr-1"></i>Cancel</button>';
+	// 							callHTML += '<button class="btn btn-xs btn-primary" data-action="reschedule"><i class="fas fa-calendar-day mr-1"></i>Re-Schedule</button>';
+	// 						callHTML += '</div>';
+	// 						callHTML += '<div class="btn-group btn-block m-0" style="display:none;">';
+	// 							callHTML += '<button class="btn btn-xs btn-danger" data-action="end"><i class="fas fa-phone-slash mr-1"></i>End</button>';
+	// 						callHTML += '</div>';
+	// 					callHTML += '</td>';
+	// 				} else { callHTML += '<td style="display:none;" data-showInlineCallsControls=""></td>'; }
+	// 			callHTML += '</tr>';
+	// 			if(call.raw.status > 2){
+	// 				if(API.Helper.isSet(API.Plugins,['calls'])){
+	// 					container.find('#organizations_calls').find('table').find('tbody').append(callHTML);
+	// 				}
+	// 				container.find('[data-id][data-type="calls"]').find('td').off().click(function(){
+	// 					API.CRUD.read.show({ key:{id:$(this).parent().attr('data-id')}, title:$(this).parent().attr('data-phone'), href:"?p=calls&v=details&id="+$(this).parent().attr('data-id'), modal:true });
+	// 				});
+	// 				if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Auth.Options.application.showInlineCallsControls.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Settings.customization.showInlineCallsControls.value))){
+	// 					container.find('[data-id][data-type="calls"]').find('td[data-showInlineCallsControls]').off();
+	// 					API.Plugins.organizations.Events.calls(container,container.find('[data-id="'+call.dom.id+'"][data-type="calls"]'),call,organization,issues);
+	// 					if(call.raw.status < 4){
+	// 						container.find('[data-id="'+call.dom.id+'"][data-type="calls"]').find('button[data-action="end"]').parent().show();
+	// 					}
+	// 				}
+	// 				if(open){
+	// 					if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showCallWidget','value']))&&(!API.Contents.Auth.Options.application.showCallWidget.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showCallWidget','value']))&&(!API.Contents.Settings.customization.showCallWidget.value))){
+	// 						API.CRUD.read.show({ key:{id:call.dom.id}, title:call.dom.phone, href:"?p=calls&v=details&id="+call.dom.id, modal:true });
+	// 					}
+	// 				}
+	// 			} else {
+	// 				if(API.Helper.isSet(API.Plugins,['callbacks'])){
+	// 					container.find('#organizations_callbacks').find('table').find('tbody').append(callHTML);
+	// 				}
+	// 				container.find('[data-id][data-type="calls"]').find('td').off().click(function(){
+	// 					API.CRUD.read.show({ key:{id:$(this).parent().attr('data-id')}, title:$(this).parent().attr('data-phone'), href:"?p=calls&v=details&id="+$(this).parent().attr('data-id'), modal:true });
+	// 				});
+	// 				if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Auth.Options.application.showInlineCallsControls.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Settings.customization.showInlineCallsControls.value))){
+	// 					container.find('[data-id][data-type="calls"]').find('td[data-showInlineCallsControls]').off();
+	// 					API.Plugins.organizations.Events.calls(container,container.find('[data-id="'+call.dom.id+'"][data-type="calls"]'),call,organization,issues);
+	// 					container.find('[data-id="'+call.dom.id+'"][data-type="calls"]').find('button[data-action="start"]').parent().show();
+	// 				}
+	// 			}
+	// 			if(open){
+	// 				call.dom.organization = call.raw.organization;
+	// 				API.Builder.Timeline.add.call(container.find('#organizations_timeline'),call.dom,'phone-square','olive',function(item){
+	// 					item.find('i').first().addClass('pointer');
+	// 					item.find('i').first().off().click(function(){
+	// 						API.CRUD.read.show({ key:{id:call.dom.id}, title:call.dom.phone, href:"?p=calls&v=details&id="+call.dom.id, modal:true });
+	// 					});
+	// 				});
+	// 			}
+	// 		},
+	// 	},
+	// },
+	// Events:{
+	// 	calls:function(container,tr,call,organization,issues={dom:[],raw:[]}, options = {}, callback = null){
+	// 		if(options instanceof Function){ callback = options; options = {}; }
+	// 		if(((API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Auth.Options.application.showInlineCallsControls.value))||((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']))&&(API.Contents.Settings.customization.showInlineCallsControls.value))){
+	// 			tr.find('[data-showInlineCallsControls]').find('button').off().click(function(){
+	// 				var control = $(this), action = control.attr('data-action');
+	// 				switch(action){
+	// 					case"start":
+	// 						API.Plugins.calls.Events.start(call,organization,issues,function(data,objects){
+	// 							call.raw.status = data.call.raw.status;
+	// 							call.dom.status = data.call.dom.status;
+	// 							// container.find('ul.nav li.nav-item a[href*="calls"]').tab('show');
+	// 							if(callback != null){ callback(data,objects); }
+	// 						});
+	// 						break;
+	// 					case"cancel":
+	// 						API.Plugins.calls.Events.cancel(call,organization,issues,function(data,objects){
+	// 							call.raw.status = data.call.raw.status;
+	// 							call.dom.status = data.call.dom.status;
+	// 							if(callback != null){ callback(data,objects); }
+	// 						});
+	// 						break;
+	// 					case"reschedule":
+	// 						API.Plugins.calls.Events.reschedule(call,organization,issues,function(data,objects){
+	// 							call.raw.status = data.call.raw.status;
+	// 							call.dom.status = data.call.dom.status;
+	// 							if(callback != null){ callback(data,objects); }
+	// 						});
+	// 						break;
+	// 					case"end":
+	// 						API.Plugins.calls.Events.end(call,organization,issues,function(data,objects){
+	// 							call.raw.status = data.call.raw.status;
+	// 							call.dom.status = data.call.dom.status;
+	// 							if(callback != null){ callback(data,objects); }
+	// 						});
+	// 						break;
+	// 				}
+	// 			});
+	// 		}
+	// 	},
+	// 	users:function(container, dataset){
+	// 		container.find('td[data-plugin="organizations"][data-key="assigned_to"]').find('.btn-group button[data-action]').each(function(){
+	// 			$(this).off().click(function(){
+	// 				switch($(this).attr('data-action')){
+	// 					case"details": API.CRUD.read.show({ key:'username',keys:dataset.output.details.users.dom[$(this).attr('data-id')], href:"?p=users&v=details&id="+dataset.output.details.users.dom[$(this).attr('data-id')].username, modal:true });break;
+	// 					case"unassign":
+	// 						API.request('organizations','unassign',{data:{id:dataset.output.this.dom.id,user:$(this).attr('data-id')}},function(result){
+	// 							var data = JSON.parse(result);
+	// 							if(data.success != undefined){
+	// 								dataset.output.this.dom.assigned_to = data.output.organization.dom.assigned_to;
+	// 								dataset.output.this.raw.assigned_to = data.output.organization.raw.assigned_to;
+	// 								container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="assigned_to"]').find('.btn-group[data-id="'+data.output.user+'"]').remove();
+	// 							}
+	// 						});
+	// 						break;
+	// 				}
+	// 			});
+	// 		});
+	// 	},
+	// 	tags:function(container, dataset){
+	// 		container.find('td[data-plugin="organizations"][data-key="tags"]').find('.btn-group button[data-action]').each(function(){
+	// 			$(this).off().click(function(){
+	// 				switch($(this).attr('data-action')){
+	// 					case"untag":
+	// 						API.request('organizations','untag',{data:{id:dataset.output.this.dom.id,tag:$(this).attr('data-id')}},function(result){
+	// 							var data = JSON.parse(result);
+	// 							if(data.success != undefined){
+	// 								dataset.output.this.dom.tags = data.output.organization.dom.tags;
+	// 								dataset.output.this.raw.tags = data.output.organization.raw.tags;
+	// 								container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="tags"]').find('.btn-group[data-id="'+data.output.tag+'"]').remove();
+	// 							}
+	// 						});
+	// 						break;
+	// 				}
+	// 			});
+	// 		});
+	// 	},
+	// 	services:function(container, dataset){
+	// 		container.find('td[data-plugin="organizations"][data-key="services"]').find('.btn-group button[data-action]').each(function(){
+	// 			$(this).off().click(function(){
+	// 				switch($(this).attr('data-action')){
+	// 					case"details": API.CRUD.read.show({ key:'name',keys:dataset.output.details.services.dom[$(this).attr('data-id')], href:"?p=services&v=details&id="+dataset.output.details.services.dom[$(this).attr('data-id')].id, modal:true });break;
+	// 					case"unlink":
+	// 						API.request('organizations','unlink',{data:{id:dataset.output.this.dom.id,relationship:{relationship:'services',link_to:$(this).attr('data-id')}}},function(result){
+	// 							var data = JSON.parse(result);
+	// 							if(data.success != undefined){
+	// 								container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="services"]').find('.btn-group[data-id="'+data.output.id+'"]').remove();
+	// 								container.find('#organizations_timeline').find('[data-type="hand-holding-usd"][data-id="'+data.output.id+'"]').remove();
+	// 							}
+	// 						});
+	// 						break;
+	// 				}
+	// 			});
+	// 		});
+	// 	},
+	// 	issues:function(container, dataset){
+	// 		container.find('td[data-plugin="organizations"][data-key="issues"]').find('.btn-group button[data-action]').each(function(){
+	// 			$(this).off().click(function(){
+	// 				switch($(this).attr('data-action')){
+	// 					case"details": API.CRUD.read.show({ key:'name',keys:dataset.output.details.issues.dom[$(this).attr('data-id')], href:"?p=issues&v=details&id="+dataset.output.details.issues.dom[$(this).attr('data-id')].id, modal:true });break;
+	// 					case"unlink":
+	// 						API.request('organizations','unlink',{data:{id:dataset.output.this.dom.id,relationship:{relationship:'issues',link_to:$(this).attr('data-id')}}},function(result){
+	// 							var data = JSON.parse(result);
+	// 							if(data.success != undefined){
+	// 								container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="issues"]').find('.btn-group[data-id="'+data.output.id+'"]').remove();
+	// 								container.find('#organizations_timeline').find('[data-type="gavel"][data-id="'+data.output.id+'"]').remove();
+	// 							}
+	// 						});
+	// 						break;
+	// 				}
+	// 			});
+	// 		});
+	// 	},
+	// 	subsidiaries:function(container, dataset){
+	// 		container.find('td[data-plugin="organizations"][data-key="subsidiaries"]').find('.btn-group button[data-action]').each(function(){
+	// 			$(this).off().click(function(){
+	// 				switch($(this).attr('data-action')){
+	// 					case"details": API.CRUD.read.show({ key:'name',keys:dataset.output.details.organizations.dom[$(this).attr('data-id')], href:"?p=organizations&v=details&id="+dataset.output.details.organizations.dom[$(this).attr('data-id')].name, modal:true });break;
+	// 					case"unlink":
+	// 						API.request('organizations','unlink',{data:{id:dataset.output.this.dom.id,relationship:{relationship:'organizations',link_to:$(this).attr('data-id')}}},function(result){
+	// 							var data = JSON.parse(result);
+	// 							if(data.success != undefined){
+	// 								container.find('#organizations_details').find('td[data-plugin="organizations"][data-key="subsidiaries"]').find('.btn-group[data-id="'+data.output.id+'"]').remove();
+	// 								container.find('#organizations_timeline').find('[data-type="building"][data-id="'+data.output.id+'"]').remove();
+	// 							}
+	// 						});
+	// 						break;
+	// 				}
+	// 			});
+	// 		});
+	// 	},
+	// 	contacts:function(container,contactsCTN,dataset){
+	// 		contactsCTN.find('[data-csv]').each(function(){
+	// 			var id = $(this).attr('data-id');
+	// 			var call = {};
+	// 			for(var [key, value] of Object.entries(API.Contents.Settings.Structure.calls)){ call[key] = ''; }
+	// 			$(this).find('button').off().click(function(){
+	// 				switch($(this).attr('data-action')){
+	// 					case"call":
+	// 						var now = new Date();
+	// 						var newCall = {
+	// 							date:now,
+	// 							time:now,
+	// 							contact:id,
+	// 							status:3,
+	// 							assigned_to:API.Contents.Auth.User.id,
+	// 							relationship:'organizations',
+	// 							link_to:dataset.output.this.raw.id,
+	// 						};
+	// 						API.request('calls','create',{data:newCall},function(result){
+	// 							var data = JSON.parse(result);
+	// 							if(typeof data.success !== 'undefined'){
+	// 								API.Plugins.calls.Widgets.toast({dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues);
+	// 								API.Plugins.organizations.GUI.calls.add(container,{dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues, true);
+	// 							}
+	// 						});
+	// 						break;
+	// 					case"edit":
+	// 					API.CRUD.update.show({ keys:dataset.output.details.users.raw[id], modal:true, plugin:'contacts' },function(contact){
+	// 						dataset.output.details.users.raw[contact.raw.id] = contact.raw;
+	// 						dataset.output.details.users.dom[contact.dom.id] = contact.dom;
+	// 						container.find('div[data-type="contact"][data-id="'+contact.raw.id+'"][data-organization="'+contact.raw.organization+'"]').remove();
+	// 						API.Plugins.organizations.GUI.contacts.add(container, dataset, {dom:contact.dom,raw:contact.raw}, true);
+	// 					});break;
+	// 					case"delete":
+	// 						var thiscontact = {};
+	// 						for(var [key, value] of Object.entries(dataset.output.details.users.raw[id])){ thiscontact[key] = value; }
+	// 						thiscontact.organization = dataset.output.this.raw.id;
+	// 						API.CRUD.delete.show({ keys:thiscontact,key:'name', modal:true, plugin:'contacts' },function(record){
+	// 							if((dataset.output.details.users.raw[id].isActive == 'true')&&(record.isActive != 'true')&&(API.Auth.validate('custom', contactsCTN.attr('id')+'_isActive', 1))){
+	// 								contactsCTN.find('[data-id="'+record.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
+	// 							} else {
+	// 								contactsCTN.find('[data-id="'+record.id+'"]').remove();
+	// 							}
+	// 						});
+	// 						break;
+	// 					case"details":
+	// 						API.Builder.modal($('body'), {
+	// 							title:'Details',
+	// 							icon:'details',
+	// 							zindex:'top',
+	// 							css:{ header: "bg-primary"},
+	// 						}, function(modal){
+	// 							modal.on('hide.bs.modal',function(){ modal.remove(); });
+	// 							var dialog = modal.find('.modal-dialog');
+	// 							var header = modal.find('.modal-header');
+	// 							var body = modal.find('.modal-body');
+	// 							var footer = modal.find('.modal-footer');
+	// 							header.find('button[data-control="hide"]').remove();
+	// 							header.find('button[data-control="update"]').remove();
+	// 							modal.modal('show');
+	// 						});
+	// 						break;
+	// 					case"share":
+	// 						API.Builder.modal($('body'), {
+	// 							title:'Share',
+	// 							icon:'share',
+	// 							zindex:'top',
+	// 							css:{ header: "bg-navy"},
+	// 						}, function(modal){
+	// 							modal.on('hide.bs.modal',function(){ modal.remove(); });
+	// 							var dialog = modal.find('.modal-dialog');
+	// 							var header = modal.find('.modal-header');
+	// 							var body = modal.find('.modal-body');
+	// 							var footer = modal.find('.modal-footer');
+	// 							header.find('button[data-control="hide"]').remove();
+	// 							header.find('button[data-control="update"]').remove();
+	// 							modal.modal('show');
+	// 						});
+	// 						break;
+	// 					case"subscriptions":
+	// 						API.Builder.modal($('body'), {
+	// 							title:'Subscriptions',
+	// 							icon:'subscriptions',
+	// 							zindex:'top',
+	// 							css:{ header: "bg-lightblue"},
+	// 						}, function(modal){
+	// 							modal.on('hide.bs.modal',function(){ modal.remove(); });
+	// 							var dialog = modal.find('.modal-dialog');
+	// 							var header = modal.find('.modal-header');
+	// 							var body = modal.find('.modal-body');
+	// 							var footer = modal.find('.modal-footer');
+	// 							header.find('button[data-control="hide"]').remove();
+	// 							header.find('button[data-control="update"]').remove();
+	// 							body.addClass('p-0');
+	// 							var tableHTML = '<div class="table-responsive"><table class="table dt-responsive table-hover table-bordered" style="width:100%"><thead class="thead-dark"></thead></table></div>';
+	// 							body.html(tableHTML);
+	// 							var table = body.find('table');
+	// 							var cols = [];
+	// 							cols.push({ name: "select", title: "", data: "select", width: "25px", defaultContent: '', targets: 0, orderable: false, className: 'select-checkbox'});
+	// 							cols.push({ name: "Category", title: "Category", data: "category", defaultContent: '', targets: 1 });
+	// 							cols.push({ name: "Sub Category", title: "Sub Category", data: "sub_category", defaultContent: '', targets: 2 });
+	// 							if(!API.Helper.isSet(dataset.output.details,['contacts','subscriptions','dom',id])){
+	// 								API.Helper.set(dataset.output.details,['contacts','subscriptions','dom',id],[]);
+	// 							}
+	// 							table.DataTable({
+	// 								data: dataset.output.details.users.subscriptions.dom[id],
+	// 								searching: true,
+	// 								paging: true,
+	// 								pageLength: 10,
+	// 								lengthChange: true,
+	// 								lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+	// 								ordering: true,
+	// 								info: true,
+	// 								autoWidth: true,
+	// 								processing: true,
+	// 								scrolling: false,
+	// 								buttons: [
+	// 									{ extend: 'selectAll' },
+	// 									{ extend: 'selectNone' },
+	// 								],
+	// 								language: {
+	// 									buttons: {
+	// 										selectAll: API.Contents.Language["All"],
+	// 										selectNone: API.Contents.Language["None"],
+	// 									},
+	// 									info: ", Total _TOTAL_ entries",
+	// 								},
+	// 								dom: '<"dtbl-toolbar"Bf>rt<"dtbl-btoolbar"lip>',
+	// 								columnDefs: cols,
+	// 								select: {
+	// 									style: 'multi',
+	// 									selector: 'td:first-child'
+	// 								},
+	// 								order: [[ 1, "asc" ]]
+	// 							});
+	// 							modal.modal('show');
+	// 						});
+	// 						break;
+	// 				}
+	// 			});
+	// 		});
+	// 	},
+	// },
+	// extend:{},
 }
 
 API.Plugins.organizations.init();
