@@ -192,6 +192,7 @@ API.Plugins.organizations = {
 			var td = layout.details.find('td[data-plugin="organizations"][data-key="subsidiaries"]');
 			td.find('button').each(function(){
 				var button = $(this);
+				console.log(button);
 				if(button.attr('data-action') != "link"){ var organization = {raw:dataset.details.organizations.raw[button.attr('data-id')],dom:dataset.details.organizations.dom[button.attr('data-id')]}; }
 				switch(button.attr('data-action')){
 					case"details":
