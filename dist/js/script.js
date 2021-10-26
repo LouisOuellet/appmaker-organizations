@@ -73,12 +73,15 @@ API.Plugins.organizations = {
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
 						console.log(data);
 						console.log(layout);
+						// Name
 						var options = {plugin:"organizations",field:"name"}
 						API.GUI.Layouts.details.data(data,layout,options);
+						// Business Number
 						if(API.Auth.validate('custom', 'organizations_business_num', 1)){
 							options.field = "business_num";
 							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 						}
+						// Code
 						if(API.Auth.validate('custom', 'organizations_code', 1)){
 							options.field = "code";
 							options.td = '';
@@ -103,12 +106,13 @@ API.Plugins.organizations = {
 							options.td += '</td>';
 							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 						}
+						// Status
 						if(API.Auth.validate('custom', 'organizations_status', 1)){
 							options.field = "status";
 							options.td = '';
 							options.td += '<td data-plugin="organizations" data-key="'+options.field+'">';
-								options.td += '<span class="badge bg-primary">';
-									options.td += '<i class="fas fa-snowflake mr-1" aria-hidden="true"></i>Cold';
+								options.td += '<span class="badge bg-'+API.Contents.Statuses.organizations[data.this.status].color+'">';
+									options.td += '<i class="'+API.Contents.Statuses.organizations[data.this.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Statuses.organizations[data.this.status].name+'';
 								options.td += '</span>';
 							options.td += '</td>';
 							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
@@ -116,6 +120,7 @@ API.Plugins.organizations = {
 						options.field = "address";
 						options.td = '<td data-plugin="organizations" data-key="address">'+data.this.dom.address+', '+data.this.dom.city+', '+data.this.dom.zipcode+'</td>';
 						API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+						// Phone
 						if(API.Auth.validate('custom', 'organizations_phone', 1)){
 							options.field = "phone";
 							options.td = '';
@@ -139,6 +144,86 @@ API.Plugins.organizations = {
 								options.td += '</div>';
 							options.td += '</td>';
 							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+							// Email
+							options.field = "email";
+							options.td = '<td><strong><i class="fas fa-envelope mr-1"></i></strong><a href="mailto:'+data.this.dom.email+'" data-plugin="organizations" data-key="'+options.field+'">'+data.this.dom.email+'</a></td>';
+							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+							// Website
+							options.field = "website";
+							options.td = '<td><strong><i class="fas fa-globe mr-1"></i></strong><a href="'+data.this.dom.website+'" data-plugin="organizations" data-key="'+options.field+'">'+data.this.dom.website+'</a></td>';
+							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+							// Subsidiaries
+							if(API.Auth.validate('custom', 'organizations_organizations', 1)){
+								options.field = "subsidiaries";
+								delete options.td;
+								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
+									if(API.Helper.isSet(data.details,['organizations'])){
+										for(var [subsKey, subsDetails] of Object.entries(data.details.organizations.dom)){
+											var subsHTML = '';
+											subsHTML += '<div class="btn-group m-1" data-id="'+subsDetails.id+'">';
+												subsHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subsDetails.id+'" data-action="details"><i class="fas fa-building mr-1"></i>'+subsDetails.name+'</button>';
+												if(API.Auth.validate('custom', 'organizations_organizations', 4)){
+													subsHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subsDetails.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
+												}
+											subsHTML += '</div>';
+											tr.append(subsHTML);
+											if(API.Auth.validate('custom', 'organizations_organizations', 2)){
+												tr.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
+												tr.find('button[data-action="link"]').off().click(function(){
+													API.Builder.modal($('body'), {
+														title:'Link a subsidiary',
+														icon:'subsidiaries',
+														zindex:'top',
+														css:{ header: "bg-gray", body: "p-3"},
+													}, function(modal){
+														modal.on('hide.bs.modal',function(){ modal.remove(); });
+														var dialog = modal.find('.modal-dialog');
+														var header = modal.find('.modal-header');
+														var body = modal.find('.modal-body');
+														var footer = modal.find('.modal-footer');
+														header.find('button[data-control="hide"]').remove();
+														header.find('button[data-control="update"]').remove();
+														API.Builder.input(body, 'organization', null,{plugin:'organizations'}, function(input){});
+														footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>Link</button>');
+														footer.find('button[data-action="link"]').click(function(){
+															if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
+																API.request('organizations','link',{data:{id:data.this.dom.id,relationship:{relationship:'organizations',link_to:body.find('select').select2('val')}}},function(result){
+																	var sub_dataset = JSON.parse(result);
+																	if(sub_dataset.success != undefined){
+																		API.Helper.set(API.Contents,['sub_dataset','dom','organizations',sub_dataset.output.dom.id],sub_dataset.output.dom);
+																		API.Helper.set(API.Contents,['sub_dataset','raw','organizations',sub_dataset.output.raw.id],sub_dataset.output.raw);
+																		API.Helper.set(data.details,['organizations','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
+																		API.Helper.set(data.details,['organizations','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+																		var subsHTML = '';
+																		subsHTML += '<div class="btn-group m-1" sub_dataset-id="'+sub_dataset.output.dom.id+'">';
+																			subsHTML += '<button type="button" class="btn btn-xs btn-primary" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="details"><i class="fas fa-building mr-1"></i>'+sub_dataset.output.dom.name+'</button>';
+																			if(API.Auth.validate('custom', 'organizations_organizations', 4)){
+																				subsHTML += '<button type="button" class="btn btn-xs btn-danger" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="unlink"><i class="fas fa-unlink"></i></button>';
+																			}
+																		subsHTML += '</div>';
+																		container.find('td[sub_dataset-plugin="organizations"][sub_dataset-key="subsidiaries"]').find('button[sub_dataset-action="link"]').before(subsHTML);
+																		API.Plugins.organizations.Events.subsidiaries(container,data);
+																		var detail = {};
+																		for(var [key, value] of Object.entries(data.details.organizations.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
+																		detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
+																		API.Builder.Timeline.add.client(container.find('#organizations_timeline'),detail);
+																	}
+																});
+																modal.modal('hide');
+															} else {
+																body.find('.input-group').addClass('is-invalid');
+																alert('No organization were selected!');
+															}
+														});
+														modal.modal('show');
+													});
+												});
+											}
+										}
+										API.Plugins.organizations.Events.subsidiaries(container,dataset);
+									}
+								});
+							}
 						}
 					});
 		// 			// GUI
