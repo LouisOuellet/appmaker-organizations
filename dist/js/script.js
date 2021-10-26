@@ -519,7 +519,7 @@ API.Plugins.organizations = {
 						break;
 					case"tag":
 						API.Builder.modal($('body'), {
-							title:'Link a tag',
+							title:'Add a tag',
 							icon:'tags',
 							zindex:'top',
 							css:{ header: "bg-gray", body: "p-3"},
