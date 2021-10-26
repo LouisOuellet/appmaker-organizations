@@ -70,18 +70,34 @@ API.Plugins.organizations = {
 					container.attr('data-id',dataset.output.this.raw.id);
 					// GUI
 					// Adding Layout
-					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(organization,layout){
-						console.log(organization);
-						console.log(layout);
-						API.GUI.Layouts.details.data(organization,layout,{plugin:"organizations",field:"name"});
-						API.GUI.Layouts.details.data(organization,layout,{
-							field:"address",
-							td:'<td data-plugin="organizations" data-key="address">'+organization.this.dom.address+', '+organization.this.dom.city+', '+organization.this.dom.zipcode+'</td>',
-						},function(organization,layout,tr){
-							console.log(organization);
-							console.log(layout);
-							console.log(tr);
-						});
+					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
+						var options = {plugin:"organizations",field:"name"}
+						API.GUI.Layouts.details.data(data,layout,options);
+						options.field = "address";
+						options.td = '<td data-plugin="organizations" data-key="address">'+data.this.dom.address+', '+data.this.dom.city+', '+data.this.dom.zipcode+'</td>';
+						API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+						options.field = "phone";
+						options.td = '';
+						options.td = '<td>';
+							options.td = '<div class="row">';
+								if(data.this.dom.phone != ''){
+									options.td = '<div class="col-lg-4 col-md-6 p-1">';
+										options.td = '<strong><i class="fas fa-phone mr-1"></i></strong><a href="" data-plugin="organizations" data-key="phone"></a>';
+									options.td = '</div>';
+								}
+								if(data.this.dom.toll_free != ''){
+									options.td = '<div class="col-lg-4 col-md-6 p-1">';
+										options.td = '<strong><i class="fas fa-phone mr-1"></i></strong><a href="" data-plugin="organizations" data-key="toll_free"></a>';
+									options.td = '</div>';
+								}
+								if(data.this.dom.fax != ''){
+									options.td = '<div class="col-lg-4 col-md-6 p-1">';
+										options.td = '<strong><i class="fas fa-fax mr-1"></i></strong><a href="" data-plugin="organizations" data-key="fax"></a>';
+									options.td = '</div>';
+								}
+							options.td = '</div>';
+						options.td = '</td>';
+						API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 					});
 		// 			// GUI
 		// 			// Subscribe BTN
