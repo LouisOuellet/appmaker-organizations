@@ -193,10 +193,12 @@ API.Plugins.organizations = {
 				var button = $(this);
 				switch(button.attr('data-action')){
 					case"details":
-						API.CRUD.read.show({ key:'name',keys:dataset.this.dom, href:"?p=organizations&v=details&id="+dataset.this.raw.name, modal:true });
+						var organization = {raw:dataset.details.organizations.raw[button.attr('data-id')],dom:dataset.details.organizations.dom[button.attr('data-id')]};
+						API.CRUD.read.show({ key:'name',keys:organization.dom, href:"?p=organizations&v=details&id="+organization.raw.name, modal:true });
 						break;
 					case"unlink":
-						API.request('organizations','unlink',{data:{id:dataset.this.dom.id,relationship:{relationship:'organizations',link_to:dataset.this.dom.id}}},function(result){
+						var organization = {raw:dataset.details.organizations.raw[button.attr('data-id')],dom:dataset.details.organizations.dom[button.attr('data-id')]};
+						API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'organizations',link_to:organization.raw.id}}},function(result){
 							var sub_dataset = JSON.parse(result);
 							if(sub_dataset.success != undefined){
 								// container.find('#organizations_timeline').find('[data-type="building"][data-id="'+sub_dataset.output.id+'"]').remove();
