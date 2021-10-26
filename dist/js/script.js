@@ -185,6 +185,7 @@ API.Plugins.organizations = {
 	GUI:{},
 	Events:{
 		subsidiaries:function(dataset,layout,options = {},callback = null){
+			console.log('ADding events');
 			if(options instanceof Function){ callback = options; options = {}; }
 			var defaults = {field: "name"};
 			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
@@ -227,8 +228,8 @@ API.Plugins.organizations = {
 									API.request('organizations','link',{data:{id:dataset.this.dom.id,relationship:{relationship:'organizations',link_to:body.find('select').select2('val')}}},function(result){
 										var sub_dataset = JSON.parse(result);
 										if(sub_dataset.success != undefined){
-											API.Helper.set(API.Contents,['sub_dataset','dom','organizations',sub_dataset.output.dom.id],sub_dataset.output.dom);
-											API.Helper.set(API.Contents,['sub_dataset','raw','organizations',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											API.Helper.set(API.Contents,['data','dom','organizations',sub_dataset.output.dom.id],sub_dataset.output.dom);
+											API.Helper.set(API.Contents,['data','raw','organizations',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['organizations','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['organizations','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											var subsHTML = '';
