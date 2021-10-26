@@ -1,5 +1,5 @@
 <div data-plugin="organizations" data-id="">
-	<span style="display:none;" data-plugin="organizations" data-key="id"></span>
+	<!-- <span style="display:none;" data-plugin="organizations" data-key="id"></span>
 	<span style="display:none;" data-plugin="organizations" data-key="created"></span>
 	<span style="display:none;" data-plugin="organizations" data-key="modified"></span>
 	<span style="display:none;" data-plugin="organizations" data-key="owner"></span>
@@ -19,8 +19,8 @@
 	<span style="display:none;" data-plugin="organizations" data-key="toll_free"></span>
 	<span style="display:none;" data-plugin="organizations" data-key="website"></span>
 	<span style="display:none;" data-plugin="organizations" data-key="tags"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="assigned_to"></span>
-	<div class="row">
+	<span style="display:none;" data-plugin="organizations" data-key="assigned_to"></span> -->
+	<!-- <div class="row">
 		<div class="col-md-4">
 			<div class="card" id="organizations_details">
 	      <div class="card-header d-flex p-0">
@@ -228,5 +228,5 @@
 	      </div>
 	    </div>
 		</div>
-	</div>
+	</div> -->
 </div>
