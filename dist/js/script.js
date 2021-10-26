@@ -75,6 +75,11 @@ API.Plugins.organizations = {
 						console.log(layout);
 						API.GUI.Layouts.details.data(organization,layout);
 						API.GUI.Layouts.details.data(organization,layout,{plugin:"organizations",field:"address"});
+						API.GUI.Layouts.details.data(organization,layout,{plugin:"organizations",field:"zipcode"},function(organization,layout,tr){
+							console.log(organization);
+							console.log(layout);
+							console.log(tr);
+						});
 					});
 		// 			// GUI
 		// 			// Subscribe BTN
