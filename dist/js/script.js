@@ -70,10 +70,10 @@ API.Plugins.organizations = {
 					container.attr('data-id',dataset.output.this.raw.id);
 					// GUI
 					// Adding Layout
-					API.GUI.Layouts.details(container,dataset.output,{title:"Organization Details",image:"/dist/img/building.png"},function(container,organization,layout){
-						console.log(container);
+					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(organization,layout){
 						console.log(organization);
 						console.log(layout);
+						API.GUI.Layouts.details.data(organization,layout);
 					});
 		// 			// GUI
 		// 			// Subscribe BTN
@@ -1190,7 +1190,20 @@ API.Plugins.organizations = {
 	},
 	GUI:{
 		details:{
-			text:{},
+			area:function(layout,organization,options = {},callback = null){
+				if(options instanceof Function){ callback = options; options = {}; }
+				var html = '';
+				var defaults = {
+					field: "name",
+				};
+				if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
+				html +='<tr>';
+					html +='<td data-edit="'+defaults.field+'"><b>'+API.Contents.Language[defaults.field]+'</b></td>';
+					html +='<td data-plugin="organizations" data-key="'+defaults.field+'">'+organization.this.dom[defaults.field]+'</td>';
+				html +='</tr>';
+				layout.find().append(html);
+				if(callback != null){ callback(); }
+			},
 			control:{},
 		},
 		tabs:{
