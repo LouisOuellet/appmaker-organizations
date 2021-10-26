@@ -192,6 +192,18 @@ API.Plugins.organizations = {
 			td.find('button').off().click(function(){
 				var button = $(this);
 				switch(button.attr('data-action')){
+					case"details":
+						API.CRUD.read.show({ key:'name',keys:dataset.this.dom, href:"?p=organizations&v=details&id="+dataset.this.raw.name, modal:true });
+						break;
+					case"unlink":
+						API.request('organizations','unlink',{data:{id:dataset.this.dom.id,relationship:{relationship:'organizations',link_to:dataset.this.dom.id}}},function(result){
+							var sub_dataset = JSON.parse(result);
+							if(sub_dataset.success != undefined){
+								// container.find('#organizations_timeline').find('[data-type="building"][data-id="'+sub_dataset.output.id+'"]').remove();
+								td.find('.btn-group[data-id="'+sub_dataset.output.id+'"]').remove();
+							}
+						});
+						break;
 					case"link":
 						API.Builder.modal($('body'), {
 							title:'Link a subsidiary',
