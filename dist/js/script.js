@@ -157,6 +157,7 @@ API.Plugins.organizations = {
 								options.field = "subsidiaries";
 								delete options.td;
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
+									var td = tr.find('td[data-plugin="organizations"][data-key="subsidiaries"]');
 									if(API.Helper.isSet(data.details,['organizations'])){
 										for(var [subsKey, subsDetails] of Object.entries(data.details.organizations.dom)){
 											var subsHTML = '';
@@ -166,11 +167,11 @@ API.Plugins.organizations = {
 													subsHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subsDetails.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
 												}
 											subsHTML += '</div>';
-											tr.append(subsHTML);
+											td.append(subsHTML);
 										}
 									}
 									if(API.Auth.validate('custom', 'organizations_organizations', 2)){
-										tr.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
+										td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
 									}
 									API.Plugins.organizations.Events.subsidiaries(data,layout);
 								});
@@ -187,8 +188,8 @@ API.Plugins.organizations = {
 			if(options instanceof Function){ callback = options; options = {}; }
 			var defaults = {field: "name"};
 			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
-			var tr = layout.details.find('td[data-plugin="organizations"][data-key="subsidiaries"]');
-			tr.find('button').off().click(function(){
+			var td = layout.details.find('td[data-plugin="organizations"][data-key="subsidiaries"]');
+			td.find('button').off().click(function(){
 				var button = $(this);
 				switch(button.attr('data-action')){
 					case"link":
