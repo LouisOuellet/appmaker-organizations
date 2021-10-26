@@ -111,8 +111,8 @@ API.Plugins.organizations = {
 							options.field = "status";
 							options.td = '';
 							options.td += '<td data-plugin="organizations" data-key="'+options.field+'">';
-								options.td += '<span class="badge bg-'+API.Contents.Statuses.organizations[data.this.status].color+'">';
-									options.td += '<i class="'+API.Contents.Statuses.organizations[data.this.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Statuses.organizations[data.this.status].name+'';
+								options.td += '<span class="badge bg-'+API.Contents.Statuses.organizations[data.this.raw.status].color+'">';
+									options.td += '<i class="'+API.Contents.Statuses.organizations[data.this.raw.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Statuses.organizations[data.this.raw.status].name+'';
 								options.td += '</span>';
 							options.td += '</td>';
 							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
