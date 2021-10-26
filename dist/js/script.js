@@ -298,7 +298,7 @@ API.Plugins.organizations = {
 							header.find('button[data-control="hide"]').remove();
 							header.find('button[data-control="update"]').remove();
 							API.Builder.input(body, 'organization', null,{plugin:'organizations'}, function(input){});
-							footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>Link</button>');
+							footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>'+API.Contents.Language['Link']+'</button>');
 							footer.find('button[data-action="link"]').click(function(){
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
 									API.request('organizations','link',{data:{id:dataset.this.dom.id,relationship:{relationship:'organizations',link_to:body.find('select').select2('val')}}},function(result){
@@ -375,7 +375,7 @@ API.Plugins.organizations = {
 							header.find('button[data-control="hide"]').remove();
 							header.find('button[data-control="update"]').remove();
 							API.Builder.input(body, 'service', null,{plugin:'services'}, function(input){});
-							footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>Link</button>');
+							footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>'+API.Contents.Language['Link']+'</button>');
 							footer.find('button[data-action="link"]').click(function(){
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
 									API.request('organizations','link',{data:{id:dataset.this.dom.id,relationship:{relationship:'services',link_to:body.find('select').select2('val')}}},function(result){
@@ -458,7 +458,7 @@ API.Plugins.organizations = {
 							header.find('button[data-control="hide"]').remove();
 							header.find('button[data-control="update"]').remove();
 							API.Builder.input(body, 'issue', null,{plugin:'issues'}, function(input){});
-							footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>Link</button>');
+							footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>'+API.Contents.Language['Link']+'</button>');
 							footer.find('button[data-action="link"]').click(function(){
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
 									API.request('organizations','link',{data:{id:dataset.this.dom.id,relationship:{relationship:'issues',link_to:body.find('select').select2('val')}}},function(result){
@@ -506,7 +506,7 @@ API.Plugins.organizations = {
 			var td = layout.details.find('td[data-plugin="organizations"][data-key="tags"]');
 			td.find('button').off().click(function(){
 				var button = $(this);
-				if(button.attr('data-action') != "link"){ var tag = {raw:dataset.details.tags.raw[button.attr('data-id')],dom:dataset.details.tags.dom[button.attr('data-id')]}; }
+				if(button.attr('data-action') != "tag"){ var tag = {raw:dataset.details.tags.raw[button.attr('data-id')],dom:dataset.details.tags.dom[button.attr('data-id')]}; }
 				switch(button.attr('data-action')){
 					case"untag":
 						API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'tags',link_to:tag.raw.id}}},function(result){
@@ -532,7 +532,7 @@ API.Plugins.organizations = {
 							header.find('button[data-control="hide"]').remove();
 							header.find('button[data-control="update"]').remove();
 							API.Builder.input(body, 'tag', null,{plugin:'tags'}, function(input){});
-							footer.append('<button class="btn btn-secondary" data-action="tag"><i class="fas fa-tag mr-1"></i>Tag</button>');
+							footer.append('<button class="btn btn-secondary" data-action="tag"><i class="fas fa-tag mr-1"></i>'+API.Contents.Language['Tag']+'</button>');
 							footer.find('button[data-action="tag"]').click(function(){
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
 									API.request('organizations','tag',{data:{id:dataset.this.dom.id,relationship:{relationship:'tags',link_to:body.find('select').select2('val')}}},function(result){
