@@ -235,7 +235,7 @@ API.Plugins.organizations = {
 							// Tags
 							if(API.Auth.validate('custom', 'organizations_tags', 1)){
 								options.field = "tags";
-								delete options.td;
+								options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="tags"]');
 									for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.tags,';').split(';'))){
