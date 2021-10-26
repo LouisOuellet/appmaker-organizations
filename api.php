@@ -386,14 +386,16 @@ class organizationsAPI extends CRUDAPI {
 					'relationship_2' => $data['relationship']['relationship'],
 					'link_to_2' => $data['relationship']['link_to'],
 				];
-				// $status = $this->Auth->query('SELECT * FROM `statuses` WHERE `relationship` = ? AND `order` = ?',$data['relationship']['relationship'],1);
-				// if($status != null){
-				// 	$status = $status->fetchAll()->all();
-				// 	if(!empty($status)){
-				// 		$new['relationship_3'] = 'statuses';
-				// 		$new['link_to_3'] = $status[0]['id'];
-				// 	}
-				// }
+				if($data['relationship']['relationship'] == "issues"){
+					$status = $this->Auth->query('SELECT * FROM `statuses` WHERE `relationship` = ? AND `order` = ?',$data['relationship']['relationship'],1);
+					if($status != null){
+						$status = $status->fetchAll()->all();
+						if(!empty($status)){
+							$new['relationship_3'] = 'statuses';
+							$new['link_to_3'] = $status[0]['id'];
+						}
+					}
+				}
 				$rel = $this->createRelationship($new);
 				$relation = $this->Auth->read($data['relationship']['relationship'],$data['relationship']['link_to']);
 				if($relation != null){
