@@ -41,6 +41,10 @@
 									</tr>
 								</thead>
 								<tbody>
+									<tr>
+										<td data-edit="name"><b>Name</b></td>
+										<td><span data-plugin="organizations" data-key="name"></span></td>
+									</tr>
 									<tr style="display:none;">
 										<td data-edit="code"><b>Code</b></td>
 										<td data-plugin="organizations" data-key="code"></td>
@@ -52,6 +56,28 @@
 									<tr style="display:none;">
 										<td><b>Status</b></td>
 										<td data-plugin="organizations" data-key="status"></td>
+									</tr>
+									<tr>
+										<td data-edit="address"><b>Address</b></td>
+										<td>
+											<span data-plugin="organizations" data-key="address"></span>, <span data-plugin="organizations" data-key="city"></span> <span data-plugin="organizations" data-key="zipcode"></span>, <span data-plugin="organizations" data-key="state"></span> <span data-plugin="organizations" data-key="country"></span>
+										</td>
+									</tr>
+									<tr style="display:none;">
+										<td data-plugin="organizations" data-edit="phone"><b>Phones</b></td>
+										<td>
+											<div class="row">
+												<div class="col-lg-4 col-md-6 p-1">
+													<strong><i class="fas fa-phone mr-1"></i></strong><a href="" data-plugin="organizations" data-key="phone"></a>
+												</div>
+												<div class="col-lg-4 col-md-6 p-1">
+													<strong><i class="fas fa-phone mr-1"></i></strong><a href="" data-plugin="organizations" data-key="toll_free"></a>
+												</div>
+												<div class="col-lg-4 col-md-6 p-1">
+													<strong><i class="fas fa-fax mr-1"></i></strong><a href="" data-plugin="organizations" data-key="fax"></a>
+												</div>
+											</div>
+										</td>
 									</tr>
 									<tr>
 										<td data-edit="email"><b>Email</b></td>
