@@ -42,10 +42,6 @@
 								</thead>
 								<tbody>
 									<tr style="display:none;">
-										<td><b>Subsidiaries</b></td>
-										<td data-plugin="organizations" data-key="subsidiaries"></td>
-									</tr>
-									<tr style="display:none;">
 										<td><b>Services</b></td>
 										<td data-plugin="organizations" data-key="services"></td>
 									</tr>
