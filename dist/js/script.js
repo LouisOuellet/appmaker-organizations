@@ -239,7 +239,7 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="tags"]');
 									if(API.Helper.isSet(data.details,['tags'])){
-										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.tags,';').split(';')))){
+										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.tags,';').split(';'))){
 											var subHTML = '';
 											subHTML += '<div class="btn-group m-1" data-id="'+subDetails.id+'">';
 												subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subDetails.id+'" data-action="details"><i class="fas fa-tag mr-1"></i>'+subDetails.name+'</button>';
