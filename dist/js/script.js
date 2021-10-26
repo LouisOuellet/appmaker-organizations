@@ -167,58 +167,58 @@ API.Plugins.organizations = {
 												}
 											subsHTML += '</div>';
 											tr.append(subsHTML);
-											if(API.Auth.validate('custom', 'organizations_organizations', 2)){
-												tr.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
-												tr.find('button[data-action="link"]').off().click(function(){
-													API.Builder.modal($('body'), {
-														title:'Link a subsidiary',
-														icon:'subsidiaries',
-														zindex:'top',
-														css:{ header: "bg-gray", body: "p-3"},
-													}, function(modal){
-														modal.on('hide.bs.modal',function(){ modal.remove(); });
-														var dialog = modal.find('.modal-dialog');
-														var header = modal.find('.modal-header');
-														var body = modal.find('.modal-body');
-														var footer = modal.find('.modal-footer');
-														header.find('button[data-control="hide"]').remove();
-														header.find('button[data-control="update"]').remove();
-														API.Builder.input(body, 'organization', null,{plugin:'organizations'}, function(input){});
-														footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>Link</button>');
-														footer.find('button[data-action="link"]').click(function(){
-															if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
-																API.request('organizations','link',{data:{id:data.this.dom.id,relationship:{relationship:'organizations',link_to:body.find('select').select2('val')}}},function(result){
-																	var sub_dataset = JSON.parse(result);
-																	if(sub_dataset.success != undefined){
-																		API.Helper.set(API.Contents,['sub_dataset','dom','organizations',sub_dataset.output.dom.id],sub_dataset.output.dom);
-																		API.Helper.set(API.Contents,['sub_dataset','raw','organizations',sub_dataset.output.raw.id],sub_dataset.output.raw);
-																		API.Helper.set(data.details,['organizations','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
-																		API.Helper.set(data.details,['organizations','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
-																		var subsHTML = '';
-																		subsHTML += '<div class="btn-group m-1" sub_dataset-id="'+sub_dataset.output.dom.id+'">';
-																			subsHTML += '<button type="button" class="btn btn-xs btn-primary" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="details"><i class="fas fa-building mr-1"></i>'+sub_dataset.output.dom.name+'</button>';
-																			if(API.Auth.validate('custom', 'organizations_organizations', 4)){
-																				subsHTML += '<button type="button" class="btn btn-xs btn-danger" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="unlink"><i class="fas fa-unlink"></i></button>';
-																			}
-																		subsHTML += '</div>';
-																		container.find('td[sub_dataset-plugin="organizations"][sub_dataset-key="subsidiaries"]').find('button[sub_dataset-action="link"]').before(subsHTML);
-																		API.Plugins.organizations.Events.subsidiaries(container,data);
-																		var detail = {};
-																		for(var [key, value] of Object.entries(data.details.organizations.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
-																		detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
-																		API.Builder.Timeline.add.client(container.find('#organizations_timeline'),detail);
-																	}
-																});
-																modal.modal('hide');
-															} else {
-																body.find('.input-group').addClass('is-invalid');
-																alert('No organization were selected!');
-															}
-														});
-														modal.modal('show');
+										}
+										if(API.Auth.validate('custom', 'organizations_organizations', 2)){
+											tr.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
+											tr.find('button[data-action="link"]').off().click(function(){
+												API.Builder.modal($('body'), {
+													title:'Link a subsidiary',
+													icon:'subsidiaries',
+													zindex:'top',
+													css:{ header: "bg-gray", body: "p-3"},
+												}, function(modal){
+													modal.on('hide.bs.modal',function(){ modal.remove(); });
+													var dialog = modal.find('.modal-dialog');
+													var header = modal.find('.modal-header');
+													var body = modal.find('.modal-body');
+													var footer = modal.find('.modal-footer');
+													header.find('button[data-control="hide"]').remove();
+													header.find('button[data-control="update"]').remove();
+													API.Builder.input(body, 'organization', null,{plugin:'organizations'}, function(input){});
+													footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>Link</button>');
+													footer.find('button[data-action="link"]').click(function(){
+														if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
+															API.request('organizations','link',{data:{id:data.this.dom.id,relationship:{relationship:'organizations',link_to:body.find('select').select2('val')}}},function(result){
+																var sub_dataset = JSON.parse(result);
+																if(sub_dataset.success != undefined){
+																	API.Helper.set(API.Contents,['sub_dataset','dom','organizations',sub_dataset.output.dom.id],sub_dataset.output.dom);
+																	API.Helper.set(API.Contents,['sub_dataset','raw','organizations',sub_dataset.output.raw.id],sub_dataset.output.raw);
+																	API.Helper.set(data.details,['organizations','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
+																	API.Helper.set(data.details,['organizations','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+																	var subsHTML = '';
+																	subsHTML += '<div class="btn-group m-1" sub_dataset-id="'+sub_dataset.output.dom.id+'">';
+																		subsHTML += '<button type="button" class="btn btn-xs btn-primary" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="details"><i class="fas fa-building mr-1"></i>'+sub_dataset.output.dom.name+'</button>';
+																		if(API.Auth.validate('custom', 'organizations_organizations', 4)){
+																			subsHTML += '<button type="button" class="btn btn-xs btn-danger" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="unlink"><i class="fas fa-unlink"></i></button>';
+																		}
+																	subsHTML += '</div>';
+																	container.find('td[sub_dataset-plugin="organizations"][sub_dataset-key="subsidiaries"]').find('button[sub_dataset-action="link"]').before(subsHTML);
+																	API.Plugins.organizations.Events.subsidiaries(container,data);
+																	var detail = {};
+																	for(var [key, value] of Object.entries(data.details.organizations.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
+																	detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
+																	API.Builder.Timeline.add.client(container.find('#organizations_timeline'),detail);
+																}
+															});
+															modal.modal('hide');
+														} else {
+															body.find('.input-group').addClass('is-invalid');
+															alert('No organization were selected!');
+														}
 													});
+													modal.modal('show');
 												});
-											}
+											});
 										}
 										API.Plugins.organizations.Events.subsidiaries(container,dataset);
 									}
