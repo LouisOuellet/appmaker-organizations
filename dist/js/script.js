@@ -86,17 +86,17 @@ API.Plugins.organizations = {
 								options.td += '<div class="row">';
 									if(API.Auth.validate('custom', 'organizations_code_ccn', 1) && data.this.dom.setCodeCCN != ''){
 										options.td += '<div class="col-lg-4 col-md-6 p-1">';
-											options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="" data-plugin="organizations" data-key="setCodeCCN">'+data.this.dom.setCodeCCN+'</a>';
+											options.td += '<strong><b>'+API.Contents.Language.setCodeCCN+': </b></strong><span data-plugin="organizations" data-key="setCodeCCN">'+data.this.dom.setCodeCCN+'</span>';
 										options.td += '</div>';
 									}
 									if(API.Auth.validate('custom', 'organizations_code_itmr4', 1) && data.this.dom.setCodeITMR4 != ''){
 										options.td += '<div class="col-lg-4 col-md-6 p-1">';
-											options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="" data-plugin="organizations" data-key="setCodeITMR4">'+data.this.dom.setCodeITMR4+'</a>';
+											options.td += '<strong><b>'+API.Contents.Language.setCodeITMR4+': </b></i></strong><span data-plugin="organizations" data-key="setCodeITMR4">'+data.this.dom.setCodeITMR4+'</span>';
 										options.td += '</div>';
 									}
 									if(API.Auth.validate('custom', 'organizations_code_hvs', 1) && data.this.dom.setCodeHVS != ''){
 										options.td += '<div class="col-lg-4 col-md-6 p-1">';
-											options.td += '<strong><i class="fas fa-fax mr-1"></i></strong><a href="" data-plugin="organizations" data-key="setCodeHVS">'+data.this.dom.setCodeHVS+'</a>';
+											options.td += '<strong><b>'+API.Contents.Language.setCodeHVS+': </b></strong><span data-plugin="organizations" data-key="setCodeHVS">'+data.this.dom.setCodeHVS+'</span>';
 										options.td += '</div>';
 									}
 								options.td += '</div>';
@@ -123,17 +123,17 @@ API.Plugins.organizations = {
 								options.td += '<div class="row">';
 									if(data.this.dom.phone != ''){
 										options.td += '<div class="col-lg-4 col-md-6 p-1">';
-											options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="" data-plugin="organizations" data-key="phone">'+data.this.dom.phone+'</a>';
+											options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="tel:'+data.this.dom.phone+'" data-plugin="organizations" data-key="phone">'+data.this.dom.phone+'</a>';
 										options.td += '</div>';
 									}
 									if(data.this.dom.toll_free != ''){
 										options.td += '<div class="col-lg-4 col-md-6 p-1">';
-											options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="" data-plugin="organizations" data-key="toll_free">'+data.this.dom.toll_free+'</a>';
+											options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="tel:'+data.this.dom.toll_free+'" data-plugin="organizations" data-key="toll_free">'+data.this.dom.toll_free+'</a>';
 										options.td += '</div>';
 									}
 									if(data.this.dom.fax != ''){
 										options.td += '<div class="col-lg-4 col-md-6 p-1">';
-											options.td += '<strong><i class="fas fa-fax mr-1"></i></strong><a href="" data-plugin="organizations" data-key="fax">'+data.this.dom.fax+'</a>';
+											options.td += '<strong><i class="fas fa-fax mr-1"></i></strong><a href="tel:'+data.this.dom.fax+'" data-plugin="organizations" data-key="fax">'+data.this.dom.fax+'</a>';
 										options.td += '</div>';
 									}
 								options.td += '</div>';
