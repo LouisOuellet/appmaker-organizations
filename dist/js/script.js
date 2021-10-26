@@ -241,10 +241,10 @@ API.Plugins.organizations = {
 									if(API.Helper.isSet(data.details,['tags'])){
 										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.tags,';').split(';'))){
 											var subHTML = '';
-											subHTML += '<div class="btn-group m-1" data-id="'+subDetails.id+'">';
-												subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subDetails.id+'" data-action="details"><i class="fas fa-tag mr-1"></i>'+subDetails.name+'</button>';
+											subHTML += '<div class="btn-group m-1" data-id="'+subDetails+'">';
+												subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subDetails+'" data-action="details"><i class="fas fa-tag mr-1"></i>'+subDetails+'</button>';
 												if(API.Auth.validate('custom', 'organizations_tags', 4)){
-													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subDetails.id+'" data-action="untag"><i class="fas fa-unlink"></i></button>';
+													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subDetails+'" data-action="untag"><i class="fas fa-unlink"></i></button>';
 												}
 											subHTML += '</div>';
 											td.append(subHTML);
@@ -537,11 +537,12 @@ API.Plugins.organizations = {
 							header.find('button[data-control="hide"]').remove();
 							header.find('button[data-control="update"]').remove();
 							API.Builder.input(body, 'tag', null,{plugin:'tags'}, function(input){});
-							footer.append('<button class="btn btn-secondary" data-action="link"><i class="fas fa-link mr-1"></i>Link</button>');
-							footer.find('button[data-action="link"]').click(function(){
+							footer.append('<button class="btn btn-secondary" data-action="tag"><i class="fas fa-tag mr-1"></i>Tag</button>');
+							footer.find('button[data-action="tag"]').click(function(){
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
-									API.request('organizations','link',{data:{id:dataset.this.dom.id,relationship:{relationship:'tags',link_to:body.find('select').select2('val')}}},function(result){
+									API.request('organizations','tag',{data:{id:dataset.this.dom.id,relationship:{relationship:'tags',link_to:body.find('select').select2('val')}}},function(result){
 										var sub_dataset = JSON.parse(result);
+										console.log(sub_dataset);
 										if(sub_dataset.success != undefined){
 											API.Helper.set(API.Contents,['data','dom','tags',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(API.Contents,['data','raw','tags',sub_dataset.output.raw.id],sub_dataset.output.raw);
@@ -554,8 +555,8 @@ API.Plugins.organizations = {
 													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+sub_dataset.output.dom.id+'" data-action="untag"><i class="fas fa-unlink"></i></button>';
 												}
 											subHTML += '</div>';
-											if(td.find('button[data-action="link"]').length > 0){
-												td.find('button[data-action="link"]').before(subHTML);
+											if(td.find('button[data-action="tag"]').length > 0){
+												td.find('button[data-action="tag"]').before(subHTML);
 											} else { td.append(subHTML); }
 											// var detail = {};
 											// for(var [key, value] of Object.entries(dataset.details.tags.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
