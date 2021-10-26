@@ -224,14 +224,14 @@ API.Plugins.organizations = {
 													subsHTML += '<button type="button" class="btn btn-xs btn-danger" sub_dataset-id="'+sub_dataset.output.dom.id+'" sub_dataset-action="unlink"><i class="fas fa-unlink"></i></button>';
 												}
 											subsHTML += '</div>';
-											if(td.find('button[sub_dataset-action="link"]').length > 0){
-												td.find('button[sub_dataset-action="link"]').before(subsHTML);
+											if(td.find('button[data-action="link"]').length > 0){
+												td.find('button[data-action="link"]').before(subsHTML);
 											} else { td.append(subsHTML); }
 											// var detail = {};
 											// for(var [key, value] of Object.entries(dataset.details.organizations.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
 											// detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
 											// API.Builder.Timeline.add.client(container.find('#organizations_timeline'),detail);
-											API.Plugins.organizations.Events.subsidiaries(container,dataset);
+											API.Plugins.organizations.Events.subsidiaries(dataset,layout);
 											if(callback != null){ callback(dataset,layout); }
 										}
 									});
