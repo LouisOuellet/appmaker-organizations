@@ -185,7 +185,7 @@ API.Plugins.organizations = {
 	GUI:{},
 	Events:{
 		subsidiaries:function(dataset,layout,options = {},callback = null){
-			console.log('ADding events');
+			console.log('Adding events');
 			if(options instanceof Function){ callback = options; options = {}; }
 			var defaults = {field: "name"};
 			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
@@ -194,10 +194,12 @@ API.Plugins.organizations = {
 				var button = $(this);
 				switch(button.attr('data-action')){
 					case"details":
+						console.log('Adding events: details');
 						var organization = {raw:dataset.details.organizations.raw[button.attr('data-id')],dom:dataset.details.organizations.dom[button.attr('data-id')]};
 						API.CRUD.read.show({ key:'name',keys:organization.dom, href:"?p=organizations&v=details&id="+organization.raw.name, modal:true });
 						break;
 					case"unlink":
+						console.log('Adding events: unlink');
 						var organization = {raw:dataset.details.organizations.raw[button.attr('data-id')],dom:dataset.details.organizations.dom[button.attr('data-id')]};
 						API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'organizations',link_to:organization.raw.id}}},function(result){
 							var sub_dataset = JSON.parse(result);
@@ -208,6 +210,7 @@ API.Plugins.organizations = {
 						});
 						break;
 					case"link":
+						console.log('Adding events: link');
 						API.Builder.modal($('body'), {
 							title:'Link a subsidiary',
 							icon:'subsidiaries',
