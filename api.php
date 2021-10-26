@@ -375,11 +375,10 @@ class organizationsAPI extends CRUDAPI {
 			$relationships = $this->getRelationships($request,$data['id']);
 			foreach($relationships as $id => $relationship){
 				foreach($relationship as $relation){
-					if(($relation['relationship'] == $data['relationship']['relationship'])&&($relation['link_to'] == $data['relationship']['link_to'])){
-						$found = false;
-					}
+					if(($relation['relationship'] == $data['relationship']['relationship'])&&($relation['link_to'] == $data['relationship']['link_to'])){ $found = false; }
 				}
 			}
+			if(($request == $data['relationship']['relationship'])&&($data['id'] == $data['relationship']['link_to'])){ $found = false; }
 			if($found){
 				$new = [
 					'relationship_1' => $request,
