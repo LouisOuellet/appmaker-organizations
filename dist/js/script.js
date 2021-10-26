@@ -73,9 +73,11 @@ API.Plugins.organizations = {
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(organization,layout){
 						console.log(organization);
 						console.log(layout);
-						API.GUI.Layouts.details.data(organization,layout);
-						API.GUI.Layouts.details.data(organization,layout,{plugin:"organizations",field:"address"});
-						API.GUI.Layouts.details.data(organization,layout,{plugin:"organizations",field:"zipcode"},function(organization,layout,tr){
+						API.GUI.Layouts.details.data(organization,layout,{plugin:"organizations",field:"name"});
+						API.GUI.Layouts.details.data(organization,layout,{
+							field:"address",
+							td:'<td data-plugin="organizations" data-key="address">'+dataset.this.dom.address+', '+dataset.this.dom.city+', '+dataset.this.dom.zipcode+'</td>',
+						},function(organization,layout,tr){
 							console.log(organization);
 							console.log(layout);
 							console.log(tr);
