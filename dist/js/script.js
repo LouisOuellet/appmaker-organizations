@@ -76,7 +76,7 @@ API.Plugins.organizations = {
 						API.GUI.Layouts.details.data(organization,layout,{plugin:"organizations",field:"name"});
 						API.GUI.Layouts.details.data(organization,layout,{
 							field:"address",
-							td:'<td data-plugin="organizations" data-key="address">'+dataset.this.dom.address+', '+dataset.this.dom.city+', '+dataset.this.dom.zipcode+'</td>',
+							td:'<td data-plugin="organizations" data-key="address">'+organization.this.dom.address+', '+organization.this.dom.city+', '+organization.this.dom.zipcode+'</td>',
 						},function(organization,layout,tr){
 							console.log(organization);
 							console.log(layout);
