@@ -104,5 +104,6 @@
 		"Setcodeccn": "Cargo Control Number",
 		"Setcodeitmr4": "ITMR4",
 		"Setcodehvs": "Transaction",
-		"Setcurrency": "Currency"
+		"Setcurrency": "Currency",
+		"subsidiaries": "subsidiaries"
 }
