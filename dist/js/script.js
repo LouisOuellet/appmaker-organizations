@@ -449,7 +449,7 @@ API.Plugins.organizations = {
 											var subHTML = '';
 											subHTML += '<div class="btn-group m-1" data-id="'+sub_dataset.output.dom.id+'">';
 												subHTML += '<button type="button" data-id="'+sub_dataset.output.dom.id+'" class="btn btn-xs bg-'+dataset.details.statuses.raw[issues[sub_dataset.output.dom.id]].color+'" data-action="details"><i class="fas fa-gavel mr-1"></i>'+sub_dataset.output.dom.id+' - '+sub_dataset.output.dom.name+' - '+API.Contents.Language[dataset.details.statuses.raw[issues[sub_dataset.output.dom.id]].name]+'</button>';
-												if(API.Auth.validate('custom', 'issues', 4)){
+												if(API.Auth.validate('custom', 'organizations_issues', 4)){
 													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+sub_dataset.output.dom.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
 												}
 											subHTML += '</div>';
