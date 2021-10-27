@@ -481,6 +481,9 @@ API.Plugins.organizations = {
 											API.Helper.set(dataset.details,['issues','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['issues','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											if(td.find('button[data-action="link"]').length > 0){
+												console.log(issues);
+												console.log(sub_dataset.output.dom);
+												console.log(API.Contents.Statuses.issues);
 												td.find('button[data-action="link"]').before(
 													API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{
 														remove:API.Auth.validate('custom', 'organizations_issues', 4),
