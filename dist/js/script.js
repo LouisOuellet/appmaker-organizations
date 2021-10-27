@@ -282,6 +282,7 @@ API.Plugins.organizations = {
 								options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="tags"]');
+									if(data.this.dom.tags == null){ data.this.dom.tags = ''; }
 									for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.tags,';').split(';'))){
 										if(subDetails != ''){
 											td.append(
@@ -313,11 +314,7 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="assigned_to"]');
 									if(API.Helper.isSet(data.details,['users'])){
-										console.log(data.this.raw.assigned_to);
 										if(data.this.raw.assigned_to == null){ data.this.raw.assigned_to = ''; }
-										console.log(data.this.raw.assigned_to);
-										console.log(API.Helper.trim(data.this.raw.assigned_to,';'));
-										console.log(API.Helper.trim(data.this.raw.assigned_to,';').split(';'));
 										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.raw.assigned_to,';').split(';'))){
 											if(subDetails != ''){
 												var user = data.details.users.dom[subDetails];
