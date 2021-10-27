@@ -686,12 +686,16 @@ API.Plugins.organizations = {
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
 									API.request('organizations','assign',{data:{id:dataset.this.dom.id,user:body.find('select').select2('val')}},function(result){
 										var sub_dataset = JSON.parse(result);
+										console.log(sub_dataset);
 										if(sub_dataset.success != undefined){
 											for(var [key, user] of Object.entries(sub_dataset.output.users.dom)){
 												if(td.find('div.btn-group[data-id="'+user.id+'"]').length <= 0){
+													console.log('user');
 													console.log(user);
+													console.log('API.Contents');
 													console.log(API.Contents.data.dom.users);
 													console.log(API.Contents.data.raw.users);
+													console.log('dataset.details.users');
 													console.log(dataset.details.users);
 													// API.Helper.set(API.Contents,['data','dom','users',user.username],user);
 													// API.Helper.set(API.Contents,['data','raw','users',sub_dataset.output.users.raw[user.id].id],sub_dataset.output.users.raw[user.id]);
