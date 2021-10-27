@@ -293,8 +293,8 @@ API.Plugins.organizations = {
 							options.field = "created";
 							options.td = '<td><time class="timeago" datetime="'+data.this.raw.created.replace(/ /g, "T")+'" title="'+data.this.raw.created+'">'+data.this.raw.created+'</time></td>';
 							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){ tr.find('time').timeago(); });
-							API.GUI.Layouts.details.data(data,layout,{color:"danger",icon:"fas fa-snowplow",text:"Clear"},function(data,layout,button){});
-							API.GUI.Layouts.details.data(data,layout,function(data,layout,button){});
+							API.GUI.Layouts.details.control(data,layout,{color:"danger",icon:"fas fa-snowplow",text:"Clear"},function(data,layout,button){});
+							API.GUI.Layouts.details.control(data,layout,function(data,layout,button){});
 						}
 					});
 				}
