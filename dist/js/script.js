@@ -644,8 +644,9 @@ API.Plugins.organizations = {
 			td.find('button').off().click(function(){
 				var button = $(this);
 				if(button.attr('data-action') != "assign"){
-					var user = {raw:dataset.details.users.raw[button.attr('data-id')],dom:{}};
-					user.dom = dataset.details.users.dom[user.raw.username];
+					API.Contents.data.dom.users
+					var user = {raw:API.Contents.data.raw.users[button.attr('data-id')],dom:{}};
+					user.dom = API.Contents.data.dom.users[user.raw.username];
 				}
 				switch(button.attr('data-action')){
 					case"details":
