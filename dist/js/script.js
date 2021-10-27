@@ -646,7 +646,8 @@ API.Plugins.organizations = {
 			td.find('button').off().click(function(){
 				var button = $(this);
 				if(button.attr('data-action') != "assign"){
-					API.Contents.data.dom.users
+					console.log(button.attr('data-id'));
+					console.log(API.Contents.data.dom.users);
 					var user = {raw:API.Contents.data.raw.users[button.attr('data-id')],dom:{}};
 					user.dom = API.Contents.data.dom.users[user.raw.username];
 				}
