@@ -248,7 +248,7 @@ API.Plugins.organizations = {
 								});
 							}
 							if(API.Helper.isSet(data,['relations','services'])){
-								for(var [id, relation] of Object.entries(data.relations.organizations)){
+								for(var [id, relation] of Object.entries(data.relations.services)){
 									if(API.Auth.validate('custom', 'organizations_services', 1) || relation.owner == API.Contents.Auth.User.username){
 										API.Builder.Timeline.add.service(layout.timeline,relation,'hand-holding-usd','success',function(item){
 											item.find('i').first().addClass('pointer');
