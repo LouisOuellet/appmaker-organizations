@@ -304,6 +304,7 @@ API.Plugins.organizations = {
 					content:"",
 					remove:false,
 				};
+				console.log(dataset);
 				if(API.Helper.isSet(options,['icon','details'])){ defaults.icon.details = options.icon.details; }
 				if(API.Helper.isSet(options,['icon','remove'])){ defaults.icon.remove = options.icon.remove; }
 				if(API.Helper.isSet(options,['color','details'])){ defaults.color.details = options.color.details; }
