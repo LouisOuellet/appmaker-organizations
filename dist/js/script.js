@@ -336,9 +336,10 @@ API.Plugins.organizations = {
 											API.Helper.set(API.Contents,['data','raw','organizations',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['organizations','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['organizations','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											var html = API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{remove:API.Auth.validate('custom', 'organizations_organizations', 4)});
 											if(td.find('button[data-action="link"]').length > 0){
-												td.find('button[data-action="link"]').before(API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{remove:API.Auth.validate('custom', 'organizations_organizations', 4)}));
-											} else { td.append(API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{remove:API.Auth.validate('custom', 'organizations_organizations', 4)})); }
+												td.find('button[data-action="link"]').before(html);
+											} else { td.append(html); }
 											// var detail = {};
 											// for(var [key, value] of Object.entries(dataset.details.organizations.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
 											// detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
@@ -405,9 +406,10 @@ API.Plugins.organizations = {
 											API.Helper.set(API.Contents,['data','raw','services',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['services','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['services','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											var html = API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{remove:API.Auth.validate('custom', 'organizations_services', 4),icon:{details:"fas fa-hand-holding-usd"}});
 											if(td.find('button[data-action="link"]').length > 0){
-												td.find('button[data-action="link"]').before(API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{remove:API.Auth.validate('custom', 'organizations_services', 4),icon:{details:"fas fa-hand-holding-usd"}}));
-											} else { td.append(API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{remove:API.Auth.validate('custom', 'organizations_services', 4),icon:{details:"fas fa-hand-holding-usd"}})); }
+												td.find('button[data-action="link"]').before(html);
+											} else { td.append(html); }
 											// var detail = {};
 											// for(var [key, value] of Object.entries(dataset.details.services.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
 											// detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
@@ -480,36 +482,19 @@ API.Plugins.organizations = {
 											API.Helper.set(API.Contents,['data','raw','issues',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['issues','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['issues','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											var html = API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{
+												remove:API.Auth.validate('custom', 'organizations_issues', 4),
+												content:sub_dataset.output.dom.id+' - '+sub_dataset.output.dom.name+' - '+API.Contents.Statuses.issues['1'].name,
+												color:{
+													details:API.Contents.Statuses.issues['1'].color
+												},
+												icon:{
+													details:API.Contents.Statuses.issues['1'].icon
+												},
+											});
 											if(td.find('button[data-action="link"]').length > 0){
-												console.log(issues);
-												console.log(sub_dataset.output.dom);
-												console.log(API.Contents.Statuses.issues);
-												td.find('button[data-action="link"]').before(
-													API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{
-														remove:API.Auth.validate('custom', 'organizations_issues', 4),
-														content:sub_dataset.output.dom.id+' - '+sub_dataset.output.dom.name+' - '+API.Contents.Language[data.details.statuses.raw[issues[sub_dataset.output.dom.id]].name],
-														color:{
-															details:data.details.statuses.raw[issues[sub_dataset.output.dom.id]].color
-														},
-														icon:{
-															details:data.details.statuses.raw[issues[sub_dataset.output.dom.id]].icon
-														},
-													})
-												);
-											} else {
-												td.append(
-													API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{
-														remove:API.Auth.validate('custom', 'organizations_issues', 4),
-														content:sub_dataset.output.dom.id+' - '+sub_dataset.output.dom.name+' - '+API.Contents.Language[data.details.statuses.raw[issues[sub_dataset.output.dom.id]].name],
-														color:{
-															details:data.details.statuses.raw[issues[sub_dataset.output.dom.id]].color
-														},
-														icon:{
-															details:data.details.statuses.raw[issues[sub_dataset.output.dom.id]].icon
-														},
-													})
-												);
-											}
+												td.find('button[data-action="link"]').before(html);
+											} else { td.append(html); }
 											// var detail = {};
 											// for(var [key, value] of Object.entries(dataset.details.issues.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
 											// detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
