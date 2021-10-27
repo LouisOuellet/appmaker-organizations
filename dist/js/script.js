@@ -565,7 +565,7 @@ API.Plugins.organizations = {
 											API.Builder.Timeline.add.service(layout.timeline,sub_dataset.output.dom,function(item){
 												item.find('i').first().addClass('pointer');
 												item.find('i').first().off().click(function(){
-													API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=services&v=details&id="+data.details.services.dom[item.attr('data-id')].name, modal:true });
+													API.CRUD.read.show({ key:'name',keys:sub_dataset.output.dom, href:"?p=services&v=details&id="+sub_dataset.output.dom.name, modal:true });
 												});
 											});
 											API.Plugins.organizations.Events.services(dataset,layout);
