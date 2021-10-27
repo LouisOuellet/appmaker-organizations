@@ -42,10 +42,6 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td><b>Assigned to</b></td>
-										<td data-plugin="organizations" data-key="assigned_to"></td>
-									</tr>
-									<tr>
 										<td><b>Created</b></td>
 										<td id="organizations_created"><time class="timeago"></time></td>
 									</tr>
