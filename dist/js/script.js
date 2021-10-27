@@ -663,7 +663,6 @@ API.Plugins.organizations = {
 											if(td.find('button[data-action="link"]').length > 0){
 												td.find('button[data-action="link"]').before(html);
 											} else { td.append(html); }
-											console.log(sub_dataset.output);
 											sub_dataset.output.dom.owner = sub_dataset.output.timeline.owner;
 											sub_dataset.output.dom.created = sub_dataset.output.timeline.created;
 											sub_dataset.output.dom.statuses = sub_dataset.output.timeline.statuses;
