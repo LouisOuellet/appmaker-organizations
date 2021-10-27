@@ -264,20 +264,23 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="users"]');
 									if(API.Helper.isSet(data.details,['users'])){
-										for(var [subKey, subDetails] of Object.entries(data.details.users.dom)){
-											td.append(
-												API.Plugins.organizations.GUI.buttons.details(subDetails,{
-													remove:API.Auth.validate('custom', 'organizations_users', 4),
-													key: "username",
-													icon:{
-														details:"fas fa-user",
-														remove:"fas fa-user-minus",
-													},
-													action:{
-														remove:"unassign",
-													},
-												})
-											);
+										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.users,';').split(';'))){
+											if(subDetails != ''){
+												var user = data.details.users.dom[subDetails.id];
+												td.append(
+													API.Plugins.organizations.GUI.buttons.details(user,{
+														remove:API.Auth.validate('custom', 'organizations_users', 4),
+														key: "username",
+														icon:{
+															details:"fas fa-user",
+															remove:"fas fa-user-minus",
+														},
+														action:{
+															remove:"unassign",
+														},
+													})
+												);
+											}
 										}
 									}
 									if(API.Auth.validate('custom', 'organizations_users', 2)){
@@ -304,7 +307,6 @@ API.Plugins.organizations = {
 					content:"",
 					remove:false,
 				};
-				console.log(dataset);
 				if(API.Helper.isSet(options,['icon','details'])){ defaults.icon.details = options.icon.details; }
 				if(API.Helper.isSet(options,['icon','remove'])){ defaults.icon.remove = options.icon.remove; }
 				if(API.Helper.isSet(options,['color','details'])){ defaults.color.details = options.color.details; }
