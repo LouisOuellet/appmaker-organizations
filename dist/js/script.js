@@ -688,9 +688,15 @@ API.Plugins.organizations = {
 										var sub_dataset = JSON.parse(result);
 										console.log(sub_dataset);
 										if(sub_dataset.success != undefined){
-											for(var [key, user] of Object.entries(sub_dataset.output.users.dom)){
-												if(td.find('div.btn-group[data-id="'+user.id+'"]').length <= 0){
+											for(var [key, user] of Object.entries(sub_dataset.output.organization.raw.assigned_to.split(';'))){
+												if(user != '' && td.find('div.btn-group[data-id="'+user+'"]').length <= 0){
 													console.log('user');
+													console.log(user);
+													user = {
+														dom:sub_dataset.output.users.dom[user],
+														raw:sub_dataset.output.users.raw[user],
+													};
+													console.log('new-user');
 													console.log(user);
 													console.log('API.Contents');
 													console.log(API.Contents.data.dom.users);
@@ -701,7 +707,7 @@ API.Plugins.organizations = {
 													// API.Helper.set(API.Contents,['data','raw','users',sub_dataset.output.users.raw[user.id].id],sub_dataset.output.users.raw[user.id]);
 													// API.Helper.set(dataset.details,['users','dom',user.id],user);
 													// API.Helper.set(dataset.details,['users','raw',sub_dataset.output.users.raw[user.id].id],sub_dataset.output.users.raw[user.id]);
-													var html = API.Plugins.organizations.GUI.buttons.details(user,{
+													var html = API.Plugins.organizations.GUI.buttons.details(user.dom,{
 														remove:API.Auth.validate('custom', 'organizations_users', 4),
 													  key: "username",
 													  icon:{
