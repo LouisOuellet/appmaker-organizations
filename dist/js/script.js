@@ -664,20 +664,16 @@ API.Plugins.organizations = {
 												td.find('button[data-action="link"]').before(html);
 											} else { td.append(html); }
 											console.log(sub_dataset.output);
-											// sub_dataset.output.dom.owner = sub_dataset.output.timeline.owner;
-											// sub_dataset.output.dom.created = sub_dataset.output.timeline.created;
-											// API.Builder.Timeline.add.service(layout.timeline,sub_dataset.output.dom,'hand-holding-usd','success',function(item){
-											// 	item.find('i').first().addClass('pointer');
-											// 	item.find('i').first().off().click(function(){
-											// 		API.CRUD.read.show({ key:'name',keys:sub_dataset.output.dom, href:"?p=services&v=details&id="+sub_dataset.output.dom.name, modal:true });
-											// 	});
-											// });
-											// API.Builder.Timeline.add.issue(layout.timeline,relation,'gavel','indigo',function(item){
-											// 	item.find('i').first().addClass('pointer');
-											// 	item.find('i').first().off().click(function(){
-											// 		API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.services.dom[item.attr('data-id')].id, modal:true });
-											// 	});
-											// });
+											sub_dataset.output.dom.owner = sub_dataset.output.timeline.owner;
+											sub_dataset.output.dom.created = sub_dataset.output.timeline.created;
+											sub_dataset.output.dom.statuses = sub_dataset.output.timeline.statuses;
+											sub_dataset.output.dom.status = data.details.statuses.raw[relation.statuses].order;
+											API.Builder.Timeline.add.issue(layout.timeline,sub_dataset.output.dom,'gavel','indigo',function(item){
+												item.find('i').first().addClass('pointer');
+												item.find('i').first().off().click(function(){
+													API.CRUD.read.show({ key:'name',keys:sub_dataset.output.dom, href:"?p=issues&v=details&id="+sub_dataset.output.dom.id, modal:true });
+												});
+											});
 											API.Plugins.organizations.Events.issues(dataset,layout);
 										}
 									});
