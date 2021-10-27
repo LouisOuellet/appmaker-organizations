@@ -313,6 +313,9 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="assigned_to"]');
 									if(API.Helper.isSet(data.details,['users'])){
+										console.log(data.this.raw.assigned_to);
+										console.log(API.Helper.trim(data.this.raw.assigned_to,';'));
+										console.log(API.Helper.trim(data.this.raw.assigned_to,';').split(';'));
 										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.raw.assigned_to,';').split(';'))){
 											if(subDetails != ''){
 												var user = data.details.users.dom[subDetails];
