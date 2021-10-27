@@ -149,7 +149,7 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 								for(var [id, status] of Object.entries(data.relations.statuses)){
 									console.log(status);
-									// API.Builder.Timeline.add.status(layout.timeline,status);
+									API.Builder.Timeline.add.status(layout.timeline,status);
 								}
 							}
 							options.field = "address";
