@@ -87,6 +87,7 @@ API.Plugins.organizations = {
 							content.addClass('p-3');
 							content.append('<div class="timeline" data-plugin="organizations"></div>');
 							layout.timeline = content.find('div.timeline');
+							var options = {plugin:"organizations"}
 							// Debug
 							if(API.debug){
 								API.GUI.Layouts.details.control(data,layout,function(data,layout,button){
@@ -105,7 +106,8 @@ API.Plugins.organizations = {
 								});
 							}
 							// Name
-							var options = {plugin:"organizations",field:"name"}
+							options.field = "name";
+							if(API.Helper.isSet(options,['td'])){ delete options.td; }
 							API.GUI.Layouts.details.data(data,layout,options);
 							// Business Number
 							if(API.Auth.validate('custom', 'organizations_business_num', 1)){
@@ -147,9 +149,10 @@ API.Plugins.organizations = {
 									options.td += '</span>';
 								options.td += '</td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-								for(var [id, status] of Object.entries(data.relations.statuses)){
-									console.log(status);
-									API.Builder.Timeline.add.status(layout.timeline,status);
+								if(API.Helper.isSet(data,['relations','statuses'])){
+									for(var [id, status] of Object.entries(data.relations.statuses)){
+										API.Builder.Timeline.add.status(layout.timeline,status);
+									}
 								}
 							}
 							options.field = "address";
@@ -191,7 +194,7 @@ API.Plugins.organizations = {
 							// Subsidiaries
 							if(API.Auth.validate('custom', 'organizations_organizations', 1)){
 								options.field = "subsidiaries";
-								delete options.td;
+								if(API.Helper.isSet(options,['td'])){ delete options.td; }
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="subsidiaries"]');
 									if(API.Helper.isSet(data.details,['organizations'])){
@@ -211,11 +214,21 @@ API.Plugins.organizations = {
 									}
 									API.Plugins.organizations.Events.subsidiaries(data,layout);
 								});
+								if(API.Helper.isSet(data,['relations','organizations'])){
+									for(var [id, organization] of Object.entries(data.relations.organizations)){
+										API.Builder.Timeline.add.client(layout.timeline,organization,'building','secondary',function(item){
+											item.find('i').first().addClass('pointer');
+											item.find('i').first().off().click(function(){
+												API.CRUD.read.show({ key:'name',keys:data.details.organizations.dom[item.attr('data-id')], href:"?p=organizations&v=details&id="+data.details.organizations.dom[item.attr('data-id')].name, modal:true });
+											});
+										});
+									}
+								}
 							}
 							// Services
 							if(API.Helper.isSet(API.Plugins,['services']) && API.Auth.validate('custom', 'organizations_services', 1)){
 								options.field = "services";
-								delete options.td;
+								if(API.Helper.isSet(options,['td'])){ delete options.td; }
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="services"]');
 									if(API.Helper.isSet(data.details,['services'])){
@@ -232,7 +245,7 @@ API.Plugins.organizations = {
 							// Issues
 							if(API.Helper.isSet(API.Plugins,['issues']) && API.Auth.validate('custom', 'organizations_issues', 1)){
 								options.field = "issues";
-								delete options.td;
+								if(API.Helper.isSet(options,['td'])){ delete options.td; }
 								var issues = {};
 								for(var [rid, relations] of Object.entries(data.relationships)){
 									for(var [uid, relation] of Object.entries(relations)){
@@ -1618,12 +1631,6 @@ API.Plugins.organizations = {
 		// 						for(var [key, value] of Object.entries(dataset.output.details[relation.relationship].dom[relation.link_to])){ detail[key] = value; }
 		// 						detail.owner = relation.owner; detail.created = relation.created;
 		// 						switch(relation.relationship){
-		// 							case"status":
-		// 							case"statuses":
-		// 								if((API.Auth.validate('custom', 'organizations_status', 1))||(detail.owner == API.Contents.Auth.User.username)){
-		// 									API.Builder.Timeline.add.status(container.find('#organizations_timeline'),detail);
-		// 								}
-		// 								break;
 		// 							case"users":
 		// 								if(API.Helper.isSet(API.Plugins,['users'])||API.Helper.isSet(API.Plugins,['employees'])||API.Helper.isSet(API.Plugins,['contacts'])){
 		// 									if(API.Helper.isSet(API.Plugins,['employees'])&&detail.isEmployee){
