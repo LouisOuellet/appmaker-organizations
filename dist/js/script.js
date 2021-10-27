@@ -250,7 +250,7 @@ API.Plugins.organizations = {
 							if(API.Helper.isSet(data,['relations','services'])){
 								for(var [id, relation] of Object.entries(data.relations.organizations)){
 									if(API.Auth.validate('custom', 'organizations_services', 1) || relation.owner == API.Contents.Auth.User.username){
-										API.Builder.Timeline.add.service(layout.timeline,relation,function(item){
+										API.Builder.Timeline.add.service(layout.timeline,relation,'hand-holding-usd','success',function(item){
 											item.find('i').first().addClass('pointer');
 											item.find('i').first().off().click(function(){
 												API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=services&v=details&id="+data.details.services.dom[item.attr('data-id')].name, modal:true });
@@ -526,7 +526,7 @@ API.Plugins.organizations = {
 						API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'services',link_to:service.raw.id}}},function(result){
 							var sub_dataset = JSON.parse(result);
 							if(sub_dataset.success != undefined){
-								// layout.timeline.find('[data-type="building"][data-id="'+sub_dataset.output.id+'"]').remove();
+								layout.timeline.find('[data-type="hand-holding-usd"][data-id="'+sub_dataset.output.id+'"]').remove();
 								td.find('.btn-group[data-id="'+sub_dataset.output.id+'"]').remove();
 							}
 						});
@@ -562,7 +562,7 @@ API.Plugins.organizations = {
 											} else { td.append(html); }
 											sub_dataset.output.dom.owner = sub_dataset.output.timeline.owner;
 											sub_dataset.output.dom.created = sub_dataset.output.timeline.created;
-											API.Builder.Timeline.add.service(layout.timeline,sub_dataset.output.dom,function(item){
+											API.Builder.Timeline.add.service(layout.timeline,sub_dataset.output.dom,'hand-holding-usd','success',function(item){
 												item.find('i').first().addClass('pointer');
 												item.find('i').first().off().click(function(){
 													API.CRUD.read.show({ key:'name',keys:sub_dataset.output.dom, href:"?p=services&v=details&id="+sub_dataset.output.dom.name, modal:true });
