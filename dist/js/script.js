@@ -74,8 +74,10 @@ API.Plugins.organizations = {
 						// Debug
 						if(API.debug){
 							API.GUI.Layouts.details.control(data,layout,function(data,layout,button){
-								console.log(data);
-								console.log(layout);
+								button.off().click(function(){
+									console.log(data);
+									console.log(layout);
+								});
 							});
 						}
 						// Clear
