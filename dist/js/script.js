@@ -107,7 +107,7 @@ API.Plugins.organizations = {
 							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 						}
 						// Status
-						if(API.Auth.validate('custom', 'organizations_status', 1)){
+						if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
 							options.field = "status";
 							options.td = '';
 							options.td += '<td data-plugin="organizations" data-key="'+options.field+'">';
@@ -177,7 +177,7 @@ API.Plugins.organizations = {
 								});
 							}
 							// Services
-							if(API.Auth.validate('custom', 'organizations_services', 1)){
+							if(API.Helper.isSet(API.Plugins,['services']) && API.Auth.validate('custom', 'organizations_services', 1)){
 								options.field = "services";
 								delete options.td;
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
@@ -194,7 +194,7 @@ API.Plugins.organizations = {
 								});
 							}
 							// Issues
-							if(API.Auth.validate('custom', 'organizations_issues', 1)){
+							if(API.Helper.isSet(API.Plugins,['issues']) && API.Auth.validate('custom', 'organizations_issues', 1)){
 								options.field = "issues";
 								delete options.td;
 								var issues = {};
@@ -228,20 +228,26 @@ API.Plugins.organizations = {
 								});
 							}
 							// Tags
-							if(API.Auth.validate('custom', 'organizations_tags', 1)){
+							if(API.Helper.isSet(API.Plugins,['tags']) && API.Auth.validate('custom', 'organizations_tags', 1)){
 								options.field = "tags";
 								options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="tags"]');
 									for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.tags,';').split(';'))){
-										var subHTML = '';
-										subHTML += '<div class="btn-group m-1" data-id="'+subDetails+'">';
-											subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subDetails+'" data-action="details"><i class="fas fa-tag mr-1"></i>'+subDetails+'</button>';
-											if(API.Auth.validate('custom', 'organizations_tags', 4)){
-												subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subDetails+'" data-action="untag"><i class="fas fa-unlink"></i></button>';
-											}
-										subHTML += '</div>';
-										td.append(subHTML);
+										td.append(
+											API.Plugins.organizations.GUI.buttons.details({name:subDetails},{
+												remove:API.Auth.validate('custom', 'organizations_tags', 4),
+												id: "name",
+												key: "name",
+												icon:{
+													details:"fas fa-tag",
+													remove:"fas fa-backspace",
+												},
+												action:{
+													remove:"untag",
+												},
+											})
+										);
 									}
 									if(API.Auth.validate('custom', 'organizations_tags', 2)){
 										td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="tag"><i class="fas fa-plus"></i></button>');
@@ -559,16 +565,21 @@ API.Plugins.organizations = {
 											API.Helper.set(API.Contents,['data','raw','tags',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['tags','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['tags','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
-											var subHTML = '';
-											subHTML += '<div class="btn-group m-1" data-id="'+sub_dataset.output.dom.id+'">';
-												subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+sub_dataset.output.dom.id+'" data-action="details"><i class="fas fa-tag mr-1"></i>'+sub_dataset.output.dom.name+'</button>';
-												if(API.Auth.validate('custom', 'organizations_tags', 4)){
-													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+sub_dataset.output.dom.id+'" data-action="untag"><i class="fas fa-unlink"></i></button>';
-												}
-											subHTML += '</div>';
-											if(td.find('button[data-action="tag"]').length > 0){
-												td.find('button[data-action="tag"]').before(subHTML);
-											} else { td.append(subHTML); }
+											// var html = API.Plugins.organizations.GUI.buttons.details({name:sub_dataset.output.dom},{
+											// 	remove:API.Auth.validate('custom', 'organizations_tags', 4),
+											//   id: "name",
+											//   key: "name",
+											//   icon:{
+											//     details:"fas fa-tag",
+											//     remove:"fas fa-backspace",
+											//   },
+											//   action:{
+											//     remove:"untag",
+											//   },
+											// });
+											// if(td.find('button[data-action="link"]').length > 0){
+											// 	td.find('button[data-action="link"]').before(html);
+											// } else { td.append(html); }
 											// var detail = {};
 											// for(var [key, value] of Object.entries(dataset.details.tags.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
 											// detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
