@@ -264,7 +264,7 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="users"]');
 									if(API.Helper.isSet(data.details,['users'])){
-										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.users,';').split(';'))){
+										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.assigned_to,';').split(';'))){
 											if(subDetails != ''){
 												var user = data.details.users.dom[subDetails.id];
 												td.append(
