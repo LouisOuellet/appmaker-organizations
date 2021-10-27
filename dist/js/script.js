@@ -265,10 +265,10 @@ API.Plugins.organizations = {
 									var td = tr.find('td[data-plugin="organizations"][data-key="users"]');
 									if(API.Helper.isSet(data.details,['users'])){
 										console.log(data.details.users);
-										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.assigned_to,';').split(';'))){
+										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.raw.assigned_to,';').split(';'))){
 											if(subDetails != ''){
 												console.log(subDetails);
-												var user = data.details.users.dom[subDetails.id];
+												var user = data.details.users.dom[subDetails];
 												td.append(
 													API.Plugins.organizations.GUI.buttons.details(user,{
 														remove:API.Auth.validate('custom', 'organizations_users', 4),
