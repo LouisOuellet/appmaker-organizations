@@ -480,13 +480,6 @@ API.Plugins.organizations = {
 											API.Helper.set(API.Contents,['data','raw','issues',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['issues','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['issues','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
-											var subHTML = '';
-											subHTML += '<div class="btn-group m-1" data-id="'+sub_dataset.output.dom.id+'">';
-												subHTML += '<button type="button" data-id="'+sub_dataset.output.dom.id+'" class="btn btn-xs bg-'+dataset.details.statuses.raw[issues[sub_dataset.output.dom.id]].color+'" data-action="details"><i class="fas fa-gavel mr-1"></i>'+sub_dataset.output.dom.id+' - '+sub_dataset.output.dom.name+' - '+API.Contents.Language[dataset.details.statuses.raw[issues[sub_dataset.output.dom.id]].name]+'</button>';
-												if(API.Auth.validate('custom', 'organizations_issues', 4)){
-													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+sub_dataset.output.dom.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
-												}
-											subHTML += '</div>';
 											if(td.find('button[data-action="link"]').length > 0){
 												td.find('button[data-action="link"]').before(
 													API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{
