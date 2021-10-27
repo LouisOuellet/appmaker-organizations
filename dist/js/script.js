@@ -528,16 +528,15 @@ API.Plugins.organizations = {
 			var td = layout.details.find('td[data-plugin="organizations"][data-key="tags"]');
 			td.find('button').off().click(function(){
 				var button = $(this);
-				if(button.attr('data-action') != "tag"){ var tag = {raw:dataset.details.tags.raw[button.attr('data-id')],dom:dataset.details.tags.dom[button.attr('data-id')]}; }
 				switch(button.attr('data-action')){
 					case"untag":
-						API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'tags',link_to:tag.raw.id}}},function(result){
-							var sub_dataset = JSON.parse(result);
-							if(sub_dataset.success != undefined){
-								// container.find('#organizations_timeline').find('[data-type="building"][data-id="'+sub_dataset.output.id+'"]').remove();
-								td.find('.btn-group[data-id="'+sub_dataset.output.id+'"]').remove();
-							}
-						});
+						// API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'tags',link_to:tag.raw.id}}},function(result){
+						// 	var sub_dataset = JSON.parse(result);
+						// 	if(sub_dataset.success != undefined){
+						// 		// container.find('#organizations_timeline').find('[data-type="building"][data-id="'+sub_dataset.output.id+'"]').remove();
+						// 		td.find('.btn-group[data-id="'+sub_dataset.output.id+'"]').remove();
+						// 	}
+						// });
 						break;
 					case"tag":
 						API.Builder.modal($('body'), {
