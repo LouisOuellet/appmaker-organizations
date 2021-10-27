@@ -435,7 +435,7 @@ API.Plugins.organizations = {
 						API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'organizations',link_to:organization.raw.id}}},function(result){
 							var sub_dataset = JSON.parse(result);
 							if(sub_dataset.success != undefined){
-								// container.find('#organizations_timeline').find('[data-type="building"][data-id="'+sub_dataset.output.id+'"]').remove();
+								layout.timeline.find('[data-type="building"][data-id="'+sub_dataset.output.id+'"]').remove();
 								td.find('.btn-group[data-id="'+sub_dataset.output.id+'"]').remove();
 							}
 						});
@@ -469,10 +469,14 @@ API.Plugins.organizations = {
 											if(td.find('button[data-action="link"]').length > 0){
 												td.find('button[data-action="link"]').before(html);
 											} else { td.append(html); }
-											// var detail = {};
-											// for(var [key, value] of Object.entries(dataset.details.organizations.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
-											// detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
-											// API.Builder.Timeline.add.client(container.find('#organizations_timeline'),detail);
+											sub_dataset.output.dom.owner = sub_dataset.output.timeline.owner;
+											sub_dataset.output.dom.created = sub_dataset.output.timeline.created;
+											API.Builder.Timeline.add.client(layout.timeline,sub_dataset.output.dom,'building','secondary',function(item){
+												item.find('i').first().addClass('pointer');
+												item.find('i').first().off().click(function(){
+													API.CRUD.read.show({ key:'name',keys:sub_dataset.output.dom, href:"?p=organizations&v=details&id="+sub_dataset.output.dom.name, modal:true });
+												});
+											});
 											API.Plugins.organizations.Events.subsidiaries(dataset,layout);
 										}
 									});
