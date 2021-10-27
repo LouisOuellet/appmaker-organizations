@@ -563,32 +563,32 @@ API.Plugins.organizations = {
 										if(tag != ''){ tags.push(tag); }
 									}
 									for(var [key, tag] of Object.entries(body.find('select').select2('val'))){
-										if(tag != ''){ tags.push(tag); }
+										if(tag != '' && jQuery.inArray(tag, tags) === -1){ tags.push(tag); }
 									}
-									console.log(tags);
 									API.request('organizations','tag',{data:{id:dataset.this.dom.id,tags:tags}},function(result){
 										var sub_dataset = JSON.parse(result);
 										console.log(sub_dataset);
 										if(sub_dataset.success != undefined){
-											API.Helper.set(API.Contents,['data','dom','tags',sub_dataset.output.dom.id],sub_dataset.output.dom);
-											API.Helper.set(API.Contents,['data','raw','tags',sub_dataset.output.raw.id],sub_dataset.output.raw);
-											API.Helper.set(dataset.details,['tags','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
-											API.Helper.set(dataset.details,['tags','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
-											// var html = API.Plugins.organizations.GUI.buttons.details({name:sub_dataset.output.dom},{
-											// 	remove:API.Auth.validate('custom', 'organizations_tags', 4),
-											//   id: "name",
-											//   key: "name",
-											//   icon:{
-											//     details:"fas fa-tag",
-											//     remove:"fas fa-backspace",
-											//   },
-											//   action:{
-											//     remove:"untag",
-											//   },
-											// });
-											// if(td.find('button[data-action="link"]').length > 0){
-											// 	td.find('button[data-action="link"]').before(html);
-											// } else { td.append(html); }
+											sub_dataset.output.tags
+											for(var [key, tag] of Object.entries(sub_dataset.output.tags)){
+												if(tag != '' && td.find('div.btn-group[data-id="'+tag+'"]').length <= 0){
+													var html = API.Plugins.organizations.GUI.buttons.details({name:tag},{
+														remove:API.Auth.validate('custom', 'organizations_tags', 4),
+													  id: "name",
+													  key: "name",
+													  icon:{
+													    details:"fas fa-tag",
+													    remove:"fas fa-backspace",
+													  },
+													  action:{
+													    remove:"untag",
+													  },
+													});
+													if(td.find('button[data-action="link"]').length > 0){
+														td.find('button[data-action="link"]').before(html);
+													} else { td.append(html); }
+												}
+											}
 											// var detail = {};
 											// for(var [key, value] of Object.entries(dataset.details.tags.dom[sub_dataset.output.dom.id])){ detail[key] = value; }
 											// detail.owner = sub_dataset.output.timeline.owner; detail.created = sub_dataset.output.timeline.created;
