@@ -262,7 +262,7 @@ API.Plugins.organizations = {
 								options.field = "assigned_to";
 								options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
-									var td = tr.find('td[data-plugin="organizations"][data-key="users"]');
+									var td = tr.find('td[data-plugin="organizations"][data-key="assigned_to"]');
 									if(API.Helper.isSet(data.details,['users'])){
 										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.raw.assigned_to,';').split(';'))){
 											if(subDetails != ''){
@@ -640,7 +640,7 @@ API.Plugins.organizations = {
 			if(options instanceof Function){ callback = options; options = {}; }
 			var defaults = {field: "name"};
 			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
-			var td = layout.details.find('td[data-plugin="organizations"][data-key="users"]');
+			var td = layout.details.find('td[data-plugin="organizations"][data-key="assigned_to"]');
 			td.find('button').off().click(function(){
 				var button = $(this);
 				if(button.attr('data-action') != "assign"){
