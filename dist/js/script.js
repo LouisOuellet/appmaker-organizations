@@ -84,6 +84,7 @@ API.Plugins.organizations = {
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
 						// History
 						API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-history",text:API.Contents.Language["History"]},function(data,layout,tab,content){
+							content.addClass('p-3');
 							content.append('<div class="timeline"></div>');
 							layout.timeline = content.find('div.timeline');
 							// Debug
@@ -146,8 +147,8 @@ API.Plugins.organizations = {
 									options.td += '</span>';
 								options.td += '</td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-								for(var [rid, relations] of Object.entries(data.relations.statuses)){
-									API.Builder.Timeline.add.status(layout.timeline,detail);
+								for(var [id, status] of Object.entries(data.relations.statuses)){
+									API.Builder.Timeline.add.status(layout.timeline,status);
 								}
 							}
 							options.field = "address";
