@@ -415,7 +415,12 @@ API.Plugins.organizations = {
 															});
 															break;
 														case"users":
-															API.Builder.Timeline.add.user(layout.timeline,relation,'user','lightblue');
+															API.Builder.Timeline.add.user(layout.timeline,relation,'user','lightblue',function(item){
+																item.find('i').first().addClass('pointer');
+																item.find('i').first().off().click(function(){
+																	API.CRUD.read.show({ key:'name',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
+																});
+															});
 															break;
 													}
 												}
