@@ -85,7 +85,7 @@ API.Plugins.organizations = {
 						// History
 						API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-history",text:API.Contents.Language["History"]},function(data,layout,tab,content){
 							content.addClass('p-3');
-							content.append('<div class="timeline"></div>');
+							content.append('<div class="timeline" data-plugin="organizations"></div>');
 							layout.timeline = content.find('div.timeline');
 							// Debug
 							if(API.debug){
