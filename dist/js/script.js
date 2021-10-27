@@ -649,7 +649,7 @@ API.Plugins.organizations = {
 				}
 				switch(button.attr('data-action')){
 					case"details":
-						API.CRUD.read.show({ key:'username',keys:issue.dom, href:"?p=users&v=details&id="+issue.raw.id, modal:true });
+						API.CRUD.read.show({ key:'username',keys:user.dom, href:"?p=users&v=details&id="+user.raw.username, modal:true });
 						break;
 					case"unassign":
 						API.request('organizations','unassign',{data:{id:dataset.this.raw.id,user:button.attr('data-id')}},function(result){
