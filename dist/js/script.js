@@ -264,10 +264,8 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="users"]');
 									if(API.Helper.isSet(data.details,['users'])){
-										console.log(data.details.users);
 										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.raw.assigned_to,';').split(';'))){
 											if(subDetails != ''){
-												console.log(subDetails);
 												var user = data.details.users.dom[subDetails];
 												td.append(
 													API.Plugins.organizations.GUI.buttons.details(user,{
@@ -679,12 +677,7 @@ API.Plugins.organizations = {
 							footer.append('<button class="btn btn-secondary" data-action="assign"><i class="fas fa-user-plus mr-1"></i>'+API.Contents.Language['Assign']+'</button>');
 							footer.find('button[data-action="assign"]').click(function(){
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
-									var users = [];
-									td.find('div.btn-group[data-id]').each(function(){ users.push($(this).attr('data-id')); });
-									for(var [key, user] of Object.entries(body.find('select').select2('val'))){
-										if(user != '' && jQuery.inArray(user, users) === -1){ users.push(user); }
-									}
-									API.request('organizations','assign',{data:{id:dataset.this.dom.id,users:users}},function(result){
+									API.request('organizations','assign',{data:{id:dataset.this.dom.id,user:body.find('select').select2('val')}},function(result){
 										var sub_dataset = JSON.parse(result);
 										if(sub_dataset.success != undefined){
 											for(var [key, user] of Object.entries(sub_dataset.output.users.dom)){
