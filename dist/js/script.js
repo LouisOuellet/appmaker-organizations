@@ -532,13 +532,12 @@ API.Plugins.organizations = {
 				var button = $(this);
 				switch(button.attr('data-action')){
 					case"untag":
-						// API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'tags',link_to:tag.raw.id}}},function(result){
-						// 	var sub_dataset = JSON.parse(result);
-						// 	if(sub_dataset.success != undefined){
-						// 		// container.find('#organizations_timeline').find('[data-type="building"][data-id="'+sub_dataset.output.id+'"]').remove();
-						// 		td.find('.btn-group[data-id="'+sub_dataset.output.id+'"]').remove();
-						// 	}
-						// });
+						API.request('organizations','untag',{data:{id:dataset.this.raw.id,tag:button.attr('data-id')}},function(result){
+							var sub_dataset = JSON.parse(result);
+							if(sub_dataset.success != undefined){
+								td.find('.btn-group[data-id="'+sub_dataset.output.tag+'"]').remove();
+							}
+						});
 						break;
 					case"tag":
 						API.Builder.modal($('body'), {
@@ -567,9 +566,7 @@ API.Plugins.organizations = {
 									}
 									API.request('organizations','tag',{data:{id:dataset.this.dom.id,tags:tags}},function(result){
 										var sub_dataset = JSON.parse(result);
-										console.log(sub_dataset);
 										if(sub_dataset.success != undefined){
-											sub_dataset.output.tags
 											for(var [key, tag] of Object.entries(sub_dataset.output.tags)){
 												if(tag != '' && td.find('div.btn-group[data-id="'+tag+'"]').length <= 0){
 													var html = API.Plugins.organizations.GUI.buttons.details({name:tag},{
