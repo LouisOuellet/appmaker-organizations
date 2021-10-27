@@ -584,8 +584,8 @@ API.Plugins.organizations = {
 													    remove:"untag",
 													  },
 													});
-													if(td.find('button[data-action="link"]').length > 0){
-														td.find('button[data-action="link"]').before(html);
+													if(td.find('button[data-action="tag"]').length > 0){
+														td.find('button[data-action="tag"]').before(html);
 													} else { td.append(html); }
 												}
 											}
