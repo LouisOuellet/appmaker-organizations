@@ -38,10 +38,6 @@
 	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_subscriptions" data-toggle="tab"><i class="fas fa-list-alt mr-1"></i>Subscriptions</a></li>
 	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_settings" data-toggle="tab"><i class="fas fa-cog mr-1"></i>Settings</a></li>
 	        </ul>
-					<div class="btn-group ml-auto">
-						<button type="button" data-action="subscribe" style="display:none;" class="btn"><i class="fas fa-bell"></i></button>
-						<button type="button" data-action="unsubscribe" style="display:none;" class="btn"><i class="fas fa-bell-slash"></i></button>
-					</div>
 	      </div>
 	      <div class="card-body p-0">
 	        <div class="tab-content">
