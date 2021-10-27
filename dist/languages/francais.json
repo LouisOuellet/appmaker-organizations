@@ -105,5 +105,7 @@
 		"Setcodeitmr4": "ITMR4",
 		"Setcodehvs": "Transaction",
 		"Setcurrency": "Currency",
-		"subsidiaries": "subsidiaries"
+		"subsidiaries": "subsidiaries",
+		"Clear": "Clear",
+		"History": "History"
 }
