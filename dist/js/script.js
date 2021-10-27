@@ -265,7 +265,7 @@ API.Plugins.organizations = {
 	},
 	GUI:{
 		buttons:{
-			details:function(subsidiary,options = {}){
+			details:function(dataset,options = {}){
 				var defaults = {
 					icon:{details:"fas fa-building",remove:"fas fa-unlink"},
 					action:{details:"details",remove:"unlink"},
@@ -285,12 +285,14 @@ API.Plugins.organizations = {
 				if(API.Helper.isSet(options,['id'])){ defaults.id = options.id; }
 				if(API.Helper.isSet(options,['remove'])){ defaults.remove = options.remove; }
 				if(API.Helper.isSet(options,['content'])){ defaults.content = options.content; }
-				else { defaults.content = subsidiary[defaults.key]; }
+				else { defaults.content = dataset[defaults.key]; }
+				console.log(dataset);
+				console.log(defaults);
 				var html = '';
-				html += '<div class="btn-group m-1" data-id="'+subsidiary.id+'">';
-					html += '<button type="button" class="btn btn-xs btn-'+defaults.color.details+'" data-id="'+subsidiary[defaults.id]+'" data-action="'+defaults.action.details+'"><i class="'+defaults.icon.details+' mr-1"></i>'+defaults.content+'</button>';
+				html += '<div class="btn-group m-1" data-id="'+dataset.id+'">';
+					html += '<button type="button" class="btn btn-xs btn-'+defaults.color.details+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action.details+'"><i class="'+defaults.icon.details+' mr-1"></i>'+defaults.content+'</button>';
 					if(defaults.remove){
-						html += '<button type="button" class="btn btn-xs btn-'+defaults.color.remove+'" data-id="'+subsidiary[[defaults.id]]+'" data-action="'+defaults.action.remove+'"><i class="'+defaults.icon.remove+'"></i></button>';
+						html += '<button type="button" class="btn btn-xs btn-'+defaults.color.remove+'" data-id="'+dataset[[defaults.id]]+'" data-action="'+defaults.action.remove+'"><i class="'+defaults.icon.remove+'"></i></button>';
 					}
 				html += '</div>';
 				return html;
