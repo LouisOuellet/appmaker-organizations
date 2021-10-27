@@ -648,8 +648,15 @@ API.Plugins.organizations = {
 				if(button.attr('data-action') != "assign"){
 					console.log(button.attr('data-id'));
 					console.log(API.Contents.data.dom.users);
-					var user = {raw:API.Contents.data.raw.users[button.attr('data-id')],dom:{}};
-					user.dom = API.Contents.data.dom.users[user.raw.username];
+					if(API.Helper.isSet(API.Contents,['data','raw','users',button.attr('data-id')])){
+						var user = {raw:API.Contents.data.raw.users[button.attr('data-id')],dom:{}};
+						user.dom = API.Contents.data.dom.users[user.raw.username];
+					} else {
+						var user = {
+							dom:dataset.details.users.dom[button.attr('data-id')],
+							raw:dataset.details.users.raw[button.attr('data-id')],
+						};
+					}
 				}
 				switch(button.attr('data-action')){
 					case"details":
