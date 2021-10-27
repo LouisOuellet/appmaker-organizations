@@ -68,6 +68,17 @@ API.Plugins.organizations = {
 				var dataset = JSON.parse(result);
 				if(dataset.success != undefined){
 					container.attr('data-id',dataset.output.this.raw.id);
+					// Configure Relations
+					for(var [rid, relations] of Object.entries(dataset.output.relationships)){
+						for(var [uid, relation] of Object.entries(relations)){
+							if(API.Helper.isSet(dataset.output.details,[relation.relationship,'dom',relation.link_to])){
+								var detail = {};
+								for(var [key, value] of Object.entries(dataset.output.details[relation.relationship].dom[relation.link_to])){ detail[key] = value; }
+								detail.owner = relation.owner; detail.created = relation.created;
+								API.Helper.set(dataset.output,['relations',relation.relationship,relation.link_to],detail);
+							}
+						}
+					}
 					// GUI
 					// Adding Layout
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
@@ -135,6 +146,9 @@ API.Plugins.organizations = {
 									options.td += '</span>';
 								options.td += '</td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+								for(var [rid, relations] of Object.entries(data.relations.statuses)){
+									API.Builder.Timeline.add.status(layout.timeline,detail);
+								}
 							}
 							options.field = "address";
 							options.td = '<td data-plugin="organizations" data-key="address">'+data.this.dom.address+', '+data.this.dom.city+', '+data.this.dom.zipcode+'</td>';
