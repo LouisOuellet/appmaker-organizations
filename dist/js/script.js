@@ -92,7 +92,7 @@ API.Plugins.organizations = {
 							var options = {plugin:"organizations"}
 							// Debug
 							if(API.debug){
-								API.GUI.Layouts.details.control(data,layout,function(data,layout,button){
+								API.GUI.Layouts.details.button(data,layout,function(data,layout,button){
 									button.off().click(function(){
 										console.log(data);
 										console.log(layout);
