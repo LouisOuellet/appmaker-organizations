@@ -558,9 +558,7 @@ API.Plugins.organizations = {
 							footer.find('button[data-action="tag"]').click(function(){
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
 									var tags = [];
-									for(var [key, tag] of Object.entries(dataset.this.dom.tags.split(';'))){
-										if(tag != ''){ tags.push(tag); }
-									}
+									td.find('div.btn-group[data-id]').each(function(){ tags.push($(this).attr('data-id')); });
 									for(var [key, tag] of Object.entries(body.find('select').select2('val'))){
 										if(tag != '' && jQuery.inArray(tag, tags) === -1){ tags.push(tag); }
 									}
