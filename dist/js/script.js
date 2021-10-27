@@ -264,10 +264,8 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="users"]');
 									if(API.Helper.isSet(data.details,['users'])){
-										console.log(data.details.users);
 										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.raw.assigned_to,';').split(';'))){
 											if(subDetails != ''){
-												console.log(subDetails);
 												var user = data.details.users.dom[subDetails];
 												td.append(
 													API.Plugins.organizations.GUI.buttons.details(user,{
@@ -646,8 +644,6 @@ API.Plugins.organizations = {
 			td.find('button').off().click(function(){
 				var button = $(this);
 				if(button.attr('data-action') != "assign"){
-					console.log(button.attr('data-id'));
-					console.log(API.Contents.data.dom.users);
 					if(API.Helper.isSet(API.Contents,['data','raw','users',button.attr('data-id')])){
 						var user = {raw:API.Contents.data.raw.users[button.attr('data-id')],dom:{}};
 						user.dom = API.Contents.data.dom.users[user.raw.username];
@@ -693,10 +689,10 @@ API.Plugins.organizations = {
 										if(sub_dataset.success != undefined){
 											for(var [key, user] of Object.entries(sub_dataset.output.users.dom)){
 												if(td.find('div.btn-group[data-id="'+user.id+'"]').length <= 0){
-													API.Helper.set(API.Contents,['data','dom','users',user.username],user);
-													API.Helper.set(API.Contents,['data','raw','users',sub_dataset.output.users.raw[user.id].id],sub_dataset.output.users.raw[user.id]);
-													API.Helper.set(dataset.details,['users','dom',user.id],user);
-													API.Helper.set(dataset.details,['users','raw',sub_dataset.output.users.raw[user.id].id],sub_dataset.output.users.raw[user.id]);
+													// API.Helper.set(API.Contents,['data','dom','users',user.username],user);
+													// API.Helper.set(API.Contents,['data','raw','users',sub_dataset.output.users.raw[user.id].id],sub_dataset.output.users.raw[user.id]);
+													// API.Helper.set(dataset.details,['users','dom',user.id],user);
+													// API.Helper.set(dataset.details,['users','raw',sub_dataset.output.users.raw[user.id].id],sub_dataset.output.users.raw[user.id]);
 													var html = API.Plugins.organizations.GUI.buttons.details(user,{
 														remove:API.Auth.validate('custom', 'organizations_users', 4),
 													  key: "username",
