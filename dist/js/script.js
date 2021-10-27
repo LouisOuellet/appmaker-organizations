@@ -167,7 +167,7 @@ API.Plugins.organizations = {
 													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subDetails.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
 												}
 											subHTML += '</div>';
-											td.append(subHTML);
+											td.append(API.Plugins.organizations.GUI.buttons.details(subDetails,{remove:API.Auth.validate('custom', 'organizations_organizations', 4)}));
 										}
 									}
 									if(API.Auth.validate('custom', 'organizations_organizations', 2)){
@@ -184,14 +184,7 @@ API.Plugins.organizations = {
 									var td = tr.find('td[data-plugin="organizations"][data-key="services"]');
 									if(API.Helper.isSet(data.details,['services'])){
 										for(var [subKey, subDetails] of Object.entries(data.details.services.dom)){
-											var subHTML = '';
-											subHTML += '<div class="btn-group m-1" data-id="'+subDetails.id+'">';
-												subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subDetails.id+'" data-action="details"><i class="fas fa-hand-holding-usd mr-1"></i>'+subDetails.name+'</button>';
-												if(API.Auth.validate('custom', 'organizations_services', 4)){
-													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subDetails.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
-												}
-											subHTML += '</div>';
-											td.append(subHTML);
+											td.append(API.Plugins.organizations.GUI.buttons.details(subDetails,{remove:API.Auth.validate('custom', 'organizations_services', 4),icon:{details:"fas fa-hand-holding-usd"}}));
 										}
 									}
 									if(API.Auth.validate('custom', 'organizations_services', 2)){
@@ -260,7 +253,30 @@ API.Plugins.organizations = {
 			});
 		},
 	},
-	GUI:{},
+	GUI:{
+		buttons:{
+			details:function(subsidiary,options = {}){
+				var defaults = {
+					icon:{details:"fas fa-building",remove:"fas fa-unlink"},
+					action:{details:"details",remove:"unlink"},
+					remove:false,
+				};
+				if(API.Helper.isSet(options,['icon','details'])){ defaults.icon.details = options.icon.details; }
+				if(API.Helper.isSet(options,['icon','remove'])){ defaults.icon.remove = options.icon.remove; }
+				if(API.Helper.isSet(options,['action','details'])){ defaults.action.details = options.action.details; }
+				if(API.Helper.isSet(options,['action','remove'])){ defaults.action.remove = options.action.remove; }
+				if(API.Helper.isSet(options,['remove'])){ defaults.remove = options.remove; }
+				var html = '';
+				html += '<div class="btn-group m-1" data-id="'+subsidiary.id+'">';
+					html += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subsidiary.id+'" data-action="'+defaults.action.details+'"><i class="'+defaults.icon.details+' mr-1"></i>'+subsidiary.name+'</button>';
+					if(defaults.remove){
+						html += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subsidiary.id+'" data-action="'+defaults.action.remove+'"><i class="'+defaults.icon.remove+'"></i></button>';
+					}
+				html += '</div>';
+				return html;
+			},
+		},
+	},
 	Events:{
 		subsidiaries:function(dataset,layout,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
@@ -273,6 +289,7 @@ API.Plugins.organizations = {
 				switch(button.attr('data-action')){
 					case"details":
 						API.CRUD.read.show({ key:'name',keys:organization.dom, href:"?p=organizations&v=details&id="+organization.raw.name, modal:true });
+						if(callback != null){ callback(dataset,layout); }
 						break;
 					case"unlink":
 						API.request('organizations','unlink',{data:{id:dataset.this.raw.id,relationship:{relationship:'organizations',link_to:organization.raw.id}}},function(result){
@@ -280,6 +297,7 @@ API.Plugins.organizations = {
 							if(sub_dataset.success != undefined){
 								// container.find('#organizations_timeline').find('[data-type="building"][data-id="'+sub_dataset.output.id+'"]').remove();
 								td.find('.btn-group[data-id="'+sub_dataset.output.id+'"]').remove();
+								if(callback != null){ callback(dataset,layout); }
 							}
 						});
 						break;
@@ -545,7 +563,7 @@ API.Plugins.organizations = {
 											API.Helper.set(dataset.details,['tags','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											var subHTML = '';
 											subHTML += '<div class="btn-group m-1" data-id="'+sub_dataset.output.dom.id+'">';
-												subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+sub_dataset.output.dom.id+'" data-action="details"><i class="fas fa-hand-holding-usd mr-1"></i>'+sub_dataset.output.dom.name+'</button>';
+												subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+sub_dataset.output.dom.id+'" data-action="details"><i class="fas fa-tag mr-1"></i>'+sub_dataset.output.dom.name+'</button>';
 												if(API.Auth.validate('custom', 'organizations_tags', 4)){
 													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+sub_dataset.output.dom.id+'" data-action="untag"><i class="fas fa-unlink"></i></button>';
 												}
