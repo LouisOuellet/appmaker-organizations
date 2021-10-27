@@ -666,7 +666,7 @@ API.Plugins.organizations = {
 											sub_dataset.output.dom.owner = sub_dataset.output.timeline.owner;
 											sub_dataset.output.dom.created = sub_dataset.output.timeline.created;
 											sub_dataset.output.dom.statuses = sub_dataset.output.timeline.statuses;
-											sub_dataset.output.dom.status = dataset.details.statuses.raw[relation.statuses].order;
+											sub_dataset.output.dom.status = 1;
 											API.Builder.Timeline.add.issue(layout.timeline,sub_dataset.output.dom,'gavel','indigo',function(item){
 												item.find('i').first().addClass('pointer');
 												item.find('i').first().off().click(function(){
