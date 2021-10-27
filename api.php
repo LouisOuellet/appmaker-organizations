@@ -169,8 +169,8 @@ class organizationsAPI extends CRUDAPI {
 				$organization = $organization->all()[0];
 				$currentUsers = explode(";",trim($organization['assigned_to'],";"));
 				if(!in_array($data['user'],$currentUsers)){ array_push($currentUsers,$data['user']); }
-				// Set new tags
-				$organization['assigned_to'] = implode(";",$currentUsers);
+				// Set new users
+				$organization['assigned_to'] = trim(implode(";",$currentUsers),";");
 				// Save Entity
 				$saved = $this->Auth->update('organizations',$organization,$data['id']);
 				// Fetch User Data
@@ -210,11 +210,11 @@ class organizationsAPI extends CRUDAPI {
 			if($organization != null){
 				$organization = $organization->all()[0];
 				$currentUsers = explode(";",trim($organization['assigned_to'],";"));
-				// Remove Tag
+				// Remove User
 				foreach($currentUsers as $key => $user){
 					if($user == $data['user']){ unset($currentUsers[$key]); }
 				}
-				$organization['assigned_to'] = implode(";",$currentUsers);
+				$organization['assigned_to'] = trim(implode(";",$currentUsers),";");
 				// Save Entity
 				$saved = $this->Auth->update('organizations',$organization,$data['id']);
 				// Return
