@@ -41,10 +41,6 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr style="display:none;">
-										<td><b>Tags</b></td>
-										<td data-plugin="organizations" data-key="tags"></td>
-									</tr>
 									<tr>
 										<td><b>Assigned to</b></td>
 										<td data-plugin="organizations" data-key="assigned_to"></td>
