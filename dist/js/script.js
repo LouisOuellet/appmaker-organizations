@@ -148,7 +148,8 @@ API.Plugins.organizations = {
 								options.td += '</td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 								for(var [id, status] of Object.entries(data.relations.statuses)){
-									API.Builder.Timeline.add.status(layout.timeline,status);
+									console.log(status);
+									// API.Builder.Timeline.add.status(layout.timeline,status);
 								}
 							}
 							options.field = "address";
