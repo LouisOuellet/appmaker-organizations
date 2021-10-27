@@ -289,7 +289,7 @@ API.Plugins.organizations = {
 				console.log(dataset);
 				console.log(defaults);
 				var html = '';
-				html += '<div class="btn-group m-1" data-id="'+dataset.id+'">';
+				html += '<div class="btn-group m-1" data-id="'+dataset[defaults.id]+'">';
 					html += '<button type="button" class="btn btn-xs btn-'+defaults.color.details+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action.details+'"><i class="'+defaults.icon.details+' mr-1"></i>'+defaults.content+'</button>';
 					if(defaults.remove){
 						html += '<button type="button" class="btn btn-xs btn-'+defaults.color.remove+'" data-id="'+dataset[[defaults.id]]+'" data-action="'+defaults.action.remove+'"><i class="'+defaults.icon.remove+'"></i></button>';
