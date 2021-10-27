@@ -292,13 +292,9 @@ API.Plugins.organizations = {
 							// Created
 							options.field = "created";
 							options.td = '<td><time class="timeago" datetime="'+data.this.raw.created.replace(/ /g, "T")+'" title="'+data.this.raw.created+'">'+data.this.raw.created+'</time></td>';
-							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
-								tr.find('time').timeago();
-							});
-							// <time class="timeago" datetime="2021-10-21T13:45:05" title="2021-10-21 13:45:05">6 days ago</time>
-							// container.find('#organizations_created').find('time').attr('datetime',dataset.output.this.raw.created.replace(/ /g, "T"));
-							// container.find('#organizations_created').find('time').html(dataset.output.this.raw.created);
-							// container.find('#organizations_created').find('time').timeago();
+							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){ tr.find('time').timeago(); });
+							API.GUI.Layouts.details.data(data,layout,{color:"danger",icon:"fas fa-snowplow",text:"Clear"},function(data,layout,button){});
+							API.GUI.Layouts.details.data(data,layout,function(data,layout,button){});
 						}
 					});
 				}

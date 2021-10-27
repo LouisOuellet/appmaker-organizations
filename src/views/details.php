@@ -40,12 +40,6 @@
 										</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td><b>Created</b></td>
-										<td id="organizations_created"><time class="timeago"></time></td>
-									</tr>
-								</tbody>
 							</table>
 				    </div>
 			    </div>
