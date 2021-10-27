@@ -259,7 +259,7 @@ API.Plugins.organizations = {
 							}
 							// Users
 							if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
-								options.field = "users";
+								options.field = "assigned_to";
 								options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="users"]');
