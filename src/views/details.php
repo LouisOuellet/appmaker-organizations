@@ -21,31 +21,6 @@
 	<span style="display:none;" data-plugin="organizations" data-key="tags"></span>
 	<span style="display:none;" data-plugin="organizations" data-key="assigned_to"></span> -->
 	<!-- <div class="row">
-		<div class="col-md-4">
-			<div class="card" id="organizations_details">
-	      <div class="card-header d-flex p-0">
-	        <h3 class="card-title p-3">Organization Details</h3>
-	      </div>
-	      <div class="card-body p-0">
-					<div class="row">
-						<div class="col-12 p-4 text-center">
-							<img class="profile-user-img img-fluid img-circle" style="height:150px;width:150px;" src="/dist/img/building.png">
-						</div>
-						<div class="col-12 pt-2 pl-2 pr-2 pb-0 m-0">
-							<table class="table table-striped table-hover m-0">
-								<thead style="display:none;">
-									<tr>
-										<th colspan="2">
-											<div class="btn-group btn-block"></div>
-										</th>
-									</tr>
-								</thead>
-							</table>
-				    </div>
-			    </div>
-				</div>
-	    </div>
-		</div>
 		<div class="col-md-8">
 			<div class="card" id="organizations_main_card">
 	      <div class="card-header d-flex p-0">

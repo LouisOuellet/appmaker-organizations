@@ -308,6 +308,41 @@ API.Plugins.organizations = {
 							options.field = "created";
 							options.td = '<td><time class="timeago" datetime="'+data.this.raw.created.replace(/ /g, "T")+'" title="'+data.this.raw.created+'">'+data.this.raw.created+'</time></td>';
 							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){ tr.find('time').timeago(); });
+							// Subscription
+							API.GUI.Layouts.details.button(data,layout,{icon:"fas fa-bell"},function(data,layout,button){
+								if(API.Helper.isSet(dataset.output.details,['users','raw',API.Contents.Auth.User.id])){ button.hide(); }
+								button.off().click(function(){
+									// API.request("organizations",'subscribe',{data:{id:data.this.raw.id}},function(answer){
+									// 	var subscription = JSON.parse(answer);
+									// 	if(subscription.success != undefined){
+									// 		main.find('.card-header').find('button[data-action="subscribe"]').hide();
+									// 		main.find('.card-header').find('button[data-action="unsubscribe"]').show();
+									// 		var sub = {
+									// 			id:API.Contents.Auth.User.id,
+									// 			created:subscription.output.relationship.created,
+									// 			email:API.Contents.Auth.User.email,
+									// 		};
+									// 		API.Builder.Timeline.add.subscription(container.find('#organizations_timeline'),sub,'user','lightblue');
+									// 	}
+									// });
+								});
+							});
+							API.GUI.Layouts.details.button(data,layout,{icon:"fas fa-bell-slash"},function(data,layout,button){
+								if(!API.Helper.isSet(dataset.output.details,['users','raw',API.Contents.Auth.User.id])){ button.hide(); }
+								button.off().click(function(){
+									// API.request(url.searchParams.get("p"),'unsubscribe',{data:{id:dataset.output.this.raw.id}},function(answer){
+									// 	var subscription = JSON.parse(answer);
+									// 	if(subscription.success != undefined){
+									// 		main.find('.card-header').find('button[data-action="unsubscribe"]').hide();
+									// 		main.find('.card-header').find('button[data-action="subscribe"]').show();
+									// 		container.find('#organizations_timeline').find('[data-type=user][data-id="'+API.Contents.Auth.User.id+'"]').remove();
+									// 	}
+									// });
+								});
+							});
+							// if(API.Helper.isSet(dataset.output.details,['users','raw',API.Contents.Auth.User.id])){
+							// 	main.find('.card-header').find('button[data-action="unsubscribe"]').show();
+							// } else { main.find('.card-header').find('button[data-action="subscribe"]').show(); }
 						}
 					});
 				}
