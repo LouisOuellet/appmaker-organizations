@@ -558,8 +558,13 @@ API.Plugins.organizations = {
 							footer.append('<button class="btn btn-secondary" data-action="tag"><i class="fas fa-tag mr-1"></i>'+API.Contents.Language['Tag']+'</button>');
 							footer.find('button[data-action="tag"]').click(function(){
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
-									var tags = dataset.this.dom.tags;
-									for(var [key, tag] of Object.entries(body.find('select').select2('val'))){ tags += ';'+tag; }
+									var tags = [];
+									for(var [key, tag] of Object.entries(dataset.this.dom.tags.split(';'))){
+										if(tag != ''){ tags.push(tag); }
+									}
+									for(var [key, tag] of Object.entries(body.find('select').select2('val'))){
+										if(tag != ''){ tags.push(tag); }
+									}
 									console.log(tags);
 									API.request('organizations','tag',{data:{id:dataset.this.dom.id,tags:tags}},function(result){
 										var sub_dataset = JSON.parse(result);
