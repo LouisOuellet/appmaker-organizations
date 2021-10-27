@@ -76,6 +76,7 @@ API.Plugins.organizations = {
 								for(var [key, value] of Object.entries(dataset.output.details[relation.relationship].dom[relation.link_to])){ detail[key] = value; }
 								detail.owner = relation.owner;
 								detail.created = relation.created;
+								if(API.Helper.isSet(relation,['statuses'])){ detail.statuses = relation.statuses; }
 								API.Helper.set(dataset.output,['relations',relation.relationship,relation.link_to],detail);
 							}
 						}
@@ -292,6 +293,19 @@ API.Plugins.organizations = {
 									}
 									API.Plugins.organizations.Events.issues(data,layout);
 								});
+							}
+							if(API.Helper.isSet(data,['relations','issues'])){
+								for(var [id, relation] of Object.entries(data.relations.issues)){
+									if(API.Auth.validate('custom', 'organizations_issues', 1) || relation.owner == API.Contents.Auth.User.username){
+										relation.status = data.details.statuses.raw[relation.statuses].order;
+										API.Builder.Timeline.add.issue(layout.timeline,relation,'gavel','indigo',function(item){
+											item.find('i').first().addClass('pointer');
+											item.find('i').first().off().click(function(){
+												API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.services.dom[item.attr('data-id')].id, modal:true });
+											});
+										});
+									}
+								}
 							}
 							// Tags
 							if(API.Helper.isSet(API.Plugins,['tags']) && API.Auth.validate('custom', 'organizations_tags', 1)){
