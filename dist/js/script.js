@@ -234,20 +234,22 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 									var td = tr.find('td[data-plugin="organizations"][data-key="tags"]');
 									for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.tags,';').split(';'))){
-										td.append(
-											API.Plugins.organizations.GUI.buttons.details({name:subDetails},{
-												remove:API.Auth.validate('custom', 'organizations_tags', 4),
-												id: "name",
-												key: "name",
-												icon:{
-													details:"fas fa-tag",
-													remove:"fas fa-backspace",
-												},
-												action:{
-													remove:"untag",
-												},
-											})
-										);
+										if(subDetails != ''){
+											td.append(
+												API.Plugins.organizations.GUI.buttons.details({name:subDetails},{
+													remove:API.Auth.validate('custom', 'organizations_tags', 4),
+													id: "name",
+													key: "name",
+													icon:{
+														details:"fas fa-tag",
+														remove:"fas fa-backspace",
+													},
+													action:{
+														remove:"untag",
+													},
+												})
+											);
+										}
 									}
 									if(API.Auth.validate('custom', 'organizations_tags', 2)){
 										td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="tag"><i class="fas fa-plus"></i></button>');
