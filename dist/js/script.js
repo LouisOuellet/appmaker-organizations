@@ -357,20 +357,20 @@ API.Plugins.organizations = {
 										],
 										height: 250,
 									});
-									if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 5)){
-										var html = '';
-										html += '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
-											html += '<form class="form-inline my-2 my-lg-0 ml-auto">';
+									var html = '';
+									html += '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
+										html += '<form class="form-inline my-2 my-lg-0 ml-auto">';
+											if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){}
 												html += '<select class="form-control mr-sm-2" name="status" style="width: 150px;">';
 												for(var [order, status] of Object.entries(API.Contents.Statuses.organizations)){
 													html += '<option value="'+order+'">'+API.Helper.ucfirst(status.name)+'</option>'
 												}
 												html += '</select>';
-												html += '<button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-reply mr-1"></i>Add Note</button>';
-											html += '</form>';
-										html += '</nav>';
-										content.append(html);
-									}
+											}
+											html += '<button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-reply mr-1"></i>Add Note</button>';
+										html += '</form>';
+									html += '</nav>';
+									content.append(html);
 								});
 							}
 							// Contacts
