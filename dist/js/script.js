@@ -642,7 +642,8 @@ API.Plugins.organizations = {
 			if(API.Helper.isSet(options,['id'])){ defaults.id = options.id; }
 			if(API.Helper.isSet(options,['content'])){ defaults.content = options.content; }
 			else { defaults.content = dataset[defaults.key]; }
-			return '<button type="button" class="btn btn-sm btn-'+defaults.color+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action+'"><i class="'+defaults.icon+' mr-1"></i>'+defaults.content+'</button>';
+			if(defaults.content != ''){ defaults.icon += ' mr-1'; }
+			return '<button type="button" class="btn btn-sm btn-'+defaults.color+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action+'"><i class="'+defaults.icon+'"></i>'+defaults.content+'</button>';
 		},
 		buttons:{
 			details:function(dataset,options = {}){
