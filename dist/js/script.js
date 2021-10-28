@@ -654,8 +654,8 @@ API.Plugins.organizations = {
 			for(var [key, value] of Object.entries(dataset)){
 				if(value == null){ value = '';dataset[key] = value; };
 				console.log(key);
-				console.log(jQuery.inArray( key, ['first_name','middle_name','last_name','email','phone','mobile','office_num','other_num','about','job_title'] ));
-				if(jQuery.inArray( key, ['first_name','middle_name','last_name','email','phone','mobile','office_num','other_num','about','job_title'] )){
+				console.log(jQuery.inArray( key, ['first_name','middle_name','last_name','email','phone','mobile','office_num','other_num','about','job_title'] ) != -1);
+				if(jQuery.inArray(key,['first_name','middle_name','last_name','email','phone','mobile','office_num','other_num','about','job_title']) != -1){
 					csv += value.replace(',','').toLowerCase()+',';
 				}
 			}
