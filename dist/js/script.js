@@ -378,8 +378,11 @@ API.Plugins.organizations = {
 												content:content.find('textarea').summernote('code'),
 												relationship:'organizations',
 												link_to:dataset.output.this.dom.id,
-												status:container.find('#organizations_notes select[name="status"]').val(),
+												status:data.this.raw.status,
 											};
+											if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
+												note.status = content.find('select').val();
+											}
 											content.find('textarea').val('');
 											content.find('textarea').summernote('code','');
 											content.find('textarea').summernote('destroy');
