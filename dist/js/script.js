@@ -663,8 +663,8 @@ API.Plugins.organizations = {
 	GUI:{
 		contact:function(dataset,area){
 			area.prepend(API.Plugins.organizations.GUI.card(dataset));
+			plugin = area.attr('data-plugin');
 			card = area.find('div.col-sm-12.col-md-6').first();
-			card.attr('data-type',plugin);
 			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_details', 1)){
 				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'primary',icon:'fas fa-eye',action:'details',content:API.Contents.Language['Details']}));
 			}
