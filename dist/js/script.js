@@ -475,10 +475,12 @@ API.Plugins.organizations = {
 										html += '</div>';
 										area.append(html);
 									}
-									for(var [id, relation] of Object.entries(data.relations.users)){
-										if(relation.isEmployee || relation.isContact){
-											if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
-												area.prepend(API.Plugins.organizations.GUI.card(relation));
+									if(API.Helper.isSet(data,['relations','users'])){
+										for(var [id, relation] of Object.entries(data.relations.users)){
+											if(relation.isEmployee || relation.isContact){
+												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
+													area.prepend(API.Plugins.organizations.GUI.card(relation));
+												}
 											}
 										}
 									}
