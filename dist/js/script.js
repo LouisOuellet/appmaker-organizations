@@ -1380,6 +1380,7 @@ API.Plugins.organizations = {
 							contacts.find('[data-id="'+user.raw.id+'"]').remove();
 							API.Plugins.organizations.GUI.contact(user.dom,contacts);
 							// API.Plugins.organizations.GUI.contacts.add(container, dataset, {dom:user.dom,raw:user.raw}, true);
+							API.Plugins.organizations.Events.contacts(data,layout);
 						});
 						break;
 					case"delete":
