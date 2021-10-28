@@ -441,6 +441,50 @@ API.Plugins.organizations = {
 								}
 							}
 							// Employees
+							if(API.Helper.isSet(API.Plugins,['employees']) && API.Auth.validate('custom', 'organizations_employees', 1)){
+								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Employees"]},function(data,layout,tab,content){
+									content.addClass('p-3');
+									var html = '';
+									html += '<div class="row">';
+										html += '<div class="col-md-12 mb-3">';
+											html += '<div class="input-group">';
+												html += '<input type="text" id="organizations_employees_search" class="form-control">';
+												html += '<div class="input-group-append pointer" data-action="clear">';
+													html += '<span class="input-group-text"><i class="fas fa-times" aria-hidden="true"></i></span>';
+												html += '</div>';
+												html += '<div class="input-group-append">';
+													html += '<span class="input-group-text"><i class="icon icon-search mr-1"></i>Search</span>';
+												html += '</div>';
+											html += '</div>';
+										html += '</div>';
+									html += '</div>';
+									html += '<div class="row" data-plugin="employees"></div>';
+									content.append(html);
+									area = content.find('div.row').last();
+									if(API.Auth.validate('custom', 'organizations_employees', 2)){
+										var html = '';
+										html += '<div class="col-sm-12 col-md-6">';
+											html += '<div class="card pointer addEmployee">';
+												html += '<div class="card-body py-4">';
+													html += '<div class="text-center p-5">';
+														html += '<i class="fas fa-plus-circle fa-10x mt-3 mb-2"></i>';
+													html += '</div>';
+												html += '</div>';
+											html += '</div>';
+										html += '</div>';
+										area.append(html);
+									}
+									if(API.Helper.isSet(data,['relations','users'])){
+										for(var [id, relation] of Object.entries(data.relations.users)){
+											if(relation.isEmployee){
+												if(relation.isActive||API.Auth.validate('custom', 'organizations_employees_isActive', 1)){
+													API.Plugins.organizations.GUI.contact(relation,area);
+												}
+											}
+										}
+									}
+								});
+							}
 							// Contacts
 							if(API.Helper.isSet(API.Plugins,['contacts']) && API.Auth.validate('custom', 'organizations_contacts', 1)){
 								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Contacts"]},function(data,layout,tab,content){
@@ -477,7 +521,7 @@ API.Plugins.organizations = {
 									}
 									if(API.Helper.isSet(data,['relations','users'])){
 										for(var [id, relation] of Object.entries(data.relations.users)){
-											if(relation.isEmployee || relation.isContact){
+											if(relation.isContact){
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 													API.Plugins.organizations.GUI.contact(relation,area);
 												}
