@@ -360,7 +360,7 @@ API.Plugins.organizations = {
 									var html = '';
 									html += '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
 										html += '<form class="form-inline my-2 my-lg-0 ml-auto">';
-											if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){}
+											if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
 												html += '<select class="form-control mr-sm-2" name="status" style="width: 150px;">';
 												for(var [order, status] of Object.entries(API.Contents.Statuses.organizations)){
 													html += '<option value="'+order+'">'+API.Helper.ucfirst(status.name)+'</option>'
