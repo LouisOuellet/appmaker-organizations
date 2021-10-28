@@ -346,7 +346,7 @@ API.Plugins.organizations = {
 							}
 							// Notes
 							if(API.Helper.isSet(API.Plugins,['notes']) && API.Auth.validate('custom', 'organizations_notes', 1)){
-								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-notes",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
+								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-note",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
 									content.append('<div><textarea title="Note" name="note" class="form-control"></textarea></div>');
 									content.find('textarea').summernote({
 										toolbar: [
