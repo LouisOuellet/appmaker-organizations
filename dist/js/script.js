@@ -372,7 +372,7 @@ API.Plugins.organizations = {
 									html += '</nav>';
 									content.append(html);
 									content.find('button').off().click(function(){
-										if(content.find('textarea').summernote('isEmpty')){
+										if(!content.find('textarea').summernote('isEmpty')){
 											var note = {
 												by:API.Contents.Auth.User.id,
 												content:content.find('textarea').summernote('code'),
