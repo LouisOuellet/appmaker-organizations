@@ -77,7 +77,7 @@ API.Plugins.organizations = {
 								detail.owner = relation.owner;
 								detail.created = relation.created;
 								if(API.Helper.isSet(relation,['statuses'])){ detail.statuses = relation.statuses; }
-								if(!API.Helper.isSet(relation,['name']) && API.Helper.isSet(relation,['first_name'])){
+								if(!API.Helper.isSet(detail,['name']) && API.Helper.isSet(detail,['first_name'])){
 									detail.name = '';
 									if((detail.first_name != '')&&(detail.first_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.first_name; }
 									if((detail.middle_name != '')&&(detail.middle_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.middle_name; }
