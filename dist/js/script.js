@@ -663,7 +663,6 @@ API.Plugins.organizations = {
 	GUI:{
 		contact:function(dataset,area){
 			area.prepend(API.Plugins.organizations.GUI.card(dataset));
-			plugin = area.attr('data-plugin');
 			card = area.find('div.col-sm-12.col-md-6').first();
 			card.attr('data-type',plugin);
 			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_details', 1)){
@@ -1369,25 +1368,21 @@ API.Plugins.organizations = {
 						});
 						break;
 					case"edit":
-						API.CRUD.update.show({ keys:contact, modal:true, plugin:'contacts' },function(contact){
-							dataset.details.users.raw[contact.raw.id] = contact.raw;
-							dataset.details.users.dom[contact.dom.id] = contact.dom;
-							card = layout.main.find('div[data-type="contacts"][data-id="'+contact.raw.id+'"]');
-							API.Plugins.organizations.GUI.contact(contact.dom,card.parent());
-							card.remove();
-							// API.Plugins.organizations.GUI.contacts.add(container, dataset, {dom:contact.dom,raw:contact.raw}, true);
+						console.log(contact);
+						API.CRUD.update.show({ keys:contact, modal:true, plugin:'contacts' },function(user){
+							dataset.details.users.raw[user.raw.id] = user.raw;
+							dataset.details.users.dom[user.dom.id] = user.dom;
+							contacts.find('[data-id="'+user.raw.id+'"]').remove();
+							API.Plugins.organizations.GUI.contact(user.dom,contacts);
+							// API.Plugins.organizations.GUI.contacts.add(container, dataset, {dom:user.dom,raw:user.raw}, true);
 						});
 						break;
 					case"delete":
-						var thiscontact = {};
-						for(var [key, value] of Object.entries(dataset.output.details.users.raw[id])){ thiscontact[key] = value; }
-						thiscontact.organization = dataset.output.this.raw.id;
-						API.CRUD.delete.show({ keys:thiscontact,key:'name', modal:true, plugin:'contacts' },function(record){
-							if((dataset.output.details.users.raw[id].isActive == 'true')&&(record.isActive != 'true')&&(API.Auth.validate('custom', contactsCTN.attr('id')+'_isActive', 1))){
-								contactsCTN.find('[data-id="'+record.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
-							} else {
-								contactsCTN.find('[data-id="'+record.id+'"]').remove();
-							}
+						console.log(contact);
+						API.CRUD.delete.show({ keys:contact,key:'name', modal:true, plugin:'contacts' },function(user){
+							if((contact.isActive == 'true')&&(user.isActive != 'true')&&(API.Auth.validate('custom', 'organizations_contacts_isActive', 1))){
+								contacts.find('[data-id="'+user.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
+							} else { contacts.find('[data-id="'+user.id+'"]').remove(); }
 						});
 						break;
 				}
