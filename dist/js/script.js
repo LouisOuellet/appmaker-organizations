@@ -748,7 +748,7 @@ API.Plugins.organizations = {
 			var html = '';
 			html += '<div class="col-sm-12 col-md-6 contactCard" data-csv="'+csv+'" data-id="'+dataset.id+'">';
 			  html += '<div class="card">';
-					if(!dataset.isActive){ html += '<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>'; }
+					if(!dataset.isActive){ html += '<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">'+API.Contents.Language['Inactive']+'</div></div>'; }
 			    html += '<div class="card-header border-bottom-0">';
 			      html += '<b class="mr-1">Title:</b>'+dataset.job_title;
 			    html += '</div>';
@@ -1386,8 +1386,8 @@ API.Plugins.organizations = {
 					case"delete":
 						console.log(contact);
 						API.CRUD.delete.show({ keys:contact,key:'name', modal:true, plugin:'contacts' },function(user){
-							if((contact.isActive == 'true')&&(user.isActive != 'true')&&(API.Auth.validate('custom', 'organizations_contacts_isActive', 1))){
-								contacts.find('[data-id="'+user.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
+							if(contact.isActive && API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
+								contacts.find('[data-id="'+user.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">'+API.Contents.Language['Inactive']+'</div></div>');
 							} else { contacts.find('[data-id="'+user.id+'"]').remove(); }
 						});
 						break;
