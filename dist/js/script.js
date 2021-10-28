@@ -367,7 +367,7 @@ API.Plugins.organizations = {
 												}
 												html += '</select>';
 											}
-											html += '<button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-sticky-note mr-1"></i>Add Note</button>';
+											html += '<button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-sticky-note mr-1"></i>'+API.Contents.Language['Add Note']+'</button>';
 										html += '</form>';
 									html += '</nav>';
 									content.append(html);
