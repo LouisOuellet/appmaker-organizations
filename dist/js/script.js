@@ -95,6 +95,8 @@ API.Plugins.organizations = {
 							content.addClass('p-3');
 							content.append('<div class="timeline" data-plugin="organizations"></div>');
 							layout.timeline = content.find('div.timeline');
+							var today = new Date();
+							API.Builder.Timeline.add.date(layout.timeline,today);
 							var html = '';
 							html += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
 								html += '<label class="btn btn-primary pointer active" data-table="all">';
