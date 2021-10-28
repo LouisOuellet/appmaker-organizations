@@ -650,10 +650,12 @@ API.Plugins.organizations = {
 		},
 		//dataset,options
 		card:function(dataset,options = {}){
+			console.log(dataset);
 			var csv = '';
 			for(var [key, value] of Object.entries(dataset)){
 				if(value == null){ value = '';dataset[key] = value; };
 				if(jQuery.inArray( key, ['first_name','middle_name','last_name','email','phone','mobile','office_num','other_num','about','job_title'] )){
+					console.log(value);
 					csv += value.replace(',','').toLowerCase()+',';
 				}
 			}
