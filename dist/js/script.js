@@ -242,7 +242,7 @@ API.Plugins.organizations = {
 								});
 								if(API.Helper.isSet(data,['relations','organizations'])){
 									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="organizations">';
+									html += '<label class="btn btn-primary pointer" data-table="subsidiaries">';
 										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Subsidiaries'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
@@ -512,7 +512,7 @@ API.Plugins.organizations = {
 										for(var [id, relation] of Object.entries(data.relations.users)){
 											if(relation.isEmployee){
 												var html = '';
-												html += '<label class="btn btn-primary pointer" data-table="users">';
+												html += '<label class="btn btn-primary pointer" data-table="employees">';
 													html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Employees'];
 												html += '</label>';
 												layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
@@ -562,7 +562,7 @@ API.Plugins.organizations = {
 										for(var [id, relation] of Object.entries(data.relations.users)){
 											if(relation.isContact){
 												var html = '';
-												html += '<label class="btn btn-primary pointer" data-table="users">';
+												html += '<label class="btn btn-primary pointer" data-table="contacts">';
 													html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Contacts'];
 												html += '</label>';
 												layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
