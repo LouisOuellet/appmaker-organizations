@@ -481,7 +481,7 @@ API.Plugins.organizations = {
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 													area.prepend(API.Plugins.organizations.GUI.card(relation));
 													card = area.find('div.col-sm-12.col-md-6').first();
-													card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'success',action:'Call',content:API.Contents.Language['Call']}));
+													card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'success',icon:'fas fa-phone',action:'Call',content:API.Contents.Language['Call']}));
 												}
 											}
 										}
@@ -627,8 +627,6 @@ API.Plugins.organizations = {
 				id:"id",
 				content:"",
 			};
-			if(API.Helper.isSet(options,['color','details'])){ defaults.color.details = options.color.details; }
-			if(API.Helper.isSet(options,['color','remove'])){ defaults.color.remove = options.color.remove; }
 			if(API.Helper.isSet(options,['icon'])){ defaults.icon = options.icon; }
 			if(API.Helper.isSet(options,['action'])){ defaults.action = options.action; }
 			if(API.Helper.isSet(options,['color'])){ defaults.color = options.color; }
@@ -636,7 +634,7 @@ API.Plugins.organizations = {
 			if(API.Helper.isSet(options,['id'])){ defaults.id = options.id; }
 			if(API.Helper.isSet(options,['content'])){ defaults.content = options.content; }
 			else { defaults.content = dataset[defaults.key]; }
-			return '<button type="button" class="btn btn-xs btn-'+defaults.color+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action+'"><i class="'+defaults.icon+' mr-1"></i>'+defaults.content+'</button>';
+			return '<button type="button" class="btn btn-sm btn-'+defaults.color+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action+'"><i class="'+defaults.icon+' mr-1"></i>'+defaults.content+'</button>';
 		},
 		buttons:{
 			details:function(dataset,options = {}){
