@@ -1345,8 +1345,8 @@ API.Plugins.organizations = {
 			var defaults = {field: "name"};
 			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
 			var contacts = layout.main.find('div[data-plugin="contacts"]');
-			var contact = dataset.relations.users[$(this).attr('data-id')];
 			contacts.find('button').off().click(function(){
+				var contact = dataset.relations.users[$(this).attr('data-id')];
 				switch($(this).attr('data-action')){
 					case"call":
 						var now = new Date();
