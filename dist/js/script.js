@@ -528,6 +528,7 @@ API.Plugins.organizations = {
 											}
 										}
 									}
+									API.Plugins.organizations.Events.contacts(data,layout);
 								});
 							}
 							// Users
@@ -1324,6 +1325,40 @@ API.Plugins.organizations = {
 								}
 							});
 							modal.modal('show');
+						});
+						break;
+				}
+			});
+			if(callback != null){ callback(dataset,layout); }
+		},
+		contacts:function(dataset,layout,options = {},callback = null){
+			if(options instanceof Function){ callback = options; options = {}; }
+			var defaults = {field: "name"};
+			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
+			var contacts = layout.main.find('div[data-plugin="contacts"]');
+			contacts.find('button').off().click(function(){
+				switch($(this).attr('data-action')){
+					case"call":
+						contact = {
+							dom: dataset.details.users.dom[$(this).attr('data-id')],
+							raw: dataset.details.users.raw[$(this).attr('data-id')],
+						};
+						var now = new Date();
+						var call = {
+							date:now,
+							time:now,
+							contact:contact.raw.id,
+							status:3,
+							assigned_to:API.Contents.Auth.User.id,
+							relationship:'organizations',
+							link_to:dataset.this.raw.id,
+						};
+						API.request('calls','create',{data:call},function(result){
+							var record = JSON.parse(result);
+							if(typeof record.success !== 'undefined'){
+								API.Plugins.calls.Widgets.toast({dom:record.output.dom,raw:record.output.raw},dataset.this,dataset.details.issues);
+								API.Plugins.organizations.GUI.calls.add(container,{dom:record.output.dom,raw:record.output.raw},dataset.this,dataset.details.issues, true);
+							}
 						});
 						break;
 				}
