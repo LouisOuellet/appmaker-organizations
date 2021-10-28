@@ -1370,6 +1370,11 @@ API.Plugins.organizations = {
 					case"edit":
 						console.log(contact);
 						API.CRUD.update.show({ keys:contact, modal:true, plugin:'contacts' },function(user){
+							user.raw.name = '';
+							if((user.raw.first_name != '')&&(user.raw.first_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.first_name; }
+							if((user.raw.middle_name != '')&&(user.raw.middle_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.middle_name; }
+							if((user.raw.last_name != '')&&(user.raw.last_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.last_name; }
+							user.dom.name = user.raw.name;
 							dataset.details.users.raw[user.raw.id] = user.raw;
 							dataset.details.users.dom[user.dom.id] = user.dom;
 							contacts.find('[data-id="'+user.raw.id+'"]').remove();
