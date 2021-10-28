@@ -430,6 +430,15 @@ API.Plugins.organizations = {
 									});
 								});
 							}
+							if(API.Helper.isSet(API.Plugins,['notes']) && API.Helper.isSet(data,['relations','notes'])){
+								for(var [id, relation] of Object.entries(data.relations.notes)){
+									if(API.Auth.validate('custom', 'organizations_notes', 1) || relation.owner == API.Contents.Auth.User.username){
+										API.Builder.Timeline.add.card(layout.timeline,relation,'sticky-note','warning',function(item){
+											item.find('.timeline-footer').remove();
+										});
+									}
+								}
+							}
 							// Contacts
 							// Employees
 							// Users
