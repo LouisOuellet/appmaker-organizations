@@ -357,7 +357,7 @@ API.Plugins.organizations = {
 										],
 										height: 250,
 									});
-									if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
+									if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 5)){
 										var html = '';
 										html += '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
 											html += '<form class="form-inline my-2 my-lg-0 ml-auto">';
