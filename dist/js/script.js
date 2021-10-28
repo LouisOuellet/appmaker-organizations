@@ -488,7 +488,7 @@ API.Plugins.organizations = {
 														card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'warning',icon:'fas fa-edit',action:'edit',content:API.Contents.Language['Edit']}));
 													}
 													if(API.Auth.validate('custom', 'organizations_contacts_btn_delete', 1)){
-														card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'danger',icon:'fas fa-trash-alt',action:'delete'}));
+														card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'danger',icon:'fas fa-trash-alt',action:'delete',content:''}));
 													}
 												}
 											}
