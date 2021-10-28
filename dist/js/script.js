@@ -459,7 +459,7 @@ API.Plugins.organizations = {
 											html += '</div>';
 										html += '</div>';
 									html += '</div>';
-									html += '<div class="row"></div>';
+									html += '<div class="row" data-plugin="contacts"></div>';
 									content.append(html);
 									area = content.find('div.row').last();
 									if(API.Auth.validate('custom', 'organizations_contacts', 2)){
@@ -479,17 +479,7 @@ API.Plugins.organizations = {
 										for(var [id, relation] of Object.entries(data.relations.users)){
 											if(relation.isEmployee || relation.isContact){
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
-													area.prepend(API.Plugins.organizations.GUI.card(relation));
-													card = area.find('div.col-sm-12.col-md-6').first();
-													if(API.Auth.validate('custom', 'organizations_contacts_btn_call', 1)){
-														card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'success',icon:'fas fa-phone',action:'call',content:API.Contents.Language['Call']}));
-													}
-													if(API.Auth.validate('custom', 'organizations_contacts_btn_edit', 1)){
-														card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'warning',icon:'fas fa-edit',action:'edit',content:API.Contents.Language['Edit']}));
-													}
-													if(API.Auth.validate('custom', 'organizations_contacts_btn_delete', 1)){
-														card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'danger',icon:'fas fa-trash-alt',action:'delete',content:''}));
-													}
+													API.Plugins.organizations.GUI.contact(relation,area);
 												}
 											}
 										}
@@ -626,6 +616,19 @@ API.Plugins.organizations = {
 		},
 	},
 	GUI:{
+		contact:function(dataset,area){
+			area.prepend(API.Plugins.organizations.GUI.card(dataset));
+			card = area.find('div.col-sm-12.col-md-6').first();
+			if(API.Auth.validate('custom', 'organizations_'+area.attr('data-plugin')+'_btn_call', 1)){
+				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'success',icon:'fas fa-phone',action:'call',content:API.Contents.Language['Call']}));
+			}
+			if(API.Auth.validate('custom', 'organizations_'+area.attr('data-plugin')+'_btn_edit', 1)){
+				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'warning',icon:'fas fa-edit',action:'edit',content:API.Contents.Language['Edit']}));
+			}
+			if(API.Auth.validate('custom', 'organizations_'+area.attr('data-plugin')+'_btn_delete', 1)){
+				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'danger',icon:'fas fa-trash-alt',action:'delete',content:''}));
+			}
+		},
 		button:function(dataset,options = {}){
 			var defaults = {
 				icon:"fas fa-building",
@@ -688,6 +691,7 @@ API.Plugins.organizations = {
 			var html = '';
 			html += '<div class="col-sm-12 col-md-6 contactCard" data-csv="'+csv+'" data-id="'+dataset.id+'">';
 			  html += '<div class="card">';
+					if(!dataset.isActive){ html += '<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>'; }
 			    html += '<div class="card-header border-bottom-0">';
 			      html += '<b class="mr-1">Title:</b>'+dataset.job_title;
 			    html += '</div>';
