@@ -344,6 +344,37 @@ API.Plugins.organizations = {
 									API.Plugins.organizations.Events.tags(data,layout);
 								});
 							}
+							// Notes
+							if(API.Helper.isSet(API.Plugins,['notes']) && API.Auth.validate('custom', 'organizations_notes', 1)){
+								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-notes",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
+									content.append('<div><textarea title="Note" name="note" class="form-control"></textarea></div>');
+									content.find('textarea').summernote({
+										toolbar: [
+											['font', ['fontname', 'fontsize']],
+											['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+											['color', ['color']],
+											['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
+										],
+										height: 250,
+									});
+									if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
+										var html = '';
+										html += '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
+											html += '<form class="form-inline my-2 my-lg-0 ml-auto">';
+												html += '<select class="form-control mr-sm-2" name="status" style="width: 150px;">';
+												for(var [order, status] of Object.entries(API.Contents.Statuses.organizations)){
+													html += '<option value="'+order+'">'+API.Helper.ucfirst(status.name)+'</option>'
+												}
+												html += '</select>';
+												html += '<button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-reply mr-1"></i>Add Note</button>';
+											html += '</form>';
+										html += '</nav>';
+										content.append(html);
+									}
+								});
+							}
+							// Contacts
+							// Employees
 							// Users
 							if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
 								options.field = "assigned_to";
