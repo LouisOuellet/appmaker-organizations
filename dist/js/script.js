@@ -371,6 +371,46 @@ API.Plugins.organizations = {
 										html += '</form>';
 									html += '</nav>';
 									content.append(html);
+									content.find('button').off().click(function(){
+										if(content.find('textarea').summernote('isEmpty')){
+											var note = {
+												by:API.Contents.Auth.User.id,
+												content:content.find('textarea').summernote('code'),
+												relationship:'organizations',
+												link_to:dataset.output.this.dom.id,
+												status:container.find('#organizations_notes select[name="status"]').val(),
+											};
+											content.find('textarea').val('');
+											content.find('textarea').summernote('code','');
+											content.find('textarea').summernote('destroy');
+											content.find('textarea').summernote({
+												toolbar: [
+													['font', ['fontname', 'fontsize']],
+													['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+													['color', ['color']],
+													['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
+												],
+												height: 250,
+											});
+											API.request('organizations','note',{data:note},function(result){
+												var dataset = JSON.parse(result);
+												if(dataset.success != undefined){
+													if(dataset.output.status != null){
+														var status = {};
+														for(var [key, value] of Object.entries(dataset.output.status)){ status[key] = value; }
+														status.created = dataset.output.note.raw.created;
+														API.Builder.Timeline.add.status(layout.timeline,status);
+														content.find('select').val(status.order);
+														layout.details.find('td[data-plugin="organizations"][data-key="status"]').html('<span class="badge bg-'+API.Contents.Statuses.organizations[status.order].color+'"><i class="'+API.Contents.Statuses.organizations[status.order].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Language[API.Contents.Statuses.organizations[status.order].name]+'</span>');
+													}
+													API.Builder.Timeline.add.card(layout.timeline,dataset.output.note.dom,'sticky-note','warning',function(item){
+														item.find('.timeline-footer').remove();
+													});
+												}
+											});
+											layout.tabs.find('a').first().tab('show');
+										} else { alert(API.Contents.Language['Note is empty']); }
+									});
 								});
 							}
 							// Contacts
