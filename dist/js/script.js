@@ -95,6 +95,13 @@ API.Plugins.organizations = {
 							content.addClass('p-3');
 							content.append('<div class="timeline" data-plugin="organizations"></div>');
 							layout.timeline = content.find('div.timeline');
+							var html = '';
+							html += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
+								html += '<label class="btn btn-primary pointer active" data-table="all">';
+									html += '<input type="radio" name="options" autocomplete="off" checked>All';
+								html += '</label>';
+							html += '</div>';
+							layout.timeline.find('.time-label').first().html(html);
 							var options = {plugin:"organizations"}
 							// Debug
 							if(API.debug){
@@ -160,6 +167,11 @@ API.Plugins.organizations = {
 								options.td += '</td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 								if(API.Helper.isSet(data,['relations','statuses'])){
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="statuses">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Status'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									for(var [id, relation] of Object.entries(data.relations.statuses)){
 										if(API.Auth.validate('custom', 'organizations_status', 1) || relation.owner == API.Contents.Auth.User.username){
 											API.Builder.Timeline.add.status(layout.timeline,relation);
@@ -227,6 +239,11 @@ API.Plugins.organizations = {
 									API.Plugins.organizations.Events.subsidiaries(data,layout);
 								});
 								if(API.Helper.isSet(data,['relations','organizations'])){
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="organizations">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Subsidiaries'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									for(var [id, relation] of Object.entries(data.relations.organizations)){
 										if(API.Auth.validate('custom', 'organizations_organizations', 1) || relation.owner == API.Contents.Auth.User.username){
 											API.Builder.Timeline.add.client(layout.timeline,relation,'building','secondary',function(item){
@@ -256,6 +273,11 @@ API.Plugins.organizations = {
 									API.Plugins.organizations.Events.services(data,layout);
 								});
 								if(API.Helper.isSet(data,['relations','services'])){
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="services">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Services'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									for(var [id, relation] of Object.entries(data.relations.services)){
 										if(API.Auth.validate('custom', 'organizations_services', 1) || relation.owner == API.Contents.Auth.User.username){
 											API.Builder.Timeline.add.service(layout.timeline,relation,'hand-holding-usd','success',function(item){
@@ -302,6 +324,11 @@ API.Plugins.organizations = {
 									API.Plugins.organizations.Events.issues(data,layout);
 								});
 								if(API.Helper.isSet(data,['relations','issues'])){
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="issues">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Issues'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									for(var [id, relation] of Object.entries(data.relations.issues)){
 										if(API.Auth.validate('custom', 'organizations_issues', 1) || relation.owner == API.Contents.Auth.User.username){
 											relation.status = data.details.statuses.raw[relation.statuses].order;
@@ -431,6 +458,11 @@ API.Plugins.organizations = {
 									});
 								});
 								if(API.Helper.isSet(data,['relations','notes'])){
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="notes">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Notes'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									for(var [id, relation] of Object.entries(data.relations.notes)){
 										if(API.Auth.validate('custom', 'organizations_notes', 1) || relation.owner == API.Contents.Auth.User.username){
 											API.Builder.Timeline.add.card(layout.timeline,relation,'sticky-note','warning',function(item){
@@ -477,6 +509,11 @@ API.Plugins.organizations = {
 									if(API.Helper.isSet(data,['relations','users'])){
 										for(var [id, relation] of Object.entries(data.relations.users)){
 											if(relation.isEmployee){
+												var html = '';
+												html += '<label class="btn btn-primary pointer" data-table="users">';
+													html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Employees'];
+												html += '</label>';
+												layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_employees_isActive', 1)){
 													API.Plugins.organizations.GUI.contact(relation,area);
 												}
@@ -522,6 +559,11 @@ API.Plugins.organizations = {
 									if(API.Helper.isSet(data,['relations','users'])){
 										for(var [id, relation] of Object.entries(data.relations.users)){
 											if(relation.isContact){
+												var html = '';
+												html += '<label class="btn btn-primary pointer" data-table="users">';
+													html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Contacts'];
+												html += '</label>';
+												layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 													API.Plugins.organizations.GUI.contact(relation,area);
 												}
@@ -564,6 +606,11 @@ API.Plugins.organizations = {
 									API.Plugins.organizations.Events.users(data,layout);
 								});
 								if(API.Helper.isSet(data,['relations','users'])){
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="users">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Users'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									for(var [id, relation] of Object.entries(data.relations.users)){
 										var plugin = "unknown";
 										if (relation.isEmployee){ plugin = "employees"; }
