@@ -662,15 +662,18 @@ API.Plugins.organizations = {
 	GUI:{
 		contact:function(dataset,area){
 			area.prepend(API.Plugins.organizations.GUI.card(dataset));
+			plugin = area.attr('data-plugin');
 			card = area.find('div.col-sm-12.col-md-6').first();
-			if(API.Auth.validate('custom', 'organizations_'+area.attr('data-plugin')+'_btn_call', 1)){
+			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_call', 1)){
 				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'success',icon:'fas fa-phone',action:'call',content:API.Contents.Language['Call']}));
 			}
-			if(API.Auth.validate('custom', 'organizations_'+area.attr('data-plugin')+'_btn_edit', 1)){
-				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'warning',icon:'fas fa-edit',action:'edit',content:API.Contents.Language['Edit']}));
-			}
-			if(API.Auth.validate('custom', 'organizations_'+area.attr('data-plugin')+'_btn_delete', 1)){
-				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'danger',icon:'fas fa-trash-alt',action:'delete',content:''}));
+			if((plugin == "employees")||(plugin == "contacts" && dataset.isContact && !dataset.isEmployee)){
+				if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_edit', 1)){
+					card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'warning',icon:'fas fa-edit',action:'edit',content:API.Contents.Language['Edit']}));
+				}
+				if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_delete', 1)){
+					card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'danger',icon:'fas fa-trash-alt',action:'delete',content:''}));
+				}
 			}
 		},
 		button:function(dataset,options = {}){
