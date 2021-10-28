@@ -665,8 +665,17 @@ API.Plugins.organizations = {
 			area.prepend(API.Plugins.organizations.GUI.card(dataset));
 			plugin = area.attr('data-plugin');
 			card = area.find('div.col-sm-12.col-md-6').first();
+			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_details', 1)){
+				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'primary',icon:'fas fa-eye',action:'details',content:API.Contents.Language['Details']}));
+			}
+			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_subscriptions', 1)){
+				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'lightblue',icon:'fas fa-list-alt',action:'subscriptions',content:API.Contents.Language['Subscriptions']}));
+			}
 			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_call', 1)){
 				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'success',icon:'fas fa-phone',action:'call',content:API.Contents.Language['Call']}));
+			}
+			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_share', 1)){
+				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'navy',icon:'fas fa-share-alt',action:'share',content:API.Contents.Language['Share']}));
 			}
 			if((plugin == "employees")||(plugin == "contacts" && dataset.isContact && !dataset.isEmployee)){
 				if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_edit', 1)){
@@ -694,7 +703,7 @@ API.Plugins.organizations = {
 			if(API.Helper.isSet(options,['content'])){ defaults.content = options.content; }
 			else { defaults.content = dataset[defaults.key]; }
 			if(defaults.content != ''){ defaults.icon += ' mr-1'; }
-			return '<button type="button" class="btn btn-sm btn-'+defaults.color+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action+'"><i class="'+defaults.icon+'"></i>'+defaults.content+'</button>';
+			return '<button type="button" class="btn btn-sm bg-'+defaults.color+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action+'"><i class="'+defaults.icon+'"></i>'+defaults.content+'</button>';
 		},
 		buttons:{
 			details:function(dataset,options = {}){
@@ -720,9 +729,9 @@ API.Plugins.organizations = {
 				else { defaults.content = dataset[defaults.key]; }
 				var html = '';
 				html += '<div class="btn-group m-1" data-id="'+dataset[defaults.id]+'">';
-					html += '<button type="button" class="btn btn-xs btn-'+defaults.color.details+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action.details+'"><i class="'+defaults.icon.details+' mr-1"></i>'+defaults.content+'</button>';
+					html += '<button type="button" class="btn btn-xs bg-'+defaults.color.details+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action.details+'"><i class="'+defaults.icon.details+' mr-1"></i>'+defaults.content+'</button>';
 					if(defaults.remove){
-						html += '<button type="button" class="btn btn-xs btn-'+defaults.color.remove+'" data-id="'+dataset[[defaults.id]]+'" data-action="'+defaults.action.remove+'"><i class="'+defaults.icon.remove+'"></i></button>';
+						html += '<button type="button" class="btn btn-xs bg-'+defaults.color.remove+'" data-id="'+dataset[[defaults.id]]+'" data-action="'+defaults.action.remove+'"><i class="'+defaults.icon.remove+'"></i></button>';
 					}
 				html += '</div>';
 				return html;
@@ -1357,7 +1366,7 @@ API.Plugins.organizations = {
 							var record = JSON.parse(result);
 							if(typeof record.success !== 'undefined'){
 								API.Plugins.calls.Widgets.toast({dom:record.output.dom,raw:record.output.raw},dataset.this,dataset.details.issues);
-								API.Plugins.organizations.GUI.calls.add(container,{dom:record.output.dom,raw:record.output.raw},dataset.this,dataset.details.issues, true);
+								// API.Plugins.organizations.GUI.calls.add(container,{dom:record.output.dom,raw:record.output.raw},dataset.this,dataset.details.issues, true);
 							}
 						});
 						break;
