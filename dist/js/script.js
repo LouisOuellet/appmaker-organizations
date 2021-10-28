@@ -481,7 +481,15 @@ API.Plugins.organizations = {
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 													area.prepend(API.Plugins.organizations.GUI.card(relation));
 													card = area.find('div.col-sm-12.col-md-6').first();
-													card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'success',icon:'fas fa-phone',action:'Call',content:API.Contents.Language['Call']}));
+													if(API.Auth.validate('custom', 'organizations_contacts_btn_call', 1)){
+														card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'success',icon:'fas fa-phone',action:'call',content:API.Contents.Language['Call']}));
+													}
+													if(API.Auth.validate('custom', 'organizations_contacts_btn_edit', 1)){
+														card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'warning',icon:'fas fa-edit',action:'edit',content:API.Contents.Language['Edit']}));
+													}
+													if(API.Auth.validate('custom', 'organizations_contacts_btn_delete', 1)){
+														card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'danger',icon:'fas fa-trash-alt',action:'delete'}));
+													}
 												}
 											}
 										}
