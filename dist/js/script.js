@@ -412,7 +412,19 @@ API.Plugins.organizations = {
 												}
 											});
 											layout.tabs.find('a').first().tab('show');
-										} else { alert(API.Contents.Language['Note is empty']); }
+										} else {
+											content.find('textarea').summernote('destroy');
+											content.find('textarea').summernote({
+												toolbar: [
+													['font', ['fontname', 'fontsize']],
+													['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+													['color', ['color']],
+													['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
+												],
+												height: 250,
+											});
+											alert(API.Contents.Language['Note is empty']);
+										}
 									});
 								});
 							}
