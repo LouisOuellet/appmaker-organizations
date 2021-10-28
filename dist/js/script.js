@@ -148,7 +148,7 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 							}
 							// Status
-							if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
+							if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1) && API.Helper.isSet(API.Contents.Statuses,['organizations',data.this.raw.status])){
 								options.field = "status";
 								options.td = '';
 								options.td += '<td data-plugin="organizations" data-key="'+options.field+'">';
