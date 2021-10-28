@@ -100,7 +100,7 @@ API.Plugins.organizations = {
 							var html = '';
 							html += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
 								html += '<label class="btn btn-primary pointer active" data-table="all">';
-									html += '<input type="radio" name="options" autocomplete="off" checked>All';
+									html += '<input type="radio" name="options" autocomplete="off" checked>'+API.Contents.Language['All'];
 								html += '</label>';
 							html += '</div>';
 							layout.timeline.find('.time-label').first().html(html);
@@ -702,7 +702,30 @@ API.Plugins.organizations = {
 									}
 								});
 							});
-							// Next
+							// Timeline
+							layout.timeline.find('.time-label').first().find('label').each(function(){
+								switch($(this).attr('data-table')){
+									case"notes":var icon = 'sticky-note';break;
+									case"comments":var icon = 'comment';break;
+									case"statuses":var icon = 'info';break;
+									case"users":var icon = 'user';break;
+									case"subsidiaries":var icon = 'building';break;
+									case"employees":var icon = 'id-card';break;
+									case"contacts":var icon = 'address-card';break;
+									case"calls":var icon = 'phone-square';break;
+									case"services":var icon = 'hand-holding-usd';break;
+									case"issues":var icon = 'gavel';break;
+									default:var icon = '';break;
+								}
+								if((icon != '')&&(typeof icon !== 'undefined')){
+									$(this).click(function(){
+										layout.timeline.find('[data-type]').hide();
+										layout.timeline.find('[data-type="'+icon+'"]').show();
+									});
+								} else {
+									$(this).click(function(){ layout.timeline.find('[data-type]').show(); });
+								}
+							});
 						});
 					});
 				}
