@@ -665,6 +665,7 @@ API.Plugins.organizations = {
 			area.prepend(API.Plugins.organizations.GUI.card(dataset));
 			plugin = area.attr('data-plugin');
 			card = area.find('div.col-sm-12.col-md-6').first();
+			card.attr('data-type',plugin);
 			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_details', 1)){
 				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'primary',icon:'fas fa-eye',action:'details',content:API.Contents.Language['Details']}));
 			}
@@ -1345,18 +1346,15 @@ API.Plugins.organizations = {
 			var defaults = {field: "name"};
 			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
 			var contacts = layout.main.find('div[data-plugin="contacts"]');
+			var contact = dataset.relations.users[$(this).attr('data-id')];
 			contacts.find('button').off().click(function(){
 				switch($(this).attr('data-action')){
 					case"call":
-						contact = {
-							dom: dataset.details.users.dom[$(this).attr('data-id')],
-							raw: dataset.details.users.raw[$(this).attr('data-id')],
-						};
 						var now = new Date();
 						var call = {
 							date:now,
 							time:now,
-							contact:contact.raw.id,
+							contact:contact.id,
 							status:3,
 							assigned_to:API.Contents.Auth.User.id,
 							relationship:'organizations',
@@ -1367,6 +1365,28 @@ API.Plugins.organizations = {
 							if(typeof record.success !== 'undefined'){
 								API.Plugins.calls.Widgets.toast({dom:record.output.dom,raw:record.output.raw},dataset.this,dataset.details.issues);
 								// API.Plugins.organizations.GUI.calls.add(container,{dom:record.output.dom,raw:record.output.raw},dataset.this,dataset.details.issues, true);
+							}
+						});
+						break;
+					case"edit":
+						API.CRUD.update.show({ keys:contact, modal:true, plugin:'contacts' },function(contact){
+							dataset.details.users.raw[contact.raw.id] = contact.raw;
+							dataset.details.users.dom[contact.dom.id] = contact.dom;
+							card = layout.main.find('div[data-type="contacts"][data-id="'+contact.raw.id+'"]');
+							API.Plugins.organizations.GUI.contact(contact.dom,card.parent());
+							card.remove();
+							// API.Plugins.organizations.GUI.contacts.add(container, dataset, {dom:contact.dom,raw:contact.raw}, true);
+						});
+						break;
+					case"delete":
+						var thiscontact = {};
+						for(var [key, value] of Object.entries(dataset.output.details.users.raw[id])){ thiscontact[key] = value; }
+						thiscontact.organization = dataset.output.this.raw.id;
+						API.CRUD.delete.show({ keys:thiscontact,key:'name', modal:true, plugin:'contacts' },function(record){
+							if((dataset.output.details.users.raw[id].isActive == 'true')&&(record.isActive != 'true')&&(API.Auth.validate('custom', contactsCTN.attr('id')+'_isActive', 1))){
+								contactsCTN.find('[data-id="'+record.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
+							} else {
+								contactsCTN.find('[data-id="'+record.id+'"]').remove();
 							}
 						});
 						break;
