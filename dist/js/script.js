@@ -148,13 +148,15 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 							}
 							// Status
-							if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1) && API.Helper.isSet(API.Contents.Statuses,['organizations',data.this.raw.status])){
+							if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
 								options.field = "status";
 								options.td = '';
 								options.td += '<td data-plugin="organizations" data-key="'+options.field+'">';
-									options.td += '<span class="badge bg-'+API.Contents.Statuses.organizations[data.this.raw.status].color+'">';
-										options.td += '<i class="'+API.Contents.Statuses.organizations[data.this.raw.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Statuses.organizations[data.this.raw.status].name+'';
-									options.td += '</span>';
+									if(API.Helper.isSet(API.Contents.Statuses,['organizations',data.this.raw.status])){
+										options.td += '<span class="badge bg-'+API.Contents.Statuses.organizations[data.this.raw.status].color+'">';
+											options.td += '<i class="'+API.Contents.Statuses.organizations[data.this.raw.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Statuses.organizations[data.this.raw.status].name+'';
+										options.td += '</span>';
+									}
 								options.td += '</td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 							}
