@@ -480,6 +480,8 @@ API.Plugins.organizations = {
 											if(relation.isEmployee || relation.isContact){
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 													area.prepend(API.Plugins.organizations.GUI.card(relation));
+													card = area.find('div.col-sm-12.col-md-6').first();
+													card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(relation,{id:'id',color:'success',action:'Call',content:API.Contents.Language['Call']}));
 												}
 											}
 										}
@@ -616,6 +618,26 @@ API.Plugins.organizations = {
 		},
 	},
 	GUI:{
+		button:function(dataset,options = {}){
+			var defaults = {
+				icon:"fas fa-building",
+				action:"details",
+				color:"primary",
+				key:"name",
+				id:"id",
+				content:"",
+			};
+			if(API.Helper.isSet(options,['color','details'])){ defaults.color.details = options.color.details; }
+			if(API.Helper.isSet(options,['color','remove'])){ defaults.color.remove = options.color.remove; }
+			if(API.Helper.isSet(options,['icon'])){ defaults.icon = options.icon; }
+			if(API.Helper.isSet(options,['action'])){ defaults.action = options.action; }
+			if(API.Helper.isSet(options,['color'])){ defaults.color = options.color; }
+			if(API.Helper.isSet(options,['key'])){ defaults.key = options.key; }
+			if(API.Helper.isSet(options,['id'])){ defaults.id = options.id; }
+			if(API.Helper.isSet(options,['content'])){ defaults.content = options.content; }
+			else { defaults.content = dataset[defaults.key]; }
+			return '<button type="button" class="btn btn-xs btn-'+defaults.color+'" data-id="'+dataset[defaults.id]+'" data-action="'+defaults.action+'"><i class="'+defaults.icon+' mr-1"></i>'+defaults.content+'</button>';
+		},
 		buttons:{
 			details:function(dataset,options = {}){
 				var defaults = {
@@ -648,13 +670,10 @@ API.Plugins.organizations = {
 				return html;
 			},
 		},
-		//dataset,options
 		card:function(dataset,options = {}){
 			var csv = '';
 			for(var [key, value] of Object.entries(dataset)){
 				if(value == null){ value = '';dataset[key] = value; };
-				console.log(key);
-				console.log(jQuery.inArray( key, ['first_name','middle_name','last_name','email','phone','mobile','office_num','other_num','about','job_title'] ) != -1);
 				if(jQuery.inArray(key,['first_name','middle_name','last_name','email','phone','mobile','office_num','other_num','about','job_title']) != -1){
 					csv += value.replace(',','').toLowerCase()+',';
 				}
