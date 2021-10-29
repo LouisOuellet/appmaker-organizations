@@ -378,6 +378,7 @@ API.Plugins.organizations = {
 							// Notes
 							if(API.Helper.isSet(API.Plugins,['notes']) && API.Auth.validate('custom', 'organizations_notes', 1)){
 								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-note",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
+									layout.notes = content;
 									content.attr('data-tab','notes');
 									content.append('<div><textarea title="Note" name="note" class="form-control"></textarea></div>');
 									content.find('textarea').summernote({
@@ -484,7 +485,7 @@ API.Plugins.organizations = {
 									html += '<div class="row">';
 										html += '<div class="col-md-12 mb-3">';
 											html += '<div class="input-group">';
-												html += '<input type="text" id="organizations_contacts_search" class="form-control">';
+												html += '<input type="text" class="form-control">';
 												html += '<div class="input-group-append pointer" data-action="clear">';
 													html += '<span class="input-group-text"><i class="fas fa-times" aria-hidden="true"></i></span>';
 												html += '</div>';
@@ -494,7 +495,7 @@ API.Plugins.organizations = {
 											html += '</div>';
 										html += '</div>';
 									html += '</div>';
-									html += '<div class="row" data-plugin="contacts"></div>';
+									html += '<div class="row"></div>';
 									content.append(html);
 									area = content.find('div.row').last();
 									if(API.Auth.validate('custom', 'organizations_contacts', 2)){
@@ -516,11 +517,11 @@ API.Plugins.organizations = {
 											if(relation.isContact){
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 													addContacts = true;
-													API.Plugins.organizations.GUI.contact(relation,area);
+													API.Plugins.organizations.GUI.contact(relation);
 													API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
 														item.find('i').first().addClass('pointer');
 														item.find('i').first().off().click(function(){
-															// container.find('#organizations_contacts_search').val(item.attr('data-name'));
+															layout.contacts.find('input').val(item.attr('data-name'));
 															// container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
 															// container.find('#organizations_contacts').find('[data-csv]').hide();
 															// container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
@@ -688,9 +689,9 @@ API.Plugins.organizations = {
 		},
 	},
 	GUI:{
-		contact:function(dataset,area){
+		contact:function(dataset,plugin = 'contacts'){
+			var area = layout[plugin].find('div.row').last();
 			area.prepend(API.Plugins.organizations.GUI.card(dataset));
-			plugin = area.attr('data-plugin');
 			card = area.find('div.col-sm-12.col-md-6').first();
 			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_details', 1)){
 				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'primary',icon:'fas fa-eye',action:'details',content:API.Contents.Language['Details']}));
@@ -1235,7 +1236,7 @@ API.Plugins.organizations = {
 			if(options instanceof Function){ callback = options; options = {}; }
 			var defaults = {field: "name"};
 			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
-			var contacts = layout.main.find('div[data-plugin="contacts"]');
+			var contacts = layout.contacts.find('div.row').last();
 			var skeleton = {};
 			for(var [field, settings] of Object.entries(API.Contents.Settings.Structure.users)){ skeleton[field] = ''; }
 			contacts.find('.addContact').off().click(function(){
@@ -1247,7 +1248,7 @@ API.Plugins.organizations = {
 						if((user.raw.last_name != '')&&(user.raw.last_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.last_name; }
 						user.dom.name = user.raw.name;
 						API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
-						API.Plugins.organizations.GUI.contact(user.dom,contacts);
+						API.Plugins.organizations.GUI.contact(user.dom);
 						API.Plugins.organizations.Events.contacts(dataset,layout);
 					}
 				});
@@ -1282,7 +1283,7 @@ API.Plugins.organizations = {
 							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
 							API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
 							contacts.find('[data-id="'+user.raw.id+'"]').remove();
-							API.Plugins.organizations.GUI.contact(user.dom,contacts);
+							API.Plugins.organizations.GUI.contact(user.dom);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
 						});
 						break;
