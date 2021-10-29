@@ -631,6 +631,9 @@ API.Plugins.organizations = {
 									}
 								});
 							});
+						} else {
+							var container = layout.details.parents().eq(2);
+							container.load('./src/views/404.php');
 						}
 					});
 				}
