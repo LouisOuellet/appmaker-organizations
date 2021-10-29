@@ -1247,6 +1247,7 @@ API.Plugins.organizations = {
 				});
 			}
 			if(API.Auth.validate('custom', 'organizations_notes', 4)){
+				console.log(layout.timeline);
 				console.log(layout.timeline.find('div[data-type="sticky-note"]'));
 				console.log(layout.timeline.find('div[data-type="sticky-note"] a.pointer'));
 				layout.timeline.find('div[data-type="sticky-note"] a.pointer').off().click(function(){
