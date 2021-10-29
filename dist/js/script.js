@@ -234,14 +234,9 @@ API.Plugins.organizations = {
 										var td = tr.find('td[data-plugin="organizations"][data-key="subsidiaries"]');
 										if(API.Helper.isSet(data.details,['organizations'])){
 											for(var [subKey, subDetails] of Object.entries(data.details.organizations.dom)){
-												var subHTML = '';
-												subHTML += '<div class="btn-group m-1" data-id="'+subDetails.id+'">';
-													subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subDetails.id+'" data-action="details"><i class="fas fa-building mr-1"></i>'+subDetails.name+'</button>';
-													if(API.Auth.validate('custom', 'organizations_organizations', 4)){
-														subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subDetails.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
-													}
-												subHTML += '</div>';
-												td.append(API.Plugins.organizations.GUI.buttons.details(subDetails,{remove:API.Auth.validate('custom', 'organizations_organizations', 4)}));
+												if(subDetails.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
+													td.append(API.Plugins.organizations.GUI.buttons.details(subDetails,{remove:API.Auth.validate('custom', 'organizations_organizations', 4)}));
+												}
 											}
 										}
 										if(API.Auth.validate('custom', 'organizations_organizations', 2)){
