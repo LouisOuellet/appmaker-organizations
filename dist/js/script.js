@@ -550,6 +550,10 @@ API.Plugins.organizations = {
 											var details = data.relations[relation.relationship][relation.link_to];
 											details.created = relation.created;
 											details.owner = relation.owner;
+											if(API.Helper.isSet(details,['statuses'])){
+												details.status = data.details.statuses.dom[relation.statuses].order;
+												delete details.statuses;
+											}
 											if(!API.Helper.isSet(details,['isActive'])||(API.Helper.isSet(details,['isActive']) && details.isActive)||(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relations.relationship+'_isActive', 1)||API.Auth.validate('custom', relations.relationship+'_isActive', 1)))){
 												switch(relation.relationship){
 													case"statuses":
@@ -576,8 +580,6 @@ API.Plugins.organizations = {
 														});
 														break;
 													case"issues":
-														details.status = data.details.statuses.dom[details.statuses].order;
-														console.log(details);
 														API.Builder.Timeline.add.issue(layout.timeline,details,'gavel','indigo',function(item){
 															if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
 																item.find('i').first().addClass('pointer');
