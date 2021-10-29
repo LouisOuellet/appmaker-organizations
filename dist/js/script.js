@@ -107,7 +107,7 @@ API.Plugins.organizations = {
 							var options = {plugin:"organizations"}
 							// Debug
 							if(API.debug){
-								API.GUI.Layouts.details.button(data,layout,function(data,layout,button){
+								API.GUI.Layouts.details.button(data,layout,{icon:"fas fa-stethoscope"},function(data,layout,button){
 									button.off().click(function(){
 										console.log(data);
 										console.log(layout);
@@ -1291,7 +1291,7 @@ API.Plugins.organizations = {
 						if((user.raw.middle_name != '')&&(user.raw.middle_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.middle_name; }
 						if((user.raw.last_name != '')&&(user.raw.last_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.last_name; }
 						user.dom.name = user.raw.name;
-						API.Helper.set(dataset.relations,['users','dom',user.dom.id],user.dom);
+						API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
 						API.Plugins.organizations.GUI.contact(user.dom,contacts);
 						API.Plugins.organizations.Events.contacts(dataset,layout);
 					}
@@ -1325,7 +1325,7 @@ API.Plugins.organizations = {
 							if((user.dom.first_name != '')&&(user.dom.first_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.first_name; }
 							if((user.dom.middle_name != '')&&(user.dom.middle_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.middle_name; }
 							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
-							dataset.relations.users.dom[user.dom.id] = user.dom;
+							API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
 							contacts.find('[data-id="'+user.raw.id+'"]').remove();
 							API.Plugins.organizations.GUI.contact(user.dom,contacts);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
