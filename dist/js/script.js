@@ -158,6 +158,9 @@ API.Plugins.organizations = {
 							}
 							// Status
 							if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
+								if(!data.this.dom.isActive){
+									layout.details.prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
+								}
 								var html = '';
 								html += '<label class="btn btn-primary pointer" data-table="statuses">';
 									html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Status'];
@@ -499,7 +502,19 @@ API.Plugins.organizations = {
 								});
 								API.Plugins.organizations.Events.contacts(data,layout);
 							}
+							// Calls
 							// Users
+							if(API.Helper.isSet(API.Plugins,['calls']) && API.Auth.validate('custom', 'organizations_calls', 1)){
+								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-phone-square",text:API.Contents.Language["Calls"]},function(data,layout,tab,content){
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="calls">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Calls'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
+									layout.content.calls = content;
+									layout.tabs.calls = tab;
+								});
+							}
 							if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
 								var html = '';
 								html += '<label class="btn btn-primary pointer" data-table="users">';
