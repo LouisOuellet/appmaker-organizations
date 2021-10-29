@@ -548,7 +548,11 @@ API.Plugins.organizations = {
 									for(var [uid, relation] of Object.entries(relations)){
 										if(API.Helper.isSet(API.Plugins,[relation.relationship]) && (API.Auth.validate('custom', 'organizations_'+relation.relationship, 1) || relation.owner == API.Contents.Auth.User.username) && API.Helper.isSet(data,['relations',relation.relationship,relation.link_to])){
 											var details = data.relations[relation.relationship][relation.link_to];
-											if(typeof relation.statuses !== 'undefined'){ details.status = data.details.statuses.dom[relation.statuses].order; }
+											if(typeof relation.statuses !== 'undefined'){
+												console.log("id: "+relation.statuses);
+												console.log("order: "+data.details.statuses.dom[relation.statuses].order);
+												details.status = data.details.statuses.dom[relation.statuses].order;
+											}
 											details.created = relation.created;
 											details.owner = relation.owner;
 											if(!API.Helper.isSet(details,['isActive'])||(API.Helper.isSet(details,['isActive']) && details.isActive)||(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relations.relationship+'_isActive', 1)||API.Auth.validate('custom', relations.relationship+'_isActive', 1)))){
@@ -577,6 +581,7 @@ API.Plugins.organizations = {
 														});
 														break;
 													case"issues":
+														console.log(details);
 														API.Builder.Timeline.add.issue(layout.timeline,details,'gavel','indigo',function(item){
 															if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
 																item.find('i').first().addClass('pointer');
