@@ -558,29 +558,25 @@ API.Plugins.organizations = {
 								button.off().click(function(){
 									if(button.find('i').hasClass( "fa-bell" )){
 										button.find('i').removeClass("fa-bell").addClass("fa-bell-slash");
-										// API.request("organizations",'subscribe',{data:{id:data.this.raw.id}},function(answer){
-										// 	var subscription = JSON.parse(answer);
-										// 	if(subscription.success != undefined){
-										// 		main.find('.card-header').find('button[data-action="subscribe"]').hide();
-										// 		main.find('.card-header').find('button[data-action="unsubscribe"]').show();
-										// 		var sub = {
-										// 			id:API.Contents.Auth.User.id,
-										// 			created:subscription.output.relationship.created,
-										// 			email:API.Contents.Auth.User.email,
-										// 		};
-										// 		API.Builder.Timeline.add.subscription(container.find('#organizations_timeline'),sub,'user','lightblue');
-										// 	}
-										// });
+										API.request("organizations",'subscribe',{data:{id:data.this.raw.id}},function(answer){
+											var subscription = JSON.parse(answer);
+											if(subscription.success != undefined){
+												var sub = {
+													id:API.Contents.Auth.User.id,
+													created:subscription.output.relationship.created,
+													email:API.Contents.Auth.User.email,
+												};
+												API.Builder.Timeline.add.subscription(layout.timeline,sub,'user','lightblue');
+											}
+										});
 									} else {
 										button.find('i').removeClass("fa-bell-slash").addClass("fa-bell");
-										// API.request(url.searchParams.get("p"),'unsubscribe',{data:{id:dataset.output.this.raw.id}},function(answer){
-										// 	var subscription = JSON.parse(answer);
-										// 	if(subscription.success != undefined){
-										// 		main.find('.card-header').find('button[data-action="unsubscribe"]').hide();
-										// 		main.find('.card-header').find('button[data-action="subscribe"]').show();
-										// 		container.find('#organizations_timeline').find('[data-type=user][data-id="'+API.Contents.Auth.User.id+'"]').remove();
-										// 	}
-										// });
+										API.request(url.searchParams.get("p"),'unsubscribe',{data:{id:dataset.output.this.raw.id}},function(answer){
+											var subscription = JSON.parse(answer);
+											if(subscription.success != undefined){
+												layout.timeline.find('[data-type=user][data-id="'+API.Contents.Auth.User.id+'"]').remove();
+											}
+										});
 									}
 								});
 							});
