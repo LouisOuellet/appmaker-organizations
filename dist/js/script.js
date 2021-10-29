@@ -561,11 +561,13 @@ API.Plugins.organizations = {
 										API.request("organizations",'subscribe',{data:{id:data.this.raw.id}},function(answer){
 											var subscription = JSON.parse(answer);
 											if(subscription.success != undefined){
-												var sub = {
-													id:API.Contents.Auth.User.id,
-													created:subscription.output.relationship.created,
-													email:API.Contents.Auth.User.email,
-												};
+												var sub = {};
+												for(var [key, value] of Object.entries(API.Contents.Auth.User)){ sub[key] = value; }
+												sub.created = subscription.output.relationship.created;
+												sub.name = '';
+												if((sub.first_name != '')&&(sub.first_name != null)){ if(sub.name != ''){sub.name += ' ';} sub.name += sub.first_name; }
+												if((sub.middle_name != '')&&(sub.middle_name != null)){ if(sub.name != ''){sub.name += ' ';} sub.name += sub.middle_name; }
+												if((sub.last_name != '')&&(sub.last_name != null)){ if(sub.name != ''){sub.name += ' ';} sub.name += sub.last_name; }
 												API.Builder.Timeline.add.subscription(layout.timeline,sub,'bell','lightblue',function(item){
 													item.find('i').first().addClass('pointer');
 													item.find('i').first().off().click(function(){
@@ -1251,11 +1253,10 @@ API.Plugins.organizations = {
 				contacts.find('.addContact').off().click(function(){
 					API.CRUD.create.show({ plugin:'contacts', keys:skeleton, set:{isActive:'true',isContact:'true',relationship:'organizations',link_to:dataset.this.raw.id} },function(created,user){
 						if(created){
-							user.raw.name = '';
-							if((user.raw.first_name != '')&&(user.raw.first_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.first_name; }
-							if((user.raw.middle_name != '')&&(user.raw.middle_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.middle_name; }
-							if((user.raw.last_name != '')&&(user.raw.last_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.last_name; }
-							user.dom.name = user.raw.name;
+							user.dom.name = '';
+							if((user.dom.first_name != '')&&(user.dom.first_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.first_name; }
+							if((user.dom.middle_name != '')&&(user.dom.middle_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.middle_name; }
+							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
 							API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
 							API.Plugins.organizations.GUI.contact(user.dom,layout);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
