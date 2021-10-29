@@ -576,6 +576,7 @@ API.Plugins.organizations = {
 														});
 														break;
 													case"issues":
+														console.log(details);
 														API.Builder.Timeline.add.issue(layout.timeline,details,'gavel','indigo',function(item){
 															if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
 																item.find('i').first().addClass('pointer');
