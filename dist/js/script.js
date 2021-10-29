@@ -1199,7 +1199,7 @@ API.Plugins.organizations = {
 				      content:layout.content.notes.find('textarea').summernote('code'),
 				      relationship:'organizations',
 				      link_to:dataset.this.dom.id,
-				      status:data.this.raw.status,
+				      status:dataset.this.raw.status,
 				    };
 				    if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
 				      note.status = layout.content.notes.find('select').val();
