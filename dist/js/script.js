@@ -497,6 +497,11 @@ API.Plugins.organizations = {
 							}
 							// Users
 							if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
+								var html = '';
+								html += '<label class="btn btn-primary pointer" data-table="users">';
+									html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Users'];
+								html += '</label>';
+								layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 								options.field = "assigned_to";
 								options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
@@ -528,45 +533,15 @@ API.Plugins.organizations = {
 									API.Plugins.organizations.Events.users(data,layout);
 								});
 								if(API.Helper.isSet(data,['relations','users'])){
-									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="users">';
-										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Users'];
-									html += '</label>';
-									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									for(var [id, relation] of Object.entries(data.relations.users)){
-										var plugin = "unknown";
-										if (relation.isEmployee){ plugin = "employees"; }
-										else if (relation.isContacts){ plugin = "contacts"; }
-										else if (relation.isUser){ plugin = "users"; }
-										if(plugin != "unknown"){
-											if(API.Helper.isSet(API.Plugins,[plugin])){
-												if(API.Auth.validate('custom', 'organizations_'+plugin, 1) || relation.owner == API.Contents.Auth.User.username){
-													if(relation.isActive||API.Auth.validate('custom', 'organizations_'+plugin+'_isActive', 1)){
-														switch(plugin){
-															case"employees":
-																API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
-																	item.find('i').first().addClass('pointer');
-																	item.find('i').first().off().click(function(){
-																		if((API.Auth.validate('custom', 'organizations_employees', 1))&&((item.attr('data-isEmployee'))||(item.attr('data-isEmployee') == 'true'))){
-																			// container.find('#organizations_employees_search').val(item.attr('data-name'));
-																			// container.find('ul.nav li.nav-item a[href*="employees"]').tab('show');
-																			// container.find('#organizations_employees').find('[data-csv]').hide();
-																			// container.find('#organizations_employees').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
-																		}
-																	});
-																});
-																break;
-															case"users":
-																API.Builder.Timeline.add.user(layout.timeline,relation,'user','lightblue',function(item){
-																	item.find('i').first().addClass('pointer');
-																	item.find('i').first().off().click(function(){
-																		API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
-																	});
-																});
-																break;
-														}
-													}
-												}
+										if(!relation.isContact && !relation.isEmployee){
+											if(relation.isActive||API.Auth.validate('custom', 'organizations_users_isActive', 1)){
+												API.Builder.Timeline.add.user(layout.timeline,relation,'user','lightblue',function(item){
+													item.find('i').first().addClass('pointer');
+													item.find('i').first().off().click(function(){
+														API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
+													});
+												});
 											}
 										}
 									}
