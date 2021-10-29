@@ -442,6 +442,7 @@ API.Plugins.organizations = {
 													}
 													API.Builder.Timeline.add.card(layout.timeline,dataset.output.note.dom,'sticky-note','warning',function(item){
 														item.find('.timeline-footer').remove();
+														$('<span class="time bg-warning"><i class="fas fa-trash-alt"></i></span>').insertAfter(item.find('span.time.bg-warning'));
 													});
 												}
 											});
@@ -471,6 +472,7 @@ API.Plugins.organizations = {
 										if(API.Auth.validate('custom', 'organizations_notes', 1) || relation.owner == API.Contents.Auth.User.username){
 											API.Builder.Timeline.add.card(layout.timeline,relation,'sticky-note','warning',function(item){
 												item.find('.timeline-footer').remove();
+												$('<span class="time bg-warning"><i class="fas fa-trash-alt"></i></span>').insertAfter(item.find('span.time.bg-warning'));
 											});
 										}
 									}
@@ -604,9 +606,6 @@ API.Plugins.organizations = {
 																		}
 																	});
 																});
-																break;
-															case"contacts":
-
 																break;
 															case"users":
 																API.Builder.Timeline.add.user(layout.timeline,relation,'user','lightblue',function(item){
@@ -1264,6 +1263,16 @@ API.Plugins.organizations = {
 						API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
 						API.Plugins.organizations.GUI.contact(user.dom,layout);
 						API.Plugins.organizations.Events.contacts(dataset,layout);
+						API.Builder.Timeline.add.contact(layout.timeline,user.dom,'address-card','secondary',function(item){
+							item.find('i').first().addClass('pointer');
+							item.find('i').first().off().click(function(){
+								value = item.attr('data-name').toLowerCase();
+								layout.content.contacts.find('input').val(value);
+								layout.tabs.contacts.find('a').tab('show');
+								layout.content.contacts.find('[data-csv]').hide();
+								layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
+							});
+						});
 					}
 				});
 			});
@@ -1306,6 +1315,7 @@ API.Plugins.organizations = {
 						API.CRUD.delete.show({ keys:contact,key:'name', modal:true, plugin:'contacts' },function(user){
 							if(contacts.find('[data-id="'+contact.id+'"]').find('.ribbon-wrapper').length > 0 || !API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 								contacts.find('[data-id="'+contact.id+'"]').remove();
+								layout.timeline.find('[data-type="address-card"][data-id="'+contact.id+'"]').remove();
 							}
 							if(contact.isActive && API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 								contact.isActive = user.isActive;
