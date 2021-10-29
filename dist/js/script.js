@@ -586,7 +586,7 @@ API.Plugins.organizations = {
 															if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
 																item.find('i').first().addClass('pointer');
 																item.find('i').first().off().click(function(){
-																	API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.services.dom[item.attr('data-id')].id, modal:true });
+																	API.CRUD.read.show({ key:'id',keys:data.details.issues.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.issues.dom[item.attr('data-id')].id, modal:true });
 																});
 															}
 														});
