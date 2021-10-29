@@ -1191,7 +1191,7 @@ API.Plugins.organizations = {
 				  if(!layout.content.notes.find('textarea').summernote('isEmpty')){
 				    var note = {
 				      by:API.Contents.Auth.User.id,
-				      layout.content.notes:layout.content.notes.find('textarea').summernote('code'),
+				      content:layout.content.notes.find('textarea').summernote('code'),
 				      relationship:'organizations',
 				      link_to:dataset.output.this.dom.id,
 				      status:data.this.raw.status,
