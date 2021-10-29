@@ -546,6 +546,12 @@ API.Plugins.organizations = {
 								// Timeline
 								for(var [rid, relations] of Object.entries(data.relationships)){
 									for(var [uid, relation] of Object.entries(relations)){
+										console.log({
+											relation:relation,
+											Plugins:API.Helper.isSet(API.Plugins,[relations.relationship]),
+											validate:API.Auth.validate('custom', 'organizations_'+relations.relationship, 1),
+											isSet:API.Helper.isSet(data,['relations',relations.relationship,relations.link_to]),
+										});
 										if(API.Helper.isSet(API.Plugins,[relations.relationship]) && (API.Auth.validate('custom', 'organizations_'+relations.relationship, 1) || relation.owner == API.Contents.Auth.User.username) && API.Helper.isSet(data,['relations',relations.relationship,relations.link_to])){
 											var details = data.relations[relations.relationship][relations.link_to];
 											details.created = relation.created;
