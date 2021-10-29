@@ -527,12 +527,12 @@ API.Plugins.organizations = {
 					                  html += '<th data-header="schedule">'+API.Contents.Language['Schedule']+'</th>';
 					                  html += '<th data-header="status">'+API.Contents.Language['Status']+'</th>';
 														if(API.Auth.validate('custom', 'organizations_calls_phone', 1)){
-					                  	html += '<th data-header="phone" style="display:none;">'+API.Contents.Language['Phone']+'</th>';
+					                  	html += '<th data-header="phone">'+API.Contents.Language['Phone']+'</th>';
 														}
 					                  html += '<th data-header="contact">'+API.Contents.Language['Contact']+'</th>';
 					                  html += '<th data-header="assigned_to">'+API.Contents.Language['Assigned to']+'</th>';
 														if((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Settings.customization.showInlineCallsControls.value)||(API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Auth.Options.application.showInlineCallsControls.value)){
-					                  	html += '<th data-header="action" style="display:none;">'+API.Contents.Language['Action']+'</th>';
+					                  	html += '<th data-header="action">'+API.Contents.Language['Action']+'</th>';
 														}
 					                html += '</tr>';
 					              html += '</thead>';
