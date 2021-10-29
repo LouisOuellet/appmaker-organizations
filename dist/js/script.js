@@ -492,7 +492,7 @@ API.Plugins.organizations = {
 													html += '<span class="input-group-text"><i class="fas fa-times" aria-hidden="true"></i></span>';
 												html += '</div>';
 												html += '<div class="input-group-append">';
-													html += '<span class="input-group-text"><i class="icon icon-search mr-1"></i>Search</span>';
+													html += '<span class="input-group-text"><i class="icon icon-search mr-1"></i>'+API.Contents.Language["Search"]+'</span>';
 												html += '</div>';
 											html += '</div>';
 										html += '</div>';
@@ -1238,9 +1238,20 @@ API.Plugins.organizations = {
 			if(options instanceof Function){ callback = options; options = {}; }
 			var defaults = {field: "name"};
 			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
-			var contacts = layout.contacts.find('div.row').last();
+			var contacts = layout.contacts.find('div.row').eq(1);
+			var search = layout.contacts.find('div.row').eq(0);
 			var skeleton = {};
 			for(var [field, settings] of Object.entries(API.Contents.Settings.Structure.users)){ skeleton[field] = ''; }
+			search.find('div[data-action="clear"]').off().click(function(){
+				$(this).parent().find('input').val('');
+				contacts.find('[data-csv]').show();
+			});
+			search.find('input').off().on('input',function(){
+				if($(this).val() != ''){
+					contacts.find('[data-csv]').hide();
+					contacts.find('[data-csv*="'+$(this).val().toLowerCase()+'"]').each(function(){ $(this).show(); });
+				} else { contacts.find('[data-csv]').show(); }
+			});
 			contacts.find('.addContact').off().click(function(){
 				API.CRUD.create.show({ plugin:'contacts', keys:skeleton, set:{isActive:'true',isContact:'true',relationship:'organizations',link_to:dataset.this.raw.id} },function(created,user){
 					if(created){
