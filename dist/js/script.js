@@ -1304,6 +1304,7 @@ API.Plugins.organizations = {
 						});
 						break;
 					case"delete":
+						contact.link_to = dataset.this.raw.id;
 						API.CRUD.delete.show({ keys:contact,key:'name', modal:true, plugin:'contacts' },function(user){
 							if(contacts.find('[data-id="'+contact.id+'"]').find('.ribbon-wrapper').length > 0 || !API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 								contacts.find('[data-id="'+contact.id+'"]').remove();
