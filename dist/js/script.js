@@ -473,22 +473,20 @@ API.Plugins.organizations = {
 										html += '</div>';
 										area.append(html);
 									}
-									if(API.Helper.isSet(data,['relations','users'])){
-										for(var [id, relation] of Object.entries(data.relations.users)){
-											if(relation.isContact){
-												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
-													API.Plugins.organizations.GUI.contact(relation,layout);
-													API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
-														item.find('i').first().addClass('pointer');
-														item.find('i').first().off().click(function(){
-															value = item.attr('data-name').toLowerCase();
-															layout.content.contacts.find('input').val(value);
-															layout.tabs.contacts.find('a').tab('show');
-															layout.content.contacts.find('[data-csv]').hide();
-															layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
-														});
+									if(API.Helper.isSet(data,['relations','contacts'])){
+										for(var [id, relation] of Object.entries(data.relations.contacts)){
+											if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
+												API.Plugins.organizations.GUI.contact(relation,layout);
+												API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
+													item.find('i').first().addClass('pointer');
+													item.find('i').first().off().click(function(){
+														value = item.attr('data-name').toLowerCase();
+														layout.content.contacts.find('input').val(value);
+														layout.tabs.contacts.find('a').tab('show');
+														layout.content.contacts.find('[data-csv]').hide();
+														layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
 													});
-												}
+												});
 											}
 										}
 									}
@@ -534,15 +532,13 @@ API.Plugins.organizations = {
 								});
 								if(API.Helper.isSet(data,['relations','users'])){
 									for(var [id, relation] of Object.entries(data.relations.users)){
-										if(!relation.isContact && !relation.isEmployee){
-											if(relation.isActive||API.Auth.validate('custom', 'organizations_users_isActive', 1)){
-												API.Builder.Timeline.add.subscription(layout.timeline,relation,'bell','lightblue',function(item){
-													item.find('i').first().addClass('pointer');
-													item.find('i').first().off().click(function(){
-														API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
-													});
+										if(relation.isActive||API.Auth.validate('custom', 'organizations_users_isActive', 1)){
+											API.Builder.Timeline.add.subscription(layout.timeline,relation,'bell','lightblue',function(item){
+												item.find('i').first().addClass('pointer');
+												item.find('i').first().off().click(function(){
+													API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
 												});
-											}
+											});
 										}
 									}
 								}
@@ -634,7 +630,7 @@ API.Plugins.organizations = {
 			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_share', 1)){
 				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'navy',icon:'fas fa-share-alt',action:'share',content:API.Contents.Language['Share']}));
 			}
-			if((plugin == "employees")||(plugin == "contacts" && dataset.isContact && !dataset.isEmployee)){
+			if(plugin == "employees" || plugin == "contacts"){
 				if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_edit', 1)){
 					card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'warning',icon:'fas fa-edit',action:'edit',content:API.Contents.Language['Edit']}));
 				}
@@ -1238,7 +1234,7 @@ API.Plugins.organizations = {
 			var contacts = layout.content.contacts.find('div.row').eq(1);
 			var search = layout.content.contacts.find('div.row').eq(0);
 			var skeleton = {};
-			for(var [field, settings] of Object.entries(API.Contents.Settings.Structure.users)){ skeleton[field] = ''; }
+			for(var [field, settings] of Object.entries(API.Contents.Settings.Structure.contacts)){ skeleton[field] = ''; }
 			search.find('div[data-action="clear"]').off().click(function(){
 				$(this).parent().find('input').val('');
 				contacts.find('[data-csv]').show();
@@ -1251,13 +1247,13 @@ API.Plugins.organizations = {
 			});
 			if(API.Auth.validate('custom', 'organizations_contacts', 2)){
 				contacts.find('.addContact').off().click(function(){
-					API.CRUD.create.show({ plugin:'contacts', keys:skeleton, set:{isActive:'true',isContact:'true',relationship:'organizations',link_to:dataset.this.raw.id} },function(created,user){
+					API.CRUD.create.show({ plugin:'contacts', keys:skeleton, set:{isActive:'true',relationship:'organizations',link_to:dataset.this.raw.id} },function(created,user){
 						if(created){
 							user.dom.name = '';
 							if((user.dom.first_name != '')&&(user.dom.first_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.first_name; }
 							if((user.dom.middle_name != '')&&(user.dom.middle_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.middle_name; }
 							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
-							API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
+							API.Helper.set(dataset.relations,['contacts',user.dom.id],user.dom);
 							API.Plugins.organizations.GUI.contact(user.dom,layout);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
 							API.Builder.Timeline.add.contact(layout.timeline,user.dom,'address-card','secondary',function(item){
@@ -1275,7 +1271,7 @@ API.Plugins.organizations = {
 				});
 			}
 			contacts.find('button').off().click(function(){
-				var contact = dataset.relations.users[$(this).attr('data-id')];
+				var contact = dataset.relations.contacts[$(this).attr('data-id')];
 				switch($(this).attr('data-action')){
 					case"call":
 						var now = new Date();
@@ -1301,7 +1297,7 @@ API.Plugins.organizations = {
 							if((user.dom.first_name != '')&&(user.dom.first_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.first_name; }
 							if((user.dom.middle_name != '')&&(user.dom.middle_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.middle_name; }
 							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
-							API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
+							API.Helper.set(dataset.relations,['contacts',user.dom.id],user.dom);
 							contacts.find('[data-id="'+user.raw.id+'"]').remove();
 							API.Plugins.organizations.GUI.contact(user.dom,layout);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
@@ -1315,7 +1311,7 @@ API.Plugins.organizations = {
 							}
 							if(contact.isActive && API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 								contact.isActive = user.isActive;
-								API.Helper.set(dataset.relations,['users',contact.id,'isActive'],contact.isActive);
+								API.Helper.set(dataset.relations,['contacts',contact.id,'isActive'],contact.isActive);
 								contacts.find('[data-id="'+contact.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">'+API.Contents.Language['Inactive']+'</div></div>');
 							}
 						});
