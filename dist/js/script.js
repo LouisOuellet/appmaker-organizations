@@ -1198,7 +1198,7 @@ API.Plugins.organizations = {
 				      by:API.Contents.Auth.User.id,
 				      content:layout.content.notes.find('textarea').summernote('code'),
 				      relationship:'organizations',
-				      link_to:dataset.output.this.dom.id,
+				      link_to:dataset.this.dom.id,
 				      status:data.this.raw.status,
 				    };
 				    if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
