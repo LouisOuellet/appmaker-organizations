@@ -247,14 +247,16 @@ API.Plugins.organizations = {
 									if(API.Helper.isSet(data,['relations','organizations'])){
 										for(var [id, relation] of Object.entries(data.relations.organizations)){
 											if(API.Auth.validate('custom', 'organizations_organizations', 1) || relation.owner == API.Contents.Auth.User.username){
-												API.Builder.Timeline.add.client(layout.timeline,relation,'building','secondary',function(item){
-													if((API.Auth.validate('plugin','organizations',1))&&(API.Auth.validate('view','details',1,'organizations'))){
-														item.find('i').first().addClass('pointer');
-														item.find('i').first().off().click(function(){
-															API.CRUD.read.show({ key:'name',keys:data.details.organizations.dom[item.attr('data-id')], href:"?p=organizations&v=details&id="+data.details.organizations.dom[item.attr('data-id')].name, modal:true });
-														});
-													}
-												});
+												if(relation.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
+													API.Builder.Timeline.add.client(layout.timeline,relation,'building','secondary',function(item){
+														if((API.Auth.validate('plugin','organizations',1))&&(API.Auth.validate('view','details',1,'organizations'))){
+															item.find('i').first().addClass('pointer');
+															item.find('i').first().off().click(function(){
+																API.CRUD.read.show({ key:'name',keys:data.details.organizations.dom[item.attr('data-id')], href:"?p=organizations&v=details&id="+data.details.organizations.dom[item.attr('data-id')].name, modal:true });
+															});
+														}
+													});
+												}
 											}
 										}
 									}
