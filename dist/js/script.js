@@ -517,7 +517,7 @@ API.Plugins.organizations = {
 											if(relation.isContact){
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 													addContacts = true;
-													API.Plugins.organizations.GUI.contact(relation);
+													API.Plugins.organizations.GUI.contact(relation,layout);
 													API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
 														item.find('i').first().addClass('pointer');
 														item.find('i').first().off().click(function(){
@@ -689,7 +689,7 @@ API.Plugins.organizations = {
 		},
 	},
 	GUI:{
-		contact:function(dataset,plugin = 'contacts'){
+		contact:function(dataset,layout,plugin = 'contacts'){
 			var area = layout[plugin].find('div.row').last();
 			area.prepend(API.Plugins.organizations.GUI.card(dataset));
 			card = area.find('div.col-sm-12.col-md-6').first();
@@ -1248,7 +1248,7 @@ API.Plugins.organizations = {
 						if((user.raw.last_name != '')&&(user.raw.last_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.last_name; }
 						user.dom.name = user.raw.name;
 						API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
-						API.Plugins.organizations.GUI.contact(user.dom);
+						API.Plugins.organizations.GUI.contact(user.dom,layout);
 						API.Plugins.organizations.Events.contacts(dataset,layout);
 					}
 				});
@@ -1283,7 +1283,7 @@ API.Plugins.organizations = {
 							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
 							API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
 							contacts.find('[data-id="'+user.raw.id+'"]').remove();
-							API.Plugins.organizations.GUI.contact(user.dom);
+							API.Plugins.organizations.GUI.contact(user.dom,layout);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
 						});
 						break;
