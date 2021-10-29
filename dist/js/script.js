@@ -547,7 +547,8 @@ API.Plugins.organizations = {
 								for(var [rid, relations] of Object.entries(data.relationships)){
 									for(var [uid, relation] of Object.entries(relations)){
 										if(API.Helper.isSet(API.Plugins,[relation.relationship]) && (API.Auth.validate('custom', 'organizations_'+relation.relationship, 1) || relation.owner == API.Contents.Auth.User.username) && API.Helper.isSet(data,['relations',relation.relationship,relation.link_to])){
-											var details = data.relations[relation.relationship][relation.link_to];
+											var details = {};
+											for(var [key, value] of Object.entries(data.relations[relation.relationship][relation.link_to])){ details[key] = value; }
 											if(typeof relation.statuses !== 'undefined'){
 												console.log("id: "+relation.statuses);
 												console.log("order: "+data.details.statuses.dom[relation.statuses].order);
