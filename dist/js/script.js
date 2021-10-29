@@ -419,6 +419,11 @@ API.Plugins.organizations = {
 												item.find('.timeline-footer').remove();
 												if(API.Auth.validate('custom', 'organizations_notes', 4)){
 													$('<a class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></a>').insertAfter(item.find('span.time.bg-warning'));
+													item.find('a.pointer').off().click(function(){
+														API.CRUD.delete.show({ keys:relation,key:'id', modal:true, plugin:'notes' },function(note){
+															item.remove();
+														});
+													});
 												}
 											});
 										}
@@ -1212,20 +1217,25 @@ API.Plugins.organizations = {
 				      height: 250,
 				    });
 				    API.request('organizations','note',{data:note},function(result){
-				      var dataset = JSON.parse(result);
-				      if(dataset.success != undefined){
-				        if(dataset.output.status != null){
+				      var data = JSON.parse(result);
+				      if(data.success != undefined){
+				        if(data.output.status != null){
 				          var status = {};
-				          for(var [key, value] of Object.entries(dataset.output.status)){ status[key] = value; }
-				          status.created = dataset.output.note.raw.created;
+				          for(var [key, value] of Object.entries(data.output.status)){ status[key] = value; }
+				          status.created = data.output.note.raw.created;
 				          API.Builder.Timeline.add.status(layout.timeline,status);
 				          layout.content.notes.find('select').val(status.order);
 				          layout.details.find('td[data-plugin="organizations"][data-key="status"]').html('<span class="badge bg-'+API.Contents.Statuses.organizations[status.order].color+'"><i class="'+API.Contents.Statuses.organizations[status.order].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Language[API.Contents.Statuses.organizations[status.order].name]+'</span>');
 				        }
-				        API.Builder.Timeline.add.card(layout.timeline,dataset.output.note.dom,'sticky-note','warning',function(item){
+				        API.Builder.Timeline.add.card(layout.timeline,data.output.note.dom,'sticky-note','warning',function(item){
 				          item.find('.timeline-footer').remove();
 				          if(API.Auth.validate('custom', 'organizations_notes', 4)){
 				            $('<a class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></a>').insertAfter(item.find('span.time.bg-warning'));
+										item.find('a.pointer').off().click(function(){
+											API.CRUD.delete.show({ keys:data.output.note.dom,key:'id', modal:true, plugin:'notes' },function(note){
+												item.remove();
+											});
+										});
 				          }
 				        });
 				      }
@@ -1244,19 +1254,6 @@ API.Plugins.organizations = {
 				    });
 				    alert(API.Contents.Language['Note is empty']);
 				  }
-				});
-			}
-			if(API.Auth.validate('custom', 'organizations_notes', 4)){
-				console.log(layout.timeline);
-				console.log(layout.timeline.find('div'));
-				console.log(layout.timeline.find('div[data-type="sticky-note"]'));
-				console.log(layout.timeline.find('div[data-type="sticky-note"] a.pointer'));
-				layout.timeline.find('div[data-type="sticky-note"] a.pointer').off().click(function(){
-					var object = $(this).parents().eq(1);
-					var note = dataset.relations.notes[object.attr('data-id')];
-					API.CRUD.delete.show({ keys:note,key:'id', modal:true, plugin:'notes' },function(item){
-						object.remove();
-					});
 				});
 			}
 		},
