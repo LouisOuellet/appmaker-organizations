@@ -1247,7 +1247,8 @@ API.Plugins.organizations = {
 				});
 			}
 			if(API.Auth.validate('custom', 'organizations_notes', 4)){
-				layout.timeline.find('div[data-type="sticky-note"] .pointer').off().click(function(){
+				console.log(layout.timeline.find('div[data-type="sticky-note"] a.pointer'));
+				layout.timeline.find('div[data-type="sticky-note"] a.pointer').off().click(function(){
 					var object = $(this).parents().eq(1);
 					var note = dataset.relations.notes[object.attr('data-id')];
 					API.CRUD.delete.show({ keys:note,key:'id', modal:true, plugin:'notes' },function(item){
