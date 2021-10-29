@@ -693,7 +693,7 @@ API.Plugins.organizations = {
 	},
 	GUI:{
 		contact:function(dataset,layout,plugin = 'contacts'){
-			var area = layout[plugin].find('div.row').eq(1);
+			var area = layout.content[plugin].find('div.row').eq(1);
 			area.prepend(API.Plugins.organizations.GUI.card(dataset));
 			card = area.find('div.col-sm-12.col-md-6').first();
 			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_details', 1)){
