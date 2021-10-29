@@ -1,73 +1,16 @@
 <div data-plugin="organizations" data-id="">
-	<!-- <span style="display:none;" data-plugin="organizations" data-key="id"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="created"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="modified"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="owner"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="updated_by"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="name"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="code"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="business_num"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="status"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="address"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="city"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="state"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="country"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="zipcode"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="email"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="fax"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="phone"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="toll_free"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="website"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="tags"></span>
-	<span style="display:none;" data-plugin="organizations" data-key="assigned_to"></span> -->
 	<!-- <div class="row">
 		<div class="col-md-8">
 			<div class="card" id="organizations_main_card">
 	      <div class="card-header d-flex p-0">
 	        <ul class="nav nav-pills p-2" id="organizations_main_card_tabs">
-	          <li class="nav-item"><a class="nav-link active" href="#organizations" data-toggle="tab"><i class="fas fa-history mr-1"></i>History</a></li>
-	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_comments" data-toggle="tab"><i class="fas fa-comment mr-1"></i>Comment</a></li>
-	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_notes" data-toggle="tab"><i class="fas fa-sticky-note mr-1"></i>Note</a></li>
-	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_addresses" data-toggle="tab"><i class="fas fa-map mr-1"></i>Addresses</a></li>
-	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_contacts" data-toggle="tab"><i class="fas fa-address-book mr-1"></i>Contacts</a></li>
-	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_employees" data-toggle="tab"><i class="fas fa-user-tie mr-1"></i>Employees</a></li>
 						<li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_calls" data-toggle="tab"><i class="fas fa-phone-square mr-1"></i>Calls</a></li>
 						<li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_callbacks" data-toggle="tab"><i class="fas fa-phone-square mr-1"></i>Callbacks</a></li>
-	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_appointments" data-toggle="tab"><i class="fas fa-calendar-day mr-1"></i>Appointments</a></li>
-	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_containers" data-toggle="tab"><i class="fas fa-boxes mr-1"></i>Containers</a></li>
-	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_subscriptions" data-toggle="tab"><i class="fas fa-list-alt mr-1"></i>Subscriptions</a></li>
 	          <li class="nav-item" style="display:none;"><a class="nav-link" href="#organizations_settings" data-toggle="tab"><i class="fas fa-cog mr-1"></i>Settings</a></li>
 	        </ul>
 	      </div>
 	      <div class="card-body p-0">
 	        <div class="tab-content">
-	          <div class="tab-pane p-3 active" id="organizations">
-							<div class="timeline" id="organizations_timeline"></div>
-						</div>
-	          <div class="tab-pane p-0" id="organizations_comments">
-							<div id="organizations_comments_textarea">
-								<textarea title="Comment" name="comment" class="form-control" data-plugin="organizations" data-form="comments"></textarea>
-							</div>
-							<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-						    <form class="form-inline my-2 my-lg-0 ml-auto">
-						      <button class="btn btn-primary my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-reply mr-1"></i>Reply</button>
-						    </form>
-							</nav>
-	          </div>
-	          <div class="tab-pane p-0" id="organizations_notes">
-							<div id="organizations_notes_textarea">
-								<textarea title="Note" name="note" class="form-control"></textarea>
-							</div>
-							<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-						    <form class="form-inline my-2 my-lg-0 ml-auto">
-									<select class="form-control mr-sm-2" name="status" style="width: 150px;display:none;"></select>
-						      <button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-reply mr-1"></i>Add Note</button>
-						    </form>
-							</nav>
-	          </div>
-						<div class="tab-pane" id="organizations_contacts">
-							<div class="row p-3"></div>
-						</div>
 						<div class="tab-pane" id="organizations_employees">
 							<div class="row p-3"></div>
 						</div>

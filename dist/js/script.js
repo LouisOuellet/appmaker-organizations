@@ -501,7 +501,6 @@ API.Plugins.organizations = {
 									API.Plugins.organizations.Events.contacts(data,layout);
 								}
 								// Calls
-								// Users
 								if(API.Helper.isSet(API.Plugins,['calls']) && API.Auth.validate('custom', 'organizations_calls', 1)){
 									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-phone-square",text:API.Contents.Language["Calls"]},function(data,layout,tab,content){
 										var html = '';
@@ -511,8 +510,39 @@ API.Plugins.organizations = {
 										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 										layout.content.calls = content;
 										layout.tabs.calls = tab;
+										var html = '';
+										html += '<div class="row p-3">';
+											html += '<div class="col-md-12">';
+												html += '<div class="input-group">';
+													html += '<input type="text" class="form-control">';
+													html += '<div class="input-group-append pointer" data-action="clear"><span class="input-group-text"><i class="fas fa-times"></i></span></div>';
+													html += '<div class="input-group-append"><span class="input-group-text"><i class="icon icon-search mr-1"></i>'+API.Contents.Language['Search']+'</span></div>';
+												html += '</div>';
+											html += '</div>';
+										html += '</div>';
+										html += '<div class="row px-2 py-0">';
+											html += '<table class="table table-sm table-striped table-hover mb-0">';
+					              html += '<thead>';
+					                html += '<tr>';
+					                  html += '<th data-header="schedule">'+API.Contents.Language['Schedule']+'</th>';
+					                  html += '<th data-header="status">'+API.Contents.Language['Status']+'</th>';
+														if(API.Auth.validate('custom', 'organizations_calls_phone', 1)){
+					                  	html += '<th data-header="phone" style="display:none;">'+API.Contents.Language['Phone']+'</th>';
+														}
+					                  html += '<th data-header="contact">'+API.Contents.Language['Contact']+'</th>';
+					                  html += '<th data-header="assigned_to">'+API.Contents.Language['Assigned to']+'</th>';
+														if((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Settings.customization.showInlineCallsControls.value)||(API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Auth.Options.application.showInlineCallsControls.value)){
+					                  	html += '<th data-header="action" style="display:none;">'+API.Contents.Language['Action']+'</th>';
+														}
+					                html += '</tr>';
+					              html += '</thead>';
+					              html += '<tbody></tbody>';
+					            html += '</table>';
+						        html += '</div>';
+										content.append(html);
 									});
 								}
+								// Users
 								if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
 									var html = '';
 									html += '<label class="btn btn-primary pointer" data-table="users">';
