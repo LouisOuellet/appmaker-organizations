@@ -76,7 +76,7 @@ API.Plugins.organizations = {
 								for(var [key, value] of Object.entries(dataset.output.details[relation.relationship].dom[relation.link_to])){ detail[key] = value; }
 								detail.owner = relation.owner;
 								detail.created = relation.created;
-								if(API.Helper.isSet(relation,['statuses'])){ detail.statuses = relation.statuses; }
+								if(API.Helper.isSet(relation,['statuses'])){ detail.status = data.details.statuses.dom[relation.statuses].order; }
 								if(!API.Helper.isSet(detail,['name']) && API.Helper.isSet(detail,['first_name'])){
 									detail.name = '';
 									if((detail.first_name != '')&&(detail.first_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.first_name; }
@@ -550,10 +550,6 @@ API.Plugins.organizations = {
 											var details = data.relations[relation.relationship][relation.link_to];
 											details.created = relation.created;
 											details.owner = relation.owner;
-											if(API.Helper.isSet(details,['statuses'])){
-												details.status = data.details.statuses.dom[relation.statuses].order;
-												delete details.statuses;
-											}
 											if(!API.Helper.isSet(details,['isActive'])||(API.Helper.isSet(details,['isActive']) && details.isActive)||(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relations.relationship+'_isActive', 1)||API.Auth.validate('custom', relations.relationship+'_isActive', 1)))){
 												switch(relation.relationship){
 													case"statuses":
