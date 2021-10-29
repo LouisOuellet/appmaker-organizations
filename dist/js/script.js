@@ -1334,7 +1334,9 @@ API.Plugins.organizations = {
 					case"delete":
 						console.log(contact);
 						API.CRUD.delete.show({ keys:contact,key:'name', modal:true, plugin:'contacts' },function(user){
-							if(contacts.find('[data-id="'+contact.id+'"]').find('.ribbon-wrapper').length > 0){ contacts.find('[data-id="'+contact.id+'"]').remove(); }
+							if(contacts.find('[data-id="'+contact.id+'"]').find('.ribbon-wrapper').length > 0 || !API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
+								contacts.find('[data-id="'+contact.id+'"]').remove();
+							}
 							if(contact.isActive && API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 								contact.isActive = user.isActive;
 								API.Helper.set(dataset.relations,['users',contact.id,'isActive'],contact.isActive);
