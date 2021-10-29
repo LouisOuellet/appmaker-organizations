@@ -480,6 +480,7 @@ API.Plugins.organizations = {
 							if(API.Helper.isSet(API.Plugins,['contacts']) && API.Auth.validate('custom', 'organizations_contacts', 1)){
 								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Contacts"]},function(data,layout,tab,content){
 									layout.contacts = content;
+									layout.tabs.contacts = tab;
 									content.addClass('p-3');
 									var html = '';
 									html += '<div class="row">';
