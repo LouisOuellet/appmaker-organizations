@@ -76,7 +76,7 @@ API.Plugins.organizations = {
 								for(var [key, value] of Object.entries(dataset.output.details[relation.relationship].dom[relation.link_to])){ detail[key] = value; }
 								detail.owner = relation.owner;
 								detail.created = relation.created;
-								if(API.Helper.isSet(relation,['statuses']) && !API.Helper.isSet(detail,['status'])){ detail.status = dataset.details.statuses.dom[relation.statuses].order; }
+								if(API.Helper.isSet(relation,['statuses']) && !API.Helper.isSet(detail,['status'])){ detail.status = dataset.output.details.statuses.dom[relation.statuses].order; }
 								if(!API.Helper.isSet(detail,['name']) && API.Helper.isSet(detail,['first_name'])){
 									detail.name = '';
 									if((detail.first_name != '')&&(detail.first_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.first_name; }
