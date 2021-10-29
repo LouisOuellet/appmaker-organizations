@@ -177,13 +177,6 @@ API.Plugins.organizations = {
 										}
 									options.td += '</td>';
 									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-									if(API.Helper.isSet(data,['relations','statuses'])){
-										for(var [id, relation] of Object.entries(data.relations.statuses)){
-											if(API.Auth.validate('custom', 'organizations_status', 1) || relation.owner == API.Contents.Auth.User.username){
-												API.Builder.Timeline.add.status(layout.timeline,relation);
-											}
-										}
-									}
 								}
 								options.field = "address";
 								options.td = '<td data-plugin="organizations" data-key="address">'+data.this.dom.address+', '+data.this.dom.city+', '+data.this.dom.zipcode+'</td>';
@@ -244,22 +237,6 @@ API.Plugins.organizations = {
 										}
 										API.Plugins.organizations.Events.subsidiaries(data,layout);
 									});
-									if(API.Helper.isSet(data,['relations','organizations'])){
-										for(var [id, relation] of Object.entries(data.relations.organizations)){
-											if(API.Auth.validate('custom', 'organizations_organizations', 1) || relation.owner == API.Contents.Auth.User.username){
-												if(relation.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
-													API.Builder.Timeline.add.client(layout.timeline,relation,'building','secondary',function(item){
-														if((API.Auth.validate('plugin','organizations',1))&&(API.Auth.validate('view','details',1,'organizations'))){
-															item.find('i').first().addClass('pointer');
-															item.find('i').first().off().click(function(){
-																API.CRUD.read.show({ key:'name',keys:data.details.organizations.dom[item.attr('data-id')], href:"?p=organizations&v=details&id="+data.details.organizations.dom[item.attr('data-id')].name, modal:true });
-															});
-														}
-													});
-												}
-											}
-										}
-									}
 								}
 								// Services
 								if(API.Helper.isSet(API.Plugins,['services']) && API.Auth.validate('custom', 'organizations_services', 1)){
@@ -282,20 +259,6 @@ API.Plugins.organizations = {
 										}
 										API.Plugins.organizations.Events.services(data,layout);
 									});
-									if(API.Helper.isSet(data,['relations','services'])){
-										for(var [id, relation] of Object.entries(data.relations.services)){
-											if(API.Auth.validate('custom', 'organizations_services', 1) || relation.owner == API.Contents.Auth.User.username){
-												API.Builder.Timeline.add.service(layout.timeline,relation,'hand-holding-usd','success',function(item){
-													if((API.Auth.validate('plugin','services',1))&&(API.Auth.validate('view','details',1,'services'))){
-														item.find('i').first().addClass('pointer');
-														item.find('i').first().off().click(function(){
-															API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=services&v=details&id="+data.details.services.dom[item.attr('data-id')].name, modal:true });
-														});
-													}
-												});
-											}
-										}
-									}
 								}
 								// Issues
 								if(API.Helper.isSet(API.Plugins,['issues']) && API.Auth.validate('custom', 'organizations_issues', 1)){
@@ -335,21 +298,6 @@ API.Plugins.organizations = {
 										}
 										API.Plugins.organizations.Events.issues(data,layout);
 									});
-									if(API.Helper.isSet(data,['relations','issues'])){
-										for(var [id, relation] of Object.entries(data.relations.issues)){
-											if(API.Auth.validate('custom', 'organizations_issues', 1) || relation.owner == API.Contents.Auth.User.username){
-												relation.status = data.details.statuses.raw[relation.statuses].order;
-												API.Builder.Timeline.add.issue(layout.timeline,relation,'gavel','indigo',function(item){
-													if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
-														item.find('i').first().addClass('pointer');
-														item.find('i').first().off().click(function(){
-															API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.services.dom[item.attr('data-id')].id, modal:true });
-														});
-													}
-												});
-											}
-										}
-									}
 								}
 								// Tags
 								if(API.Helper.isSet(API.Plugins,['tags']) && API.Auth.validate('custom', 'organizations_tags', 1)){
@@ -419,23 +367,6 @@ API.Plugins.organizations = {
 											content.append(html);
 										}
 									});
-									if(API.Helper.isSet(data,['relations','notes'])){
-										for(var [id, relation] of Object.entries(data.relations.notes)){
-											if(API.Auth.validate('custom', 'organizations_notes', 1) || relation.owner == API.Contents.Auth.User.username){
-												API.Builder.Timeline.add.card(layout.timeline,relation,'sticky-note','warning',function(item){
-													item.find('.timeline-footer').remove();
-													if(API.Auth.validate('custom', 'organizations_notes', 4)){
-														$('<a class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></a>').insertAfter(item.find('span.time.bg-warning'));
-														item.find('a.pointer').off().click(function(){
-															API.CRUD.delete.show({ keys:data.relations.notes[item.attr('data-id')],key:'id', modal:true, plugin:'notes' },function(note){
-																item.remove();
-															});
-														});
-													}
-												});
-											}
-										}
-									}
 									API.Plugins.organizations.Events.notes(data,layout);
 								}
 								// Employees
@@ -484,16 +415,6 @@ API.Plugins.organizations = {
 											for(var [id, relation] of Object.entries(data.relations.contacts)){
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 													API.Plugins.organizations.GUI.contact(relation,layout);
-													API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
-														item.find('i').first().addClass('pointer');
-														item.find('i').first().off().click(function(){
-															value = item.attr('data-name').toLowerCase();
-															layout.content.contacts.find('input').val(value);
-															layout.tabs.contacts.find('a').tab('show');
-															layout.content.contacts.find('[data-csv]').hide();
-															layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
-														});
-													});
 												}
 											}
 										}
@@ -579,20 +500,6 @@ API.Plugins.organizations = {
 										}
 										API.Plugins.organizations.Events.users(data,layout);
 									});
-									if(API.Helper.isSet(data,['relations','users'])){
-										for(var [id, relation] of Object.entries(data.relations.users)){
-											if(relation.isActive||API.Auth.validate('custom', 'organizations_users_isActive', 1)){
-												API.Builder.Timeline.add.subscription(layout.timeline,relation,'bell','lightblue',function(item){
-													if((API.Auth.validate('plugin','users',1))&&(API.Auth.validate('view','details',1,'users'))){
-														item.find('i').first().addClass('pointer');
-														item.find('i').first().off().click(function(){
-															API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
-														});
-													}
-												});
-											}
-										}
-									}
 								}
 								// Created
 								options.field = "created";
@@ -637,6 +544,89 @@ API.Plugins.organizations = {
 									});
 								});
 								// Timeline
+								for(var [rid, relations] of Object.entries(data.relationships)){
+									for(var [uid, relation] of Object.entries(relations)){
+										if(API.Helper.isSet(API.Plugins,[relations.relationship]) && (API.Auth.validate('custom', 'organizations_'+relations.relationship, 1) || relation.owner == API.Contents.Auth.User.username) && API.Helper.isSet(data,['relations',relations.relationship,relations.link_to])){
+											var details = data.relations[relations.relationship][relations.link_to];
+											details.created = relation.created;
+											details.owner = relation.owner;
+											if(!API.Helper.isSet(details,['isActive'])||(API.Helper.isSet(details,['isActive']) && details.isActive)||(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relations.relationship+'_isActive', 1)||API.Auth.validate('custom', relations.relationship+'_isActive', 1)))){
+												switch(relation.relationship){
+													case"statuses":
+														API.Builder.Timeline.add.status(layout.timeline,details);
+														break;
+													case"organizations":
+														API.Builder.Timeline.add.client(layout.timeline,details,'building','secondary',function(item){
+															if((API.Auth.validate('plugin','organizations',1))&&(API.Auth.validate('view','details',1,'organizations'))){
+																item.find('i').first().addClass('pointer');
+																item.find('i').first().off().click(function(){
+																	API.CRUD.read.show({ key:'name',keys:data.details.organizations.dom[item.attr('data-id')], href:"?p=organizations&v=details&id="+data.details.organizations.dom[item.attr('data-id')].name, modal:true });
+																});
+															}
+														});
+														break;
+													case"services":
+														API.Builder.Timeline.add.service(layout.timeline,details,'hand-holding-usd','success',function(item){
+															if((API.Auth.validate('plugin','services',1))&&(API.Auth.validate('view','details',1,'services'))){
+																item.find('i').first().addClass('pointer');
+																item.find('i').first().off().click(function(){
+																	API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=services&v=details&id="+data.details.services.dom[item.attr('data-id')].name, modal:true });
+																});
+															}
+														});
+														break;
+													case"issues":
+														API.Builder.Timeline.add.issue(layout.timeline,details,'gavel','indigo',function(item){
+															if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
+																item.find('i').first().addClass('pointer');
+																item.find('i').first().off().click(function(){
+																	API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.services.dom[item.attr('data-id')].id, modal:true });
+																});
+															}
+														});
+														break;
+													case"notes":
+														API.Builder.Timeline.add.card(layout.timeline,details,'sticky-note','warning',function(item){
+															item.find('.timeline-footer').remove();
+															if(API.Auth.validate('custom', 'organizations_notes', 4)){
+																$('<a class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></a>').insertAfter(item.find('span.time.bg-warning'));
+																item.find('a.pointer').off().click(function(){
+																	API.CRUD.delete.show({ keys:data.relations.notes[item.attr('data-id')],key:'id', modal:true, plugin:'notes' },function(note){
+																		item.remove();
+																	});
+																});
+															}
+														});
+														break;
+													case"contacts":
+														API.Builder.Timeline.add.contact(layout.timeline,details,'address-card','secondary',function(item){
+															item.find('i').first().addClass('pointer');
+															item.find('i').first().off().click(function(){
+																value = item.attr('data-name').toLowerCase();
+																layout.content.contacts.find('input').val(value);
+																layout.tabs.contacts.find('a').tab('show');
+																layout.content.contacts.find('[data-csv]').hide();
+																layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
+															});
+														});
+														break;
+													case"calls":
+														break;
+													case"users":
+														API.Builder.Timeline.add.subscription(layout.timeline,details,'bell','lightblue',function(item){
+															if((API.Auth.validate('plugin','users',1))&&(API.Auth.validate('view','details',1,'users'))){
+																item.find('i').first().addClass('pointer');
+																item.find('i').first().off().click(function(){
+																	API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
+																});
+															}
+														});
+														break;
+												}
+											}
+										}
+									}
+								}
 								layout.timeline.find('.time-label').first().find('label').each(function(){
 									switch($(this).attr('data-table')){
 										case"notes":var icon = 'sticky-note';break;
