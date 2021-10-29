@@ -523,10 +523,10 @@ API.Plugins.organizations = {
 													API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
 														item.find('i').first().addClass('pointer');
 														item.find('i').first().off().click(function(){
-															layout.contacts.find('input').val(item.attr('data-name'));
+															layout.contacts.find('input').val(item.attr('data-name').toLowerCase());
 															layout.tabs.contacts.find('a').tab('show');
-															layout.contacts.find('[data-csv]').hide();
-															layout.contacts.find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+															// layout.contacts.find('[data-csv]').hide();
+															// layout.contacts.find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
 														});
 													});
 												}
