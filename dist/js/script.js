@@ -420,7 +420,7 @@ API.Plugins.organizations = {
 												if(API.Auth.validate('custom', 'organizations_notes', 4)){
 													$('<a class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></a>').insertAfter(item.find('span.time.bg-warning'));
 													item.find('a.pointer').off().click(function(){
-														API.CRUD.delete.show({ keys:relation,key:'id', modal:true, plugin:'notes' },function(note){
+														API.CRUD.delete.show({ keys:data.relations.notes[item.attr('data-id')],key:'id', modal:true, plugin:'notes' },function(note){
 															item.remove();
 														});
 													});
