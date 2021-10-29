@@ -566,7 +566,12 @@ API.Plugins.organizations = {
 													created:subscription.output.relationship.created,
 													email:API.Contents.Auth.User.email,
 												};
-												API.Builder.Timeline.add.subscription(layout.timeline,sub,'user','lightblue');
+												API.Builder.Timeline.add.subscription(layout.timeline,sub,'bell','lightblue',function(item){
+													item.find('i').first().addClass('pointer');
+													item.find('i').first().off().click(function(){
+														API.CRUD.read.show({ key:'username',keys:data.relations.users[item.attr('data-id')], href:"?p=users&v=details&id="+data.relations.users[item.attr('data-id')].username, modal:true });
+													});
+												});
 											}
 										});
 									} else {
@@ -574,7 +579,7 @@ API.Plugins.organizations = {
 										API.request(url.searchParams.get("p"),'unsubscribe',{data:{id:dataset.output.this.raw.id}},function(answer){
 											var subscription = JSON.parse(answer);
 											if(subscription.success != undefined){
-												layout.timeline.find('[data-type=user][data-id="'+API.Contents.Auth.User.id+'"]').remove();
+												layout.timeline.find('[data-type="bell"][data-id="'+API.Contents.Auth.User.id+'"]').remove();
 											}
 										});
 									}
