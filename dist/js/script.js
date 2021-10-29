@@ -548,12 +548,12 @@ API.Plugins.organizations = {
 									for(var [uid, relation] of Object.entries(relations)){
 										console.log({
 											relation:relation,
-											Plugins:API.Helper.isSet(API.Plugins,[relations.relationship]),
-											validate:API.Auth.validate('custom', 'organizations_'+relations.relationship, 1),
-											isSet:API.Helper.isSet(data,['relations',relations.relationship,relations.link_to]),
+											Plugins:API.Helper.isSet(API.Plugins,[relation.relationship]),
+											validate:API.Auth.validate('custom', 'organizations_'+relation.relationship, 1),
+											isSet:API.Helper.isSet(data,['relations',relation.relationship,relation.link_to]),
 										});
-										if(API.Helper.isSet(API.Plugins,[relations.relationship]) && (API.Auth.validate('custom', 'organizations_'+relations.relationship, 1) || relation.owner == API.Contents.Auth.User.username) && API.Helper.isSet(data,['relations',relations.relationship,relations.link_to])){
-											var details = data.relations[relations.relationship][relations.link_to];
+										if(API.Helper.isSet(API.Plugins,[relation.relationship]) && (API.Auth.validate('custom', 'organizations_'+relation.relationship, 1) || relation.owner == API.Contents.Auth.User.username) && API.Helper.isSet(data,['relations',relation.relationship,relation.link_to])){
+											var details = data.relations[relation.relationship][relation.link_to];
 											details.created = relation.created;
 											details.owner = relation.owner;
 											if(!API.Helper.isSet(details,['isActive'])||(API.Helper.isSet(details,['isActive']) && details.isActive)||(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relations.relationship+'_isActive', 1)||API.Auth.validate('custom', relations.relationship+'_isActive', 1)))){
