@@ -475,58 +475,10 @@ API.Plugins.organizations = {
 								}
 							}
 							// Employees
-							if(API.Helper.isSet(API.Plugins,['employees']) && API.Auth.validate('custom', 'organizations_employees', 1)){
-								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Employees"]},function(data,layout,tab,content){
-									content.addClass('p-3');
-									var html = '';
-									html += '<div class="row">';
-										html += '<div class="col-md-12 mb-3">';
-											html += '<div class="input-group">';
-												html += '<input type="text" id="organizations_employees_search" class="form-control">';
-												html += '<div class="input-group-append pointer" data-action="clear">';
-													html += '<span class="input-group-text"><i class="fas fa-times" aria-hidden="true"></i></span>';
-												html += '</div>';
-												html += '<div class="input-group-append">';
-													html += '<span class="input-group-text"><i class="icon icon-search mr-1"></i>Search</span>';
-												html += '</div>';
-											html += '</div>';
-										html += '</div>';
-									html += '</div>';
-									html += '<div class="row" data-plugin="employees"></div>';
-									content.append(html);
-									area = content.find('div.row').last();
-									if(API.Auth.validate('custom', 'organizations_employees', 2)){
-										var html = '';
-										html += '<div class="col-sm-12 col-md-6">';
-											html += '<div class="card pointer addEmployee">';
-												html += '<div class="card-body py-4">';
-													html += '<div class="text-center p-5">';
-														html += '<i class="fas fa-plus-circle fa-10x mt-3 mb-2"></i>';
-													html += '</div>';
-												html += '</div>';
-											html += '</div>';
-										html += '</div>';
-										area.append(html);
-									}
-									if(API.Helper.isSet(data,['relations','users'])){
-										for(var [id, relation] of Object.entries(data.relations.users)){
-											if(relation.isEmployee){
-												var html = '';
-												html += '<label class="btn btn-primary pointer" data-table="employees">';
-													html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Employees'];
-												html += '</label>';
-												layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
-												if(relation.isActive||API.Auth.validate('custom', 'organizations_employees_isActive', 1)){
-													API.Plugins.organizations.GUI.contact(relation,area);
-												}
-											}
-										}
-									}
-								});
-							}
 							// Contacts
 							if(API.Helper.isSet(API.Plugins,['contacts']) && API.Auth.validate('custom', 'organizations_contacts', 1)){
 								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Contacts"]},function(data,layout,tab,content){
+									layout.contacts = content;
 									content.addClass('p-3');
 									var html = '';
 									html += '<div class="row">';
@@ -559,17 +511,30 @@ API.Plugins.organizations = {
 										area.append(html);
 									}
 									if(API.Helper.isSet(data,['relations','users'])){
+										var addContacts = false;
 										for(var [id, relation] of Object.entries(data.relations.users)){
 											if(relation.isContact){
-												var html = '';
-												html += '<label class="btn btn-primary pointer" data-table="contacts">';
-													html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Contacts'];
-												html += '</label>';
-												layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
+													addContacts = true;
 													API.Plugins.organizations.GUI.contact(relation,area);
+													API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
+														item.find('i').first().addClass('pointer');
+														item.find('i').first().off().click(function(){
+															// container.find('#organizations_contacts_search').val(item.attr('data-name'));
+															// container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
+															// container.find('#organizations_contacts').find('[data-csv]').hide();
+															// container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+														});
+													});
 												}
 											}
+										}
+										if(addContacts){
+											var html = '';
+											html += '<label class="btn btn-primary pointer" data-table="contacts">';
+												html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Contacts'];
+											html += '</label>';
+											layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 										}
 									}
 									API.Plugins.organizations.Events.contacts(data,layout);
@@ -637,17 +602,7 @@ API.Plugins.organizations = {
 																});
 																break;
 															case"contacts":
-																API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
-																	item.find('i').first().addClass('pointer');
-																	item.find('i').first().off().click(function(){
-																		if(API.Auth.validate('custom', 'organizations_contacts', 1)){
-																			// container.find('#organizations_contacts_search').val(item.attr('data-name'));
-																			// container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
-																			// container.find('#organizations_contacts').find('[data-csv]').hide();
-																			// container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
-																		}
-																	});
-																});
+
 																break;
 															case"users":
 																API.Builder.Timeline.add.user(layout.timeline,relation,'user','lightblue',function(item){
