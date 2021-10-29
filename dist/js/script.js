@@ -1291,8 +1291,7 @@ API.Plugins.organizations = {
 						if((user.raw.middle_name != '')&&(user.raw.middle_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.middle_name; }
 						if((user.raw.last_name != '')&&(user.raw.last_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.last_name; }
 						user.dom.name = user.raw.name;
-						API.Helper.set(dataset.details,['users','raw',user.raw.id],user.raw);
-						API.Helper.set(dataset.details,['users','dom',user.dom.id],user.dom);
+						API.Helper.set(dataset.relations,['users','dom',user.dom.id],user.dom);
 						API.Plugins.organizations.GUI.contact(user.dom,contacts);
 						API.Plugins.organizations.Events.contacts(dataset,layout);
 					}
@@ -1322,13 +1321,11 @@ API.Plugins.organizations = {
 					case"edit":
 						console.log(contact);
 						API.CRUD.update.show({ keys:contact, modal:true, plugin:'contacts' },function(user){
-							user.raw.name = '';
-							if((user.raw.first_name != '')&&(user.raw.first_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.first_name; }
-							if((user.raw.middle_name != '')&&(user.raw.middle_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.middle_name; }
-							if((user.raw.last_name != '')&&(user.raw.last_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.last_name; }
-							user.dom.name = user.raw.name;
-							dataset.details.users.raw[user.raw.id] = user.raw;
-							dataset.details.users.dom[user.dom.id] = user.dom;
+							user.dom.name = '';
+							if((user.dom.first_name != '')&&(user.dom.first_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.first_name; }
+							if((user.dom.middle_name != '')&&(user.dom.middle_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.middle_name; }
+							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
+							dataset.relations.users.dom[user.dom.id] = user.dom;
 							contacts.find('[data-id="'+user.raw.id+'"]').remove();
 							API.Plugins.organizations.GUI.contact(user.dom,contacts);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
