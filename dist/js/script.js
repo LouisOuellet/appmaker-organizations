@@ -380,87 +380,32 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-note",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
 									layout.content.notes = content;
 									layout.tabs.notes = tab;
-									content.attr('data-tab','notes');
-									content.append('<div><textarea title="Note" name="note" class="form-control"></textarea></div>');
-									content.find('textarea').summernote({
-										toolbar: [
-											['font', ['fontname', 'fontsize']],
-											['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-											['color', ['color']],
-											['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
-										],
-										height: 250,
-									});
-									var html = '';
-									html += '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
-										html += '<form class="form-inline my-2 my-lg-0 ml-auto">';
-											if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
-												html += '<select class="form-control mr-sm-2" name="status" style="width: 150px;">';
-												for(var [order, status] of Object.entries(API.Contents.Statuses.organizations)){
-													html += '<option value="'+order+'">'+API.Helper.ucfirst(status.name)+'</option>'
-												}
-												html += '</select>';
-											}
-											html += '<button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-sticky-note mr-1"></i>'+API.Contents.Language['Add Note']+'</button>';
-										html += '</form>';
-									html += '</nav>';
-									content.append(html);
-									content.find('button').off().click(function(){
-										if(!content.find('textarea').summernote('isEmpty')){
-											var note = {
-												by:API.Contents.Auth.User.id,
-												content:content.find('textarea').summernote('code'),
-												relationship:'organizations',
-												link_to:dataset.output.this.dom.id,
-												status:data.this.raw.status,
-											};
-											if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
-												note.status = content.find('select').val();
-											}
-											content.find('textarea').val('');
-											content.find('textarea').summernote('code','');
-											content.find('textarea').summernote('destroy');
-											content.find('textarea').summernote({
-												toolbar: [
-													['font', ['fontname', 'fontsize']],
-													['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-													['color', ['color']],
-													['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
-												],
-												height: 250,
-											});
-											API.request('organizations','note',{data:note},function(result){
-												var dataset = JSON.parse(result);
-												if(dataset.success != undefined){
-													if(dataset.output.status != null){
-														var status = {};
-														for(var [key, value] of Object.entries(dataset.output.status)){ status[key] = value; }
-														status.created = dataset.output.note.raw.created;
-														API.Builder.Timeline.add.status(layout.timeline,status);
-														content.find('select').val(status.order);
-														layout.details.find('td[data-plugin="organizations"][data-key="status"]').html('<span class="badge bg-'+API.Contents.Statuses.organizations[status.order].color+'"><i class="'+API.Contents.Statuses.organizations[status.order].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Language[API.Contents.Statuses.organizations[status.order].name]+'</span>');
+									if(API.Auth.validate('custom', 'organizations_notes', 2)){
+										content.append('<div><textarea title="Note" name="note" class="form-control"></textarea></div>');
+										content.find('textarea').summernote({
+											toolbar: [
+												['font', ['fontname', 'fontsize']],
+												['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+												['color', ['color']],
+												['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
+											],
+											height: 250,
+										});
+										var html = '';
+										html += '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
+											html += '<form class="form-inline my-2 my-lg-0 ml-auto">';
+												if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
+													html += '<select class="form-control mr-sm-2" name="status" style="width: 150px;">';
+													for(var [order, status] of Object.entries(API.Contents.Statuses.organizations)){
+														html += '<option value="'+order+'">'+API.Helper.ucfirst(status.name)+'</option>'
 													}
-													API.Builder.Timeline.add.card(layout.timeline,dataset.output.note.dom,'sticky-note','warning',function(item){
-														item.find('.timeline-footer').remove();
-														$('<span class="time bg-warning"><i class="fas fa-trash-alt"></i></span>').insertAfter(item.find('span.time.bg-warning'));
-													});
+													html += '</select>';
 												}
-											});
-											layout.tabs.find('a').first().tab('show');
-										} else {
-											content.find('textarea').summernote('destroy');
-											content.find('textarea').summernote({
-												toolbar: [
-													['font', ['fontname', 'fontsize']],
-													['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-													['color', ['color']],
-													['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
-												],
-												height: 250,
-											});
-											alert(API.Contents.Language['Note is empty']);
-										}
-									});
+												html += '<button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-sticky-note mr-1"></i>'+API.Contents.Language['Add Note']+'</button>';
+											html += '</form>';
+										html += '</nav>';
+										content.append(html);
+									}
 								});
 								if(API.Helper.isSet(data,['relations','notes'])){
 									var html = '';
@@ -472,11 +417,14 @@ API.Plugins.organizations = {
 										if(API.Auth.validate('custom', 'organizations_notes', 1) || relation.owner == API.Contents.Auth.User.username){
 											API.Builder.Timeline.add.card(layout.timeline,relation,'sticky-note','warning',function(item){
 												item.find('.timeline-footer').remove();
-												$('<span class="time bg-warning"><i class="fas fa-trash-alt"></i></span>').insertAfter(item.find('span.time.bg-warning'));
+												if(API.Auth.validate('custom', 'organizations_notes', 4)){
+													$('<span class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></span>').insertAfter(item.find('span.time.bg-warning'));
+												}
 											});
 										}
 									}
 								}
+								API.Plugins.organizations.Events.notes(data,layout);
 							}
 							// Employees
 							// Contacts
@@ -543,8 +491,8 @@ API.Plugins.organizations = {
 											layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 										}
 									}
-									API.Plugins.organizations.Events.contacts(data,layout);
 								});
+								API.Plugins.organizations.Events.contacts(data,layout);
 							}
 							// Users
 							if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
@@ -1234,6 +1182,71 @@ API.Plugins.organizations = {
 			});
 			if(callback != null){ callback(dataset,layout); }
 		},
+		notes:function(dataset,layout,options = {},callback = null){
+			if(options instanceof Function){ callback = options; options = {}; }
+			var defaults = {field: "name"};
+			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
+			if(API.Auth.validate('custom', 'organizations_notes', 2)){
+				layout.content.notes.find('button').off().click(function(){
+				  if(!layout.content.notes.find('textarea').summernote('isEmpty')){
+				    var note = {
+				      by:API.Contents.Auth.User.id,
+				      layout.content.notes:layout.content.notes.find('textarea').summernote('code'),
+				      relationship:'organizations',
+				      link_to:dataset.output.this.dom.id,
+				      status:data.this.raw.status,
+				    };
+				    if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
+				      note.status = layout.content.notes.find('select').val();
+				    }
+				    layout.content.notes.find('textarea').val('');
+				    layout.content.notes.find('textarea').summernote('code','');
+				    layout.content.notes.find('textarea').summernote('destroy');
+				    layout.content.notes.find('textarea').summernote({
+				      toolbar: [
+				        ['font', ['fontname', 'fontsize']],
+				        ['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+				        ['color', ['color']],
+				        ['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
+				      ],
+				      height: 250,
+				    });
+				    API.request('organizations','note',{data:note},function(result){
+				      var dataset = JSON.parse(result);
+				      if(dataset.success != undefined){
+				        if(dataset.output.status != null){
+				          var status = {};
+				          for(var [key, value] of Object.entries(dataset.output.status)){ status[key] = value; }
+				          status.created = dataset.output.note.raw.created;
+				          API.Builder.Timeline.add.status(layout.timeline,status);
+				          layout.content.notes.find('select').val(status.order);
+				          layout.details.find('td[data-plugin="organizations"][data-key="status"]').html('<span class="badge bg-'+API.Contents.Statuses.organizations[status.order].color+'"><i class="'+API.Contents.Statuses.organizations[status.order].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Language[API.Contents.Statuses.organizations[status.order].name]+'</span>');
+				        }
+				        API.Builder.Timeline.add.card(layout.timeline,dataset.output.note.dom,'sticky-note','warning',function(item){
+				          item.find('.timeline-footer').remove();
+				          if(API.Auth.validate('custom', 'organizations_notes', 4)){
+				            $('<span class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></span>').insertAfter(item.find('span.time.bg-warning'));
+				          }
+				        });
+				      }
+				    });
+				    layout.tabs.find('a').first().tab('show');
+				  } else {
+				    layout.content.notes.find('textarea').summernote('destroy');
+				    layout.content.notes.find('textarea').summernote({
+				      toolbar: [
+				        ['font', ['fontname', 'fontsize']],
+				        ['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+				        ['color', ['color']],
+				        ['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
+				      ],
+				      height: 250,
+				    });
+				    alert(API.Contents.Language['Note is empty']);
+				  }
+				});
+			}
+		},
 		contacts:function(dataset,layout,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
 			var defaults = {field: "name"};
@@ -1252,30 +1265,32 @@ API.Plugins.organizations = {
 					contacts.find('[data-csv*="'+$(this).val().toLowerCase()+'"]').each(function(){ $(this).show(); });
 				} else { contacts.find('[data-csv]').show(); }
 			});
+			if(API.Auth.validate('custom', 'organizations_contacts', 2)){
 			contacts.find('.addContact').off().click(function(){
-				API.CRUD.create.show({ plugin:'contacts', keys:skeleton, set:{isActive:'true',isContact:'true',relationship:'organizations',link_to:dataset.this.raw.id} },function(created,user){
-					if(created){
-						user.raw.name = '';
-						if((user.raw.first_name != '')&&(user.raw.first_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.first_name; }
-						if((user.raw.middle_name != '')&&(user.raw.middle_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.middle_name; }
-						if((user.raw.last_name != '')&&(user.raw.last_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.last_name; }
-						user.dom.name = user.raw.name;
-						API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
-						API.Plugins.organizations.GUI.contact(user.dom,layout);
-						API.Plugins.organizations.Events.contacts(dataset,layout);
-						API.Builder.Timeline.add.contact(layout.timeline,user.dom,'address-card','secondary',function(item){
-							item.find('i').first().addClass('pointer');
-							item.find('i').first().off().click(function(){
-								value = item.attr('data-name').toLowerCase();
-								layout.content.contacts.find('input').val(value);
-								layout.tabs.contacts.find('a').tab('show');
-								layout.content.contacts.find('[data-csv]').hide();
-								layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
+					API.CRUD.create.show({ plugin:'contacts', keys:skeleton, set:{isActive:'true',isContact:'true',relationship:'organizations',link_to:dataset.this.raw.id} },function(created,user){
+						if(created){
+							user.raw.name = '';
+							if((user.raw.first_name != '')&&(user.raw.first_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.first_name; }
+							if((user.raw.middle_name != '')&&(user.raw.middle_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.middle_name; }
+							if((user.raw.last_name != '')&&(user.raw.last_name != null)){ if(user.raw.name != ''){user.raw.name += ' ';} user.raw.name += user.raw.last_name; }
+							user.dom.name = user.raw.name;
+							API.Helper.set(dataset.relations,['users',user.dom.id],user.dom);
+							API.Plugins.organizations.GUI.contact(user.dom,layout);
+							API.Plugins.organizations.Events.contacts(dataset,layout);
+							API.Builder.Timeline.add.contact(layout.timeline,user.dom,'address-card','secondary',function(item){
+								item.find('i').first().addClass('pointer');
+								item.find('i').first().off().click(function(){
+									value = item.attr('data-name').toLowerCase();
+									layout.content.contacts.find('input').val(value);
+									layout.tabs.contacts.find('a').tab('show');
+									layout.content.contacts.find('[data-csv]').hide();
+									layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
+								});
 							});
-						});
-					}
+						}
+					});
 				});
-			});
+			}
 			contacts.find('button').off().click(function(){
 				var contact = dataset.relations.users[$(this).attr('data-id')];
 				switch($(this).attr('data-action')){
