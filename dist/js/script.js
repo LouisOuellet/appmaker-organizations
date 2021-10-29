@@ -536,7 +536,7 @@ API.Plugins.organizations = {
 									for(var [id, relation] of Object.entries(data.relations.users)){
 										if(!relation.isContact && !relation.isEmployee){
 											if(relation.isActive||API.Auth.validate('custom', 'organizations_users_isActive', 1)){
-												API.Builder.Timeline.add.user(layout.timeline,relation,'user','lightblue',function(item){
+												API.Builder.Timeline.add.subscription(layout.timeline,relation,'bell','lightblue',function(item){
 													item.find('i').first().addClass('pointer');
 													item.find('i').first().off().click(function(){
 														API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
@@ -586,7 +586,7 @@ API.Plugins.organizations = {
 									case"notes":var icon = 'sticky-note';break;
 									case"comments":var icon = 'comment';break;
 									case"statuses":var icon = 'info';break;
-									case"users":var icon = 'user';break;
+									case"users":var icon = 'bell';break;
 									case"subsidiaries":var icon = 'building';break;
 									case"employees":var icon = 'id-card';break;
 									case"contacts":var icon = 'address-card';break;
