@@ -90,549 +90,551 @@ API.Plugins.organizations = {
 					// GUI
 					// Adding Layout
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
-						// History
-						API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-history",text:API.Contents.Language["History"]},function(data,layout,tab,content){
-							content.addClass('p-3');
-							content.append('<div class="timeline" data-plugin="organizations"></div>');
-							layout.timeline = content.find('div.timeline');
-							var today = new Date();
-							API.Builder.Timeline.add.date(layout.timeline,today);
-							var html = '';
-							html += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
-								html += '<label class="btn btn-primary pointer active" data-table="all">';
-									html += '<input type="radio" name="options" autocomplete="off" checked>'+API.Contents.Language['All'];
-								html += '</label>';
-							html += '</div>';
-							layout.timeline.find('.time-label').first().html(html);
-							var options = {plugin:"organizations"}
-							// Debug
-							if(API.debug){
-								API.GUI.Layouts.details.button(data,layout,{icon:"fas fa-stethoscope"},function(data,layout,button){
-									button.off().click(function(){
-										console.log(data);
-										console.log(layout);
-									});
-								});
-							}
-							// Clear
-							if(API.Auth.validate('custom', 'organizations_clear', 1)){
-								API.GUI.Layouts.details.control(data,layout,{color:"danger",icon:"fas fa-snowplow",text:API.Contents.Language["Clear"]},function(data,layout,button){
-									button.off().click(function(){
-										API.request('organizations','clear',{ data:data.this.raw });
-									});
-								});
-							}
-							// Name
-							options.field = "name";
-							if(API.Helper.isSet(options,['td'])){ delete options.td; }
-							API.GUI.Layouts.details.data(data,layout,options);
-							// Business Number
-							if(API.Auth.validate('custom', 'organizations_business_num', 1)){
-								options.field = "business_num";
-								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-							}
-							// Code
-							if(API.Auth.validate('custom', 'organizations_code', 1)){
-								options.field = "code";
-								options.td = '';
-								options.td += '<td>';
-									options.td += '<div class="row">';
-										if(API.Auth.validate('custom', 'organizations_code_ccn', 1) && data.this.dom.setCodeCCN != ''){
-											options.td += '<div class="col-lg-4 col-md-6 p-1">';
-												options.td += '<strong><b>'+API.Contents.Language.setCodeCCN+': </b></strong><span data-plugin="organizations" data-key="setCodeCCN">'+data.this.dom.setCodeCCN+'</span>';
-											options.td += '</div>';
-										}
-										if(API.Auth.validate('custom', 'organizations_code_itmr4', 1) && data.this.dom.setCodeITMR4 != ''){
-											options.td += '<div class="col-lg-4 col-md-6 p-1">';
-												options.td += '<strong><b>'+API.Contents.Language.setCodeITMR4+': </b></i></strong><span data-plugin="organizations" data-key="setCodeITMR4">'+data.this.dom.setCodeITMR4+'</span>';
-											options.td += '</div>';
-										}
-										if(API.Auth.validate('custom', 'organizations_code_hvs', 1) && data.this.dom.setCodeHVS != ''){
-											options.td += '<div class="col-lg-4 col-md-6 p-1">';
-												options.td += '<strong><b>'+API.Contents.Language.setCodeHVS+': </b></strong><span data-plugin="organizations" data-key="setCodeHVS">'+data.this.dom.setCodeHVS+'</span>';
-											options.td += '</div>';
-										}
-									options.td += '</div>';
-								options.td += '</td>';
-								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-							}
-							// Status
-							if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
-								if(!data.this.dom.isActive){
-									layout.details.prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
-								}
+						if(data.this.dom.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
+							// History
+							API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-history",text:API.Contents.Language["History"]},function(data,layout,tab,content){
+								content.addClass('p-3');
+								content.append('<div class="timeline" data-plugin="organizations"></div>');
+								layout.timeline = content.find('div.timeline');
+								var today = new Date();
+								API.Builder.Timeline.add.date(layout.timeline,today);
 								var html = '';
-								html += '<label class="btn btn-primary pointer" data-table="statuses">';
-									html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Status'];
-								html += '</label>';
-								layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
-								options.field = "status";
-								options.td = '';
-								options.td += '<td data-plugin="organizations" data-key="'+options.field+'">';
-									if(API.Helper.isSet(API.Contents.Statuses,['organizations',data.this.raw.status])){
-										options.td += '<span class="badge bg-'+API.Contents.Statuses.organizations[data.this.raw.status].color+'">';
-											options.td += '<i class="'+API.Contents.Statuses.organizations[data.this.raw.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Statuses.organizations[data.this.raw.status].name+'';
-										options.td += '</span>';
-									}
-								options.td += '</td>';
-								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-								if(API.Helper.isSet(data,['relations','statuses'])){
-									for(var [id, relation] of Object.entries(data.relations.statuses)){
-										if(API.Auth.validate('custom', 'organizations_status', 1) || relation.owner == API.Contents.Auth.User.username){
-											API.Builder.Timeline.add.status(layout.timeline,relation);
-										}
-									}
-								}
-							}
-							options.field = "address";
-							options.td = '<td data-plugin="organizations" data-key="address">'+data.this.dom.address+', '+data.this.dom.city+', '+data.this.dom.zipcode+'</td>';
-							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-							// Phone
-							if(API.Auth.validate('custom', 'organizations_phone', 1)){
-								options.field = "phone";
-								options.td = '';
-								options.td += '<td>';
-									options.td += '<div class="row">';
-										if(data.this.dom.phone != ''){
-											options.td += '<div class="col-lg-4 col-md-6 p-1">';
-												options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="tel:'+data.this.dom.phone+'" data-plugin="organizations" data-key="phone">'+data.this.dom.phone+'</a>';
-											options.td += '</div>';
-										}
-										if(data.this.dom.toll_free != ''){
-											options.td += '<div class="col-lg-4 col-md-6 p-1">';
-												options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="tel:'+data.this.dom.toll_free+'" data-plugin="organizations" data-key="toll_free">'+data.this.dom.toll_free+'</a>';
-											options.td += '</div>';
-										}
-										if(data.this.dom.fax != ''){
-											options.td += '<div class="col-lg-4 col-md-6 p-1">';
-												options.td += '<strong><i class="fas fa-fax mr-1"></i></strong><a href="tel:'+data.this.dom.fax+'" data-plugin="organizations" data-key="fax">'+data.this.dom.fax+'</a>';
-											options.td += '</div>';
-										}
-									options.td += '</div>';
-								options.td += '</td>';
-								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-							}
-							// Email
-							options.field = "email";
-							options.td = '<td><strong><i class="fas fa-envelope mr-1"></i></strong><a href="mailto:'+data.this.dom.email+'" data-plugin="organizations" data-key="'+options.field+'">'+data.this.dom.email+'</a></td>';
-							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-							// Website
-							options.field = "website";
-							options.td = '<td><strong><i class="fas fa-globe mr-1"></i></strong><a href="'+data.this.dom.website+'" data-plugin="organizations" data-key="'+options.field+'">'+data.this.dom.website+'</a></td>';
-							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-							// Subsidiaries
-							if(API.Auth.validate('custom', 'organizations_organizations', 1)){
-								var html = '';
-								html += '<label class="btn btn-primary pointer" data-table="subsidiaries">';
-									html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Subsidiaries'];
-								html += '</label>';
-								layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
-								options.field = "subsidiaries";
-								if(API.Helper.isSet(options,['td'])){ delete options.td; }
-								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
-									var td = tr.find('td[data-plugin="organizations"][data-key="subsidiaries"]');
-									if(API.Helper.isSet(data.details,['organizations'])){
-										for(var [subKey, subDetails] of Object.entries(data.details.organizations.dom)){
-											var subHTML = '';
-											subHTML += '<div class="btn-group m-1" data-id="'+subDetails.id+'">';
-												subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subDetails.id+'" data-action="details"><i class="fas fa-building mr-1"></i>'+subDetails.name+'</button>';
-												if(API.Auth.validate('custom', 'organizations_organizations', 4)){
-													subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subDetails.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
-												}
-											subHTML += '</div>';
-											td.append(API.Plugins.organizations.GUI.buttons.details(subDetails,{remove:API.Auth.validate('custom', 'organizations_organizations', 4)}));
-										}
-									}
-									if(API.Auth.validate('custom', 'organizations_organizations', 2)){
-										td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
-									}
-									API.Plugins.organizations.Events.subsidiaries(data,layout);
-								});
-								if(API.Helper.isSet(data,['relations','organizations'])){
-									for(var [id, relation] of Object.entries(data.relations.organizations)){
-										if(API.Auth.validate('custom', 'organizations_organizations', 1) || relation.owner == API.Contents.Auth.User.username){
-											API.Builder.Timeline.add.client(layout.timeline,relation,'building','secondary',function(item){
-												if((API.Auth.validate('plugin','organizations',1))&&(API.Auth.validate('view','details',1,'organizations'))){
-													item.find('i').first().addClass('pointer');
-													item.find('i').first().off().click(function(){
-														API.CRUD.read.show({ key:'name',keys:data.details.organizations.dom[item.attr('data-id')], href:"?p=organizations&v=details&id="+data.details.organizations.dom[item.attr('data-id')].name, modal:true });
-													});
-												}
-											});
-										}
-									}
-								}
-							}
-							// Services
-							if(API.Helper.isSet(API.Plugins,['services']) && API.Auth.validate('custom', 'organizations_services', 1)){
-								var html = '';
-								html += '<label class="btn btn-primary pointer" data-table="services">';
-									html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Services'];
-								html += '</label>';
-								layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
-								options.field = "services";
-								if(API.Helper.isSet(options,['td'])){ delete options.td; }
-								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
-									var td = tr.find('td[data-plugin="organizations"][data-key="services"]');
-									if(API.Helper.isSet(data.details,['services'])){
-										for(var [subKey, subDetails] of Object.entries(data.details.services.dom)){
-											td.append(API.Plugins.organizations.GUI.buttons.details(subDetails,{remove:API.Auth.validate('custom', 'organizations_services', 4),icon:{details:"fas fa-hand-holding-usd"}}));
-										}
-									}
-									if(API.Auth.validate('custom', 'organizations_services', 2)){
-										td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
-									}
-									API.Plugins.organizations.Events.services(data,layout);
-								});
-								if(API.Helper.isSet(data,['relations','services'])){
-									for(var [id, relation] of Object.entries(data.relations.services)){
-										if(API.Auth.validate('custom', 'organizations_services', 1) || relation.owner == API.Contents.Auth.User.username){
-											API.Builder.Timeline.add.service(layout.timeline,relation,'hand-holding-usd','success',function(item){
-												if((API.Auth.validate('plugin','services',1))&&(API.Auth.validate('view','details',1,'services'))){
-													item.find('i').first().addClass('pointer');
-													item.find('i').first().off().click(function(){
-														API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=services&v=details&id="+data.details.services.dom[item.attr('data-id')].name, modal:true });
-													});
-												}
-											});
-										}
-									}
-								}
-							}
-							// Issues
-							if(API.Helper.isSet(API.Plugins,['issues']) && API.Auth.validate('custom', 'organizations_issues', 1)){
-								var html = '';
-								html += '<label class="btn btn-primary pointer" data-table="issues">';
-									html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Issues'];
-								html += '</label>';
-								layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
-								options.field = "issues";
-								if(API.Helper.isSet(options,['td'])){ delete options.td; }
-								var issues = {};
-								for(var [rid, relations] of Object.entries(data.relationships)){
-									for(var [uid, relation] of Object.entries(relations)){
-										if(relation.relationship == 'issues'){ issues[relation.link_to] = relation.statuses; }
-									}
-								}
-								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
-									var td = tr.find('td[data-plugin="organizations"][data-key="issues"]');
-									if(API.Helper.isSet(data.details,['issues'])){
-										for(var [subKey, subDetails] of Object.entries(data.details.issues.dom)){
-											td.append(
-												API.Plugins.organizations.GUI.buttons.details(subDetails,{
-													remove:API.Auth.validate('custom', 'organizations_issues', 4),
-													content:subDetails.id+' - '+subDetails.name+' - '+API.Contents.Language[data.details.statuses.raw[issues[subDetails.id]].name],
-													color:{
-														details:data.details.statuses.raw[issues[subDetails.id]].color
-													},
-													icon:{
-														details:data.details.statuses.raw[issues[subDetails.id]].icon
-													},
-												})
-											);
-										}
-									}
-									if(API.Auth.validate('custom', 'organizations_issues', 2)){
-										td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
-									}
-									API.Plugins.organizations.Events.issues(data,layout);
-								});
-								if(API.Helper.isSet(data,['relations','issues'])){
-									for(var [id, relation] of Object.entries(data.relations.issues)){
-										if(API.Auth.validate('custom', 'organizations_issues', 1) || relation.owner == API.Contents.Auth.User.username){
-											relation.status = data.details.statuses.raw[relation.statuses].order;
-											API.Builder.Timeline.add.issue(layout.timeline,relation,'gavel','indigo',function(item){
-												if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
-													item.find('i').first().addClass('pointer');
-													item.find('i').first().off().click(function(){
-														API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.services.dom[item.attr('data-id')].id, modal:true });
-													});
-												}
-											});
-										}
-									}
-								}
-							}
-							// Tags
-							if(API.Helper.isSet(API.Plugins,['tags']) && API.Auth.validate('custom', 'organizations_tags', 1)){
-								options.field = "tags";
-								options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
-								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
-									var td = tr.find('td[data-plugin="organizations"][data-key="tags"]');
-									if(data.this.dom.tags == null){ data.this.dom.tags = ''; }
-									for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.tags,';').split(';'))){
-										if(subDetails != ''){
-											td.append(
-												API.Plugins.organizations.GUI.buttons.details({name:subDetails},{
-													remove:API.Auth.validate('custom', 'organizations_tags', 4),
-													id: "name",
-													key: "name",
-													icon:{
-														details:"fas fa-tag",
-														remove:"fas fa-backspace",
-													},
-													action:{
-														remove:"untag",
-													},
-												})
-											);
-										}
-									}
-									if(API.Auth.validate('custom', 'organizations_tags', 2)){
-										td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="tag"><i class="fas fa-plus"></i></button>');
-									}
-									API.Plugins.organizations.Events.tags(data,layout);
-								});
-							}
-							// Notes
-							if(API.Helper.isSet(API.Plugins,['notes']) && API.Auth.validate('custom', 'organizations_notes', 1)){
-								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-note",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
-									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="notes">';
-										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Notes'];
+								html += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
+									html += '<label class="btn btn-primary pointer active" data-table="all">';
+										html += '<input type="radio" name="options" autocomplete="off" checked>'+API.Contents.Language['All'];
 									html += '</label>';
-									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
-									layout.content.notes = content;
-									layout.tabs.notes = tab;
-									if(API.Auth.validate('custom', 'organizations_notes', 2)){
-										content.append('<div><textarea title="Note" name="note" class="form-control"></textarea></div>');
-										content.find('textarea').summernote({
-											toolbar: [
-												['font', ['fontname', 'fontsize']],
-												['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-												['color', ['color']],
-												['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
-											],
-											height: 250,
+								html += '</div>';
+								layout.timeline.find('.time-label').first().html(html);
+								var options = {plugin:"organizations"}
+								// Debug
+								if(API.debug){
+									API.GUI.Layouts.details.button(data,layout,{icon:"fas fa-stethoscope"},function(data,layout,button){
+										button.off().click(function(){
+											console.log(data);
+											console.log(layout);
 										});
-										var html = '';
-										html += '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
-											html += '<form class="form-inline my-2 my-lg-0 ml-auto">';
-												if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
-													html += '<select class="form-control mr-sm-2" name="status" style="width: 150px;">';
-													for(var [order, status] of Object.entries(API.Contents.Statuses.organizations)){
-														html += '<option value="'+order+'">'+API.Helper.ucfirst(status.name)+'</option>'
-													}
-													html += '</select>';
-												}
-												html += '<button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-sticky-note mr-1"></i>'+API.Contents.Language['Add Note']+'</button>';
-											html += '</form>';
-										html += '</nav>';
-										content.append(html);
+									});
+								}
+								// Clear
+								if(API.Auth.validate('custom', 'organizations_clear', 1)){
+									API.GUI.Layouts.details.control(data,layout,{color:"danger",icon:"fas fa-snowplow",text:API.Contents.Language["Clear"]},function(data,layout,button){
+										button.off().click(function(){
+											API.request('organizations','clear',{ data:data.this.raw });
+										});
+									});
+								}
+								// Name
+								options.field = "name";
+								if(API.Helper.isSet(options,['td'])){ delete options.td; }
+								API.GUI.Layouts.details.data(data,layout,options);
+								// Business Number
+								if(API.Auth.validate('custom', 'organizations_business_num', 1)){
+									options.field = "business_num";
+									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+								}
+								// Code
+								if(API.Auth.validate('custom', 'organizations_code', 1)){
+									options.field = "code";
+									options.td = '';
+									options.td += '<td>';
+										options.td += '<div class="row">';
+											if(API.Auth.validate('custom', 'organizations_code_ccn', 1) && data.this.dom.setCodeCCN != ''){
+												options.td += '<div class="col-lg-4 col-md-6 p-1">';
+													options.td += '<strong><b>'+API.Contents.Language.setCodeCCN+': </b></strong><span data-plugin="organizations" data-key="setCodeCCN">'+data.this.dom.setCodeCCN+'</span>';
+												options.td += '</div>';
+											}
+											if(API.Auth.validate('custom', 'organizations_code_itmr4', 1) && data.this.dom.setCodeITMR4 != ''){
+												options.td += '<div class="col-lg-4 col-md-6 p-1">';
+													options.td += '<strong><b>'+API.Contents.Language.setCodeITMR4+': </b></i></strong><span data-plugin="organizations" data-key="setCodeITMR4">'+data.this.dom.setCodeITMR4+'</span>';
+												options.td += '</div>';
+											}
+											if(API.Auth.validate('custom', 'organizations_code_hvs', 1) && data.this.dom.setCodeHVS != ''){
+												options.td += '<div class="col-lg-4 col-md-6 p-1">';
+													options.td += '<strong><b>'+API.Contents.Language.setCodeHVS+': </b></strong><span data-plugin="organizations" data-key="setCodeHVS">'+data.this.dom.setCodeHVS+'</span>';
+												options.td += '</div>';
+											}
+										options.td += '</div>';
+									options.td += '</td>';
+									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+								}
+								// Status
+								if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
+									if(!data.this.dom.isActive){
+										layout.details.prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
 									}
-								});
-								if(API.Helper.isSet(data,['relations','notes'])){
-									for(var [id, relation] of Object.entries(data.relations.notes)){
-										if(API.Auth.validate('custom', 'organizations_notes', 1) || relation.owner == API.Contents.Auth.User.username){
-											API.Builder.Timeline.add.card(layout.timeline,relation,'sticky-note','warning',function(item){
-												item.find('.timeline-footer').remove();
-												if(API.Auth.validate('custom', 'organizations_notes', 4)){
-													$('<a class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></a>').insertAfter(item.find('span.time.bg-warning'));
-													item.find('a.pointer').off().click(function(){
-														API.CRUD.delete.show({ keys:data.relations.notes[item.attr('data-id')],key:'id', modal:true, plugin:'notes' },function(note){
-															item.remove();
-														});
-													});
-												}
-											});
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="statuses">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Status'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
+									options.field = "status";
+									options.td = '';
+									options.td += '<td data-plugin="organizations" data-key="'+options.field+'">';
+										if(API.Helper.isSet(API.Contents.Statuses,['organizations',data.this.raw.status])){
+											options.td += '<span class="badge bg-'+API.Contents.Statuses.organizations[data.this.raw.status].color+'">';
+												options.td += '<i class="'+API.Contents.Statuses.organizations[data.this.raw.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Statuses.organizations[data.this.raw.status].name+'';
+											options.td += '</span>';
+										}
+									options.td += '</td>';
+									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+									if(API.Helper.isSet(data,['relations','statuses'])){
+										for(var [id, relation] of Object.entries(data.relations.statuses)){
+											if(API.Auth.validate('custom', 'organizations_status', 1) || relation.owner == API.Contents.Auth.User.username){
+												API.Builder.Timeline.add.status(layout.timeline,relation);
+											}
 										}
 									}
 								}
-								API.Plugins.organizations.Events.notes(data,layout);
-							}
-							// Employees
-							// Contacts
-							if(API.Helper.isSet(API.Plugins,['contacts']) && API.Auth.validate('custom', 'organizations_contacts', 1)){
-								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Contacts"]},function(data,layout,tab,content){
+								options.field = "address";
+								options.td = '<td data-plugin="organizations" data-key="address">'+data.this.dom.address+', '+data.this.dom.city+', '+data.this.dom.zipcode+'</td>';
+								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+								// Phone
+								if(API.Auth.validate('custom', 'organizations_phone', 1)){
+									options.field = "phone";
+									options.td = '';
+									options.td += '<td>';
+										options.td += '<div class="row">';
+											if(data.this.dom.phone != ''){
+												options.td += '<div class="col-lg-4 col-md-6 p-1">';
+													options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="tel:'+data.this.dom.phone+'" data-plugin="organizations" data-key="phone">'+data.this.dom.phone+'</a>';
+												options.td += '</div>';
+											}
+											if(data.this.dom.toll_free != ''){
+												options.td += '<div class="col-lg-4 col-md-6 p-1">';
+													options.td += '<strong><i class="fas fa-phone mr-1"></i></strong><a href="tel:'+data.this.dom.toll_free+'" data-plugin="organizations" data-key="toll_free">'+data.this.dom.toll_free+'</a>';
+												options.td += '</div>';
+											}
+											if(data.this.dom.fax != ''){
+												options.td += '<div class="col-lg-4 col-md-6 p-1">';
+													options.td += '<strong><i class="fas fa-fax mr-1"></i></strong><a href="tel:'+data.this.dom.fax+'" data-plugin="organizations" data-key="fax">'+data.this.dom.fax+'</a>';
+												options.td += '</div>';
+											}
+										options.td += '</div>';
+									options.td += '</td>';
+									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+								}
+								// Email
+								options.field = "email";
+								options.td = '<td><strong><i class="fas fa-envelope mr-1"></i></strong><a href="mailto:'+data.this.dom.email+'" data-plugin="organizations" data-key="'+options.field+'">'+data.this.dom.email+'</a></td>';
+								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+								// Website
+								options.field = "website";
+								options.td = '<td><strong><i class="fas fa-globe mr-1"></i></strong><a href="'+data.this.dom.website+'" data-plugin="organizations" data-key="'+options.field+'">'+data.this.dom.website+'</a></td>';
+								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+								// Subsidiaries
+								if(API.Auth.validate('custom', 'organizations_organizations', 1)){
 									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="contacts">';
-										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Contacts'];
+									html += '<label class="btn btn-primary pointer" data-table="subsidiaries">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Subsidiaries'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
-									layout.content.contacts = content;
-									layout.tabs.contacts = tab;
-									content.addClass('p-3');
-									var html = '';
-									html += '<div class="row">';
-										html += '<div class="col-md-12 mb-3">';
-											html += '<div class="input-group">';
-												html += '<input type="text" class="form-control">';
-												html += '<div class="input-group-append pointer" data-action="clear">';
-													html += '<span class="input-group-text"><i class="fas fa-times" aria-hidden="true"></i></span>';
-												html += '</div>';
-												html += '<div class="input-group-append">';
-													html += '<span class="input-group-text"><i class="icon icon-search mr-1"></i>'+API.Contents.Language["Search"]+'</span>';
-												html += '</div>';
-											html += '</div>';
-										html += '</div>';
-									html += '</div>';
-									html += '<div class="row"></div>';
-									content.append(html);
-									area = content.find('div.row').last();
-									if(API.Auth.validate('custom', 'organizations_contacts', 2)){
-										var html = '';
-										html += '<div class="col-sm-12 col-md-6">';
-											html += '<div class="card pointer addContact">';
-												html += '<div class="card-body py-4">';
-													html += '<div class="text-center p-5">';
-														html += '<i class="fas fa-plus-circle fa-10x mt-3 mb-2"></i>';
-													html += '</div>';
-												html += '</div>';
-											html += '</div>';
-										html += '</div>';
-										area.append(html);
-									}
-									if(API.Helper.isSet(data,['relations','contacts'])){
-										for(var [id, relation] of Object.entries(data.relations.contacts)){
-											if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
-												API.Plugins.organizations.GUI.contact(relation,layout);
-												API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
-													item.find('i').first().addClass('pointer');
-													item.find('i').first().off().click(function(){
-														value = item.attr('data-name').toLowerCase();
-														layout.content.contacts.find('input').val(value);
-														layout.tabs.contacts.find('a').tab('show');
-														layout.content.contacts.find('[data-csv]').hide();
-														layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
-													});
+									options.field = "subsidiaries";
+									if(API.Helper.isSet(options,['td'])){ delete options.td; }
+									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
+										var td = tr.find('td[data-plugin="organizations"][data-key="subsidiaries"]');
+										if(API.Helper.isSet(data.details,['organizations'])){
+											for(var [subKey, subDetails] of Object.entries(data.details.organizations.dom)){
+												var subHTML = '';
+												subHTML += '<div class="btn-group m-1" data-id="'+subDetails.id+'">';
+													subHTML += '<button type="button" class="btn btn-xs btn-primary" data-id="'+subDetails.id+'" data-action="details"><i class="fas fa-building mr-1"></i>'+subDetails.name+'</button>';
+													if(API.Auth.validate('custom', 'organizations_organizations', 4)){
+														subHTML += '<button type="button" class="btn btn-xs btn-danger" data-id="'+subDetails.id+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
+													}
+												subHTML += '</div>';
+												td.append(API.Plugins.organizations.GUI.buttons.details(subDetails,{remove:API.Auth.validate('custom', 'organizations_organizations', 4)}));
+											}
+										}
+										if(API.Auth.validate('custom', 'organizations_organizations', 2)){
+											td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
+										}
+										API.Plugins.organizations.Events.subsidiaries(data,layout);
+									});
+									if(API.Helper.isSet(data,['relations','organizations'])){
+										for(var [id, relation] of Object.entries(data.relations.organizations)){
+											if(API.Auth.validate('custom', 'organizations_organizations', 1) || relation.owner == API.Contents.Auth.User.username){
+												API.Builder.Timeline.add.client(layout.timeline,relation,'building','secondary',function(item){
+													if((API.Auth.validate('plugin','organizations',1))&&(API.Auth.validate('view','details',1,'organizations'))){
+														item.find('i').first().addClass('pointer');
+														item.find('i').first().off().click(function(){
+															API.CRUD.read.show({ key:'name',keys:data.details.organizations.dom[item.attr('data-id')], href:"?p=organizations&v=details&id="+data.details.organizations.dom[item.attr('data-id')].name, modal:true });
+														});
+													}
 												});
 											}
 										}
 									}
-								});
-								API.Plugins.organizations.Events.contacts(data,layout);
-							}
-							// Calls
-							// Users
-							if(API.Helper.isSet(API.Plugins,['calls']) && API.Auth.validate('custom', 'organizations_calls', 1)){
-								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-phone-square",text:API.Contents.Language["Calls"]},function(data,layout,tab,content){
+								}
+								// Services
+								if(API.Helper.isSet(API.Plugins,['services']) && API.Auth.validate('custom', 'organizations_services', 1)){
 									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="calls">';
-										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Calls'];
+									html += '<label class="btn btn-primary pointer" data-table="services">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Services'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
-									layout.content.calls = content;
-									layout.tabs.calls = tab;
-								});
-							}
-							if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
-								var html = '';
-								html += '<label class="btn btn-primary pointer" data-table="users">';
-									html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Users'];
-								html += '</label>';
-								layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
-								options.field = "assigned_to";
-								options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
-								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
-									var td = tr.find('td[data-plugin="organizations"][data-key="assigned_to"]');
-									if(API.Helper.isSet(data.details,['users'])){
-										if(data.this.raw.assigned_to == null){ data.this.raw.assigned_to = ''; }
-										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.raw.assigned_to,';').split(';'))){
-											if(subDetails != ''){
-												var user = data.details.users.dom[subDetails];
+									options.field = "services";
+									if(API.Helper.isSet(options,['td'])){ delete options.td; }
+									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
+										var td = tr.find('td[data-plugin="organizations"][data-key="services"]');
+										if(API.Helper.isSet(data.details,['services'])){
+											for(var [subKey, subDetails] of Object.entries(data.details.services.dom)){
+												td.append(API.Plugins.organizations.GUI.buttons.details(subDetails,{remove:API.Auth.validate('custom', 'organizations_services', 4),icon:{details:"fas fa-hand-holding-usd"}}));
+											}
+										}
+										if(API.Auth.validate('custom', 'organizations_services', 2)){
+											td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
+										}
+										API.Plugins.organizations.Events.services(data,layout);
+									});
+									if(API.Helper.isSet(data,['relations','services'])){
+										for(var [id, relation] of Object.entries(data.relations.services)){
+											if(API.Auth.validate('custom', 'organizations_services', 1) || relation.owner == API.Contents.Auth.User.username){
+												API.Builder.Timeline.add.service(layout.timeline,relation,'hand-holding-usd','success',function(item){
+													if((API.Auth.validate('plugin','services',1))&&(API.Auth.validate('view','details',1,'services'))){
+														item.find('i').first().addClass('pointer');
+														item.find('i').first().off().click(function(){
+															API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=services&v=details&id="+data.details.services.dom[item.attr('data-id')].name, modal:true });
+														});
+													}
+												});
+											}
+										}
+									}
+								}
+								// Issues
+								if(API.Helper.isSet(API.Plugins,['issues']) && API.Auth.validate('custom', 'organizations_issues', 1)){
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="issues">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Issues'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
+									options.field = "issues";
+									if(API.Helper.isSet(options,['td'])){ delete options.td; }
+									var issues = {};
+									for(var [rid, relations] of Object.entries(data.relationships)){
+										for(var [uid, relation] of Object.entries(relations)){
+											if(relation.relationship == 'issues'){ issues[relation.link_to] = relation.statuses; }
+										}
+									}
+									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
+										var td = tr.find('td[data-plugin="organizations"][data-key="issues"]');
+										if(API.Helper.isSet(data.details,['issues'])){
+											for(var [subKey, subDetails] of Object.entries(data.details.issues.dom)){
 												td.append(
-													API.Plugins.organizations.GUI.buttons.details(user,{
-														remove:API.Auth.validate('custom', 'organizations_users', 4),
-														key: "username",
-														icon:{
-															details:"fas fa-user",
-															remove:"fas fa-user-minus",
+													API.Plugins.organizations.GUI.buttons.details(subDetails,{
+														remove:API.Auth.validate('custom', 'organizations_issues', 4),
+														content:subDetails.id+' - '+subDetails.name+' - '+API.Contents.Language[data.details.statuses.raw[issues[subDetails.id]].name],
+														color:{
+															details:data.details.statuses.raw[issues[subDetails.id]].color
 														},
-														action:{
-															remove:"unassign",
+														icon:{
+															details:data.details.statuses.raw[issues[subDetails.id]].icon
 														},
 													})
 												);
 											}
 										}
-									}
-									if(API.Auth.validate('custom', 'organizations_users', 2)){
-										td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="assign"><i class="fas fa-user-plus"></i></button>');
-									}
-									API.Plugins.organizations.Events.users(data,layout);
-								});
-								if(API.Helper.isSet(data,['relations','users'])){
-									for(var [id, relation] of Object.entries(data.relations.users)){
-										if(relation.isActive||API.Auth.validate('custom', 'organizations_users_isActive', 1)){
-											API.Builder.Timeline.add.subscription(layout.timeline,relation,'bell','lightblue',function(item){
-												if((API.Auth.validate('plugin','users',1))&&(API.Auth.validate('view','details',1,'users'))){
-													item.find('i').first().addClass('pointer');
-													item.find('i').first().off().click(function(){
-														API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
-													});
-												}
-											});
+										if(API.Auth.validate('custom', 'organizations_issues', 2)){
+											td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
 										}
-									}
-								}
-							}
-							// Created
-							options.field = "created";
-							options.td = '<td><time class="timeago" datetime="'+data.this.raw.created.replace(/ /g, "T")+'" title="'+data.this.raw.created+'">'+data.this.raw.created+'</time></td>';
-							API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){ tr.find('time').timeago(); });
-							// Subscription
-							var icon = "fas fa-bell";
-							if(API.Helper.isSet(data.relations,['users',API.Contents.Auth.User.id])){ var icon = "fas fa-bell-slash"; }
-							API.GUI.Layouts.details.button(data,layout,{icon:icon},function(data,layout,button){
-								button.off().click(function(){
-									if(button.find('i').hasClass( "fa-bell" )){
-										button.find('i').removeClass("fa-bell").addClass("fa-bell-slash");
-										API.request("organizations",'subscribe',{data:{id:data.this.raw.id}},function(answer){
-											var subscription = JSON.parse(answer);
-											if(subscription.success != undefined){
-												var sub = {};
-												for(var [key, value] of Object.entries(API.Contents.Auth.User)){ sub[key] = value; }
-												sub.created = subscription.output.relationship.created;
-												sub.name = '';
-												if((sub.first_name != '')&&(sub.first_name != null)){ if(sub.name != ''){sub.name += ' ';} sub.name += sub.first_name; }
-												if((sub.middle_name != '')&&(sub.middle_name != null)){ if(sub.name != ''){sub.name += ' ';} sub.name += sub.middle_name; }
-												if((sub.last_name != '')&&(sub.last_name != null)){ if(sub.name != ''){sub.name += ' ';} sub.name += sub.last_name; }
-												API.Builder.Timeline.add.subscription(layout.timeline,sub,'bell','lightblue',function(item){
-													if((API.Auth.validate('plugin','users',1))&&(API.Auth.validate('view','details',1,'users'))){
+										API.Plugins.organizations.Events.issues(data,layout);
+									});
+									if(API.Helper.isSet(data,['relations','issues'])){
+										for(var [id, relation] of Object.entries(data.relations.issues)){
+											if(API.Auth.validate('custom', 'organizations_issues', 1) || relation.owner == API.Contents.Auth.User.username){
+												relation.status = data.details.statuses.raw[relation.statuses].order;
+												API.Builder.Timeline.add.issue(layout.timeline,relation,'gavel','indigo',function(item){
+													if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
 														item.find('i').first().addClass('pointer');
 														item.find('i').first().off().click(function(){
-															API.CRUD.read.show({ key:'username',keys:data.relations.users[item.attr('data-id')], href:"?p=users&v=details&id="+data.relations.users[item.attr('data-id')].username, modal:true });
+															API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.services.dom[item.attr('data-id')].id, modal:true });
 														});
 													}
 												});
 											}
+										}
+									}
+								}
+								// Tags
+								if(API.Helper.isSet(API.Plugins,['tags']) && API.Auth.validate('custom', 'organizations_tags', 1)){
+									options.field = "tags";
+									options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
+									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
+										var td = tr.find('td[data-plugin="organizations"][data-key="tags"]');
+										if(data.this.dom.tags == null){ data.this.dom.tags = ''; }
+										for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.dom.tags,';').split(';'))){
+											if(subDetails != ''){
+												td.append(
+													API.Plugins.organizations.GUI.buttons.details({name:subDetails},{
+														remove:API.Auth.validate('custom', 'organizations_tags', 4),
+														id: "name",
+														key: "name",
+														icon:{
+															details:"fas fa-tag",
+															remove:"fas fa-backspace",
+														},
+														action:{
+															remove:"untag",
+														},
+													})
+												);
+											}
+										}
+										if(API.Auth.validate('custom', 'organizations_tags', 2)){
+											td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="tag"><i class="fas fa-plus"></i></button>');
+										}
+										API.Plugins.organizations.Events.tags(data,layout);
+									});
+								}
+								// Notes
+								if(API.Helper.isSet(API.Plugins,['notes']) && API.Auth.validate('custom', 'organizations_notes', 1)){
+									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-note",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
+										var html = '';
+										html += '<label class="btn btn-primary pointer" data-table="notes">';
+											html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Notes'];
+										html += '</label>';
+										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
+										layout.content.notes = content;
+										layout.tabs.notes = tab;
+										if(API.Auth.validate('custom', 'organizations_notes', 2)){
+											content.append('<div><textarea title="Note" name="note" class="form-control"></textarea></div>');
+											content.find('textarea').summernote({
+												toolbar: [
+													['font', ['fontname', 'fontsize']],
+													['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+													['color', ['color']],
+													['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
+												],
+												height: 250,
+											});
+											var html = '';
+											html += '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
+												html += '<form class="form-inline my-2 my-lg-0 ml-auto">';
+													if(API.Helper.isSet(API.Plugins,['statuses']) && API.Auth.validate('custom', 'organizations_status', 1)){
+														html += '<select class="form-control mr-sm-2" name="status" style="width: 150px;">';
+														for(var [order, status] of Object.entries(API.Contents.Statuses.organizations)){
+															html += '<option value="'+order+'">'+API.Helper.ucfirst(status.name)+'</option>'
+														}
+														html += '</select>';
+													}
+													html += '<button class="btn btn-warning my-2 my-sm-0" type="button" data-action="reply"><i class="fas fa-sticky-note mr-1"></i>'+API.Contents.Language['Add Note']+'</button>';
+												html += '</form>';
+											html += '</nav>';
+											content.append(html);
+										}
+									});
+									if(API.Helper.isSet(data,['relations','notes'])){
+										for(var [id, relation] of Object.entries(data.relations.notes)){
+											if(API.Auth.validate('custom', 'organizations_notes', 1) || relation.owner == API.Contents.Auth.User.username){
+												API.Builder.Timeline.add.card(layout.timeline,relation,'sticky-note','warning',function(item){
+													item.find('.timeline-footer').remove();
+													if(API.Auth.validate('custom', 'organizations_notes', 4)){
+														$('<a class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></a>').insertAfter(item.find('span.time.bg-warning'));
+														item.find('a.pointer').off().click(function(){
+															API.CRUD.delete.show({ keys:data.relations.notes[item.attr('data-id')],key:'id', modal:true, plugin:'notes' },function(note){
+																item.remove();
+															});
+														});
+													}
+												});
+											}
+										}
+									}
+									API.Plugins.organizations.Events.notes(data,layout);
+								}
+								// Employees
+								// Contacts
+								if(API.Helper.isSet(API.Plugins,['contacts']) && API.Auth.validate('custom', 'organizations_contacts', 1)){
+									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Contacts"]},function(data,layout,tab,content){
+										var html = '';
+										html += '<label class="btn btn-primary pointer" data-table="contacts">';
+											html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Contacts'];
+										html += '</label>';
+										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
+										layout.content.contacts = content;
+										layout.tabs.contacts = tab;
+										content.addClass('p-3');
+										var html = '';
+										html += '<div class="row">';
+											html += '<div class="col-md-12 mb-3">';
+												html += '<div class="input-group">';
+													html += '<input type="text" class="form-control">';
+													html += '<div class="input-group-append pointer" data-action="clear">';
+														html += '<span class="input-group-text"><i class="fas fa-times" aria-hidden="true"></i></span>';
+													html += '</div>';
+													html += '<div class="input-group-append">';
+														html += '<span class="input-group-text"><i class="icon icon-search mr-1"></i>'+API.Contents.Language["Search"]+'</span>';
+													html += '</div>';
+												html += '</div>';
+											html += '</div>';
+										html += '</div>';
+										html += '<div class="row"></div>';
+										content.append(html);
+										area = content.find('div.row').last();
+										if(API.Auth.validate('custom', 'organizations_contacts', 2)){
+											var html = '';
+											html += '<div class="col-sm-12 col-md-6">';
+												html += '<div class="card pointer addContact">';
+													html += '<div class="card-body py-4">';
+														html += '<div class="text-center p-5">';
+															html += '<i class="fas fa-plus-circle fa-10x mt-3 mb-2"></i>';
+														html += '</div>';
+													html += '</div>';
+												html += '</div>';
+											html += '</div>';
+											area.append(html);
+										}
+										if(API.Helper.isSet(data,['relations','contacts'])){
+											for(var [id, relation] of Object.entries(data.relations.contacts)){
+												if(relation.isActive||API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
+													API.Plugins.organizations.GUI.contact(relation,layout);
+													API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
+														item.find('i').first().addClass('pointer');
+														item.find('i').first().off().click(function(){
+															value = item.attr('data-name').toLowerCase();
+															layout.content.contacts.find('input').val(value);
+															layout.tabs.contacts.find('a').tab('show');
+															layout.content.contacts.find('[data-csv]').hide();
+															layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
+														});
+													});
+												}
+											}
+										}
+									});
+									API.Plugins.organizations.Events.contacts(data,layout);
+								}
+								// Calls
+								// Users
+								if(API.Helper.isSet(API.Plugins,['calls']) && API.Auth.validate('custom', 'organizations_calls', 1)){
+									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-phone-square",text:API.Contents.Language["Calls"]},function(data,layout,tab,content){
+										var html = '';
+										html += '<label class="btn btn-primary pointer" data-table="calls">';
+											html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Calls'];
+										html += '</label>';
+										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
+										layout.content.calls = content;
+										layout.tabs.calls = tab;
+									});
+								}
+								if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
+									var html = '';
+									html += '<label class="btn btn-primary pointer" data-table="users">';
+										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Users'];
+									html += '</label>';
+									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
+									options.field = "assigned_to";
+									options.td = '<td data-plugin="organizations" data-key="'+options.field+'"></td>';
+									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
+										var td = tr.find('td[data-plugin="organizations"][data-key="assigned_to"]');
+										if(API.Helper.isSet(data.details,['users'])){
+											if(data.this.raw.assigned_to == null){ data.this.raw.assigned_to = ''; }
+											for(var [subKey, subDetails] of Object.entries(API.Helper.trim(data.this.raw.assigned_to,';').split(';'))){
+												if(subDetails != ''){
+													var user = data.details.users.dom[subDetails];
+													td.append(
+														API.Plugins.organizations.GUI.buttons.details(user,{
+															remove:API.Auth.validate('custom', 'organizations_users', 4),
+															key: "username",
+															icon:{
+																details:"fas fa-user",
+																remove:"fas fa-user-minus",
+															},
+															action:{
+																remove:"unassign",
+															},
+														})
+													);
+												}
+											}
+										}
+										if(API.Auth.validate('custom', 'organizations_users', 2)){
+											td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="assign"><i class="fas fa-user-plus"></i></button>');
+										}
+										API.Plugins.organizations.Events.users(data,layout);
+									});
+									if(API.Helper.isSet(data,['relations','users'])){
+										for(var [id, relation] of Object.entries(data.relations.users)){
+											if(relation.isActive||API.Auth.validate('custom', 'organizations_users_isActive', 1)){
+												API.Builder.Timeline.add.subscription(layout.timeline,relation,'bell','lightblue',function(item){
+													if((API.Auth.validate('plugin','users',1))&&(API.Auth.validate('view','details',1,'users'))){
+														item.find('i').first().addClass('pointer');
+														item.find('i').first().off().click(function(){
+															API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
+														});
+													}
+												});
+											}
+										}
+									}
+								}
+								// Created
+								options.field = "created";
+								options.td = '<td><time class="timeago" datetime="'+data.this.raw.created.replace(/ /g, "T")+'" title="'+data.this.raw.created+'">'+data.this.raw.created+'</time></td>';
+								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){ tr.find('time').timeago(); });
+								// Subscription
+								var icon = "fas fa-bell";
+								if(API.Helper.isSet(data.relations,['users',API.Contents.Auth.User.id])){ var icon = "fas fa-bell-slash"; }
+								API.GUI.Layouts.details.button(data,layout,{icon:icon},function(data,layout,button){
+									button.off().click(function(){
+										if(button.find('i').hasClass( "fa-bell" )){
+											button.find('i').removeClass("fa-bell").addClass("fa-bell-slash");
+											API.request("organizations",'subscribe',{data:{id:data.this.raw.id}},function(answer){
+												var subscription = JSON.parse(answer);
+												if(subscription.success != undefined){
+													var sub = {};
+													for(var [key, value] of Object.entries(API.Contents.Auth.User)){ sub[key] = value; }
+													sub.created = subscription.output.relationship.created;
+													sub.name = '';
+													if((sub.first_name != '')&&(sub.first_name != null)){ if(sub.name != ''){sub.name += ' ';} sub.name += sub.first_name; }
+													if((sub.middle_name != '')&&(sub.middle_name != null)){ if(sub.name != ''){sub.name += ' ';} sub.name += sub.middle_name; }
+													if((sub.last_name != '')&&(sub.last_name != null)){ if(sub.name != ''){sub.name += ' ';} sub.name += sub.last_name; }
+													API.Builder.Timeline.add.subscription(layout.timeline,sub,'bell','lightblue',function(item){
+														if((API.Auth.validate('plugin','users',1))&&(API.Auth.validate('view','details',1,'users'))){
+															item.find('i').first().addClass('pointer');
+															item.find('i').first().off().click(function(){
+																API.CRUD.read.show({ key:'username',keys:data.relations.users[item.attr('data-id')], href:"?p=users&v=details&id="+data.relations.users[item.attr('data-id')].username, modal:true });
+															});
+														}
+													});
+												}
+											});
+										} else {
+											button.find('i').removeClass("fa-bell-slash").addClass("fa-bell");
+											API.request(url.searchParams.get("p"),'unsubscribe',{data:{id:dataset.output.this.raw.id}},function(answer){
+												var subscription = JSON.parse(answer);
+												if(subscription.success != undefined){
+													layout.timeline.find('[data-type="bell"][data-id="'+API.Contents.Auth.User.id+'"]').remove();
+												}
+											});
+										}
+									});
+								});
+								// Timeline
+								layout.timeline.find('.time-label').first().find('label').each(function(){
+									switch($(this).attr('data-table')){
+										case"notes":var icon = 'sticky-note';break;
+										case"comments":var icon = 'comment';break;
+										case"statuses":var icon = 'info';break;
+										case"users":var icon = 'bell';break;
+										case"subsidiaries":var icon = 'building';break;
+										case"employees":var icon = 'id-card';break;
+										case"contacts":var icon = 'address-card';break;
+										case"calls":var icon = 'phone-square';break;
+										case"services":var icon = 'hand-holding-usd';break;
+										case"issues":var icon = 'gavel';break;
+										default:var icon = '';break;
+									}
+									if((icon != '')&&(typeof icon !== 'undefined')){
+										$(this).click(function(){
+											layout.timeline.find('[data-type]').hide();
+											layout.timeline.find('[data-type="'+icon+'"]').show();
 										});
 									} else {
-										button.find('i').removeClass("fa-bell-slash").addClass("fa-bell");
-										API.request(url.searchParams.get("p"),'unsubscribe',{data:{id:dataset.output.this.raw.id}},function(answer){
-											var subscription = JSON.parse(answer);
-											if(subscription.success != undefined){
-												layout.timeline.find('[data-type="bell"][data-id="'+API.Contents.Auth.User.id+'"]').remove();
-											}
-										});
+										$(this).click(function(){ layout.timeline.find('[data-type]').show(); });
 									}
 								});
 							});
-							// Timeline
-							layout.timeline.find('.time-label').first().find('label').each(function(){
-								switch($(this).attr('data-table')){
-									case"notes":var icon = 'sticky-note';break;
-									case"comments":var icon = 'comment';break;
-									case"statuses":var icon = 'info';break;
-									case"users":var icon = 'bell';break;
-									case"subsidiaries":var icon = 'building';break;
-									case"employees":var icon = 'id-card';break;
-									case"contacts":var icon = 'address-card';break;
-									case"calls":var icon = 'phone-square';break;
-									case"services":var icon = 'hand-holding-usd';break;
-									case"issues":var icon = 'gavel';break;
-									default:var icon = '';break;
-								}
-								if((icon != '')&&(typeof icon !== 'undefined')){
-									$(this).click(function(){
-										layout.timeline.find('[data-type]').hide();
-										layout.timeline.find('[data-type="'+icon+'"]').show();
-									});
-								} else {
-									$(this).click(function(){ layout.timeline.find('[data-type]').show(); });
-								}
-							});
-						});
+						}
 					});
 				}
 			});
