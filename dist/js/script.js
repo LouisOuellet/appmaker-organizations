@@ -379,6 +379,7 @@ API.Plugins.organizations = {
 							if(API.Helper.isSet(API.Plugins,['notes']) && API.Auth.validate('custom', 'organizations_notes', 1)){
 								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-note",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
 									layout.notes = content;
+									layout.tabs.notes = tab;
 									content.attr('data-tab','notes');
 									content.append('<div><textarea title="Note" name="note" class="form-control"></textarea></div>');
 									content.find('textarea').summernote({
@@ -523,9 +524,9 @@ API.Plugins.organizations = {
 														item.find('i').first().addClass('pointer');
 														item.find('i').first().off().click(function(){
 															layout.contacts.find('input').val(item.attr('data-name'));
-															// container.find('ul.nav li.nav-item a[href*="contacts"]').tab('show');
-															// container.find('#organizations_contacts').find('[data-csv]').hide();
-															// container.find('#organizations_contacts').find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+															layout.tabs.contacts.find('a').tab('show');
+															layout.contacts.find('[data-csv]').hide();
+															layout.contacts.find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
 														});
 													});
 												}
