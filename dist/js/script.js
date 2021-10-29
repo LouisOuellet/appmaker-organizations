@@ -378,7 +378,7 @@ API.Plugins.organizations = {
 							// Notes
 							if(API.Helper.isSet(API.Plugins,['notes']) && API.Auth.validate('custom', 'organizations_notes', 1)){
 								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-note",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
-									layout.notes = content;
+									layout.content.notes = content;
 									layout.tabs.notes = tab;
 									content.attr('data-tab','notes');
 									content.append('<div><textarea title="Note" name="note" class="form-control"></textarea></div>');
@@ -480,7 +480,7 @@ API.Plugins.organizations = {
 							// Contacts
 							if(API.Helper.isSet(API.Plugins,['contacts']) && API.Auth.validate('custom', 'organizations_contacts', 1)){
 								API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Contacts"]},function(data,layout,tab,content){
-									layout.contacts = content;
+									layout.content.contacts = content;
 									layout.tabs.contacts = tab;
 									content.addClass('p-3');
 									var html = '';
@@ -523,10 +523,11 @@ API.Plugins.organizations = {
 													API.Builder.Timeline.add.contact(layout.timeline,relation,'address-card','secondary',function(item){
 														item.find('i').first().addClass('pointer');
 														item.find('i').first().off().click(function(){
-															layout.contacts.find('input').val(item.attr('data-name').toLowerCase());
+															value = item.attr('data-name').toLowerCase();
+															layout.content.contacts.find('input').val(value);
 															layout.tabs.contacts.find('a').tab('show');
-															// layout.contacts.find('[data-csv]').hide();
-															// layout.contacts.find('[data-csv*="'+item.attr('data-name').toLowerCase()+'"]').each(function(){ $(this).show(); });
+															layout.content.contacts.find('[data-csv]').hide();
+															layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
 														});
 													});
 												}
@@ -771,7 +772,7 @@ API.Plugins.organizations = {
 			var csv = '';
 			for(var [key, value] of Object.entries(dataset)){
 				if(value == null){ value = '';dataset[key] = value; };
-				if(jQuery.inArray(key,['first_name','middle_name','last_name','email','phone','mobile','office_num','other_num','about','job_title']) != -1){
+				if(jQuery.inArray(key,['first_name','middle_name','last_name','name','email','phone','mobile','office_num','other_num','about','job_title']) != -1){
 					csv += value.replace(',','').toLowerCase()+',';
 				}
 			}
@@ -1238,8 +1239,8 @@ API.Plugins.organizations = {
 			if(options instanceof Function){ callback = options; options = {}; }
 			var defaults = {field: "name"};
 			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
-			var contacts = layout.contacts.find('div.row').eq(1);
-			var search = layout.contacts.find('div.row').eq(0);
+			var contacts = layout.content.contacts.find('div.row').eq(1);
+			var search = layout.content.contacts.find('div.row').eq(0);
 			var skeleton = {};
 			for(var [field, settings] of Object.entries(API.Contents.Settings.Structure.users)){ skeleton[field] = ''; }
 			search.find('div[data-action="clear"]').off().click(function(){
