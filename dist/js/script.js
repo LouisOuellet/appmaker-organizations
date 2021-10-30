@@ -1294,7 +1294,7 @@ API.Plugins.organizations = {
 							if((user.dom.first_name != '')&&(user.dom.first_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.first_name; }
 							if((user.dom.middle_name != '')&&(user.dom.middle_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.middle_name; }
 							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
-							API.Helper.set(dataset.relations,['contacts',user.dom.id],user.dom);
+							API.Helper.set(dataset,['relations','contacts',user.dom.id],user.dom);
 							API.Plugins.organizations.GUI.contact(user.dom,layout);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
 							API.Builder.Timeline.add.contact(layout.timeline,user.dom,'address-card','secondary',function(item){
@@ -1338,7 +1338,7 @@ API.Plugins.organizations = {
 							if((user.dom.first_name != '')&&(user.dom.first_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.first_name; }
 							if((user.dom.middle_name != '')&&(user.dom.middle_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.middle_name; }
 							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
-							API.Helper.set(dataset.relations,['contacts',user.dom.id],user.dom);
+							API.Helper.set(dataset,['relations','contacts',user.dom.id],user.dom);
 							contacts.find('[data-id="'+user.raw.id+'"]').remove();
 							API.Plugins.organizations.GUI.contact(user.dom,layout);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
@@ -1353,7 +1353,7 @@ API.Plugins.organizations = {
 							}
 							if(contact.isActive && API.Auth.validate('custom', 'organizations_contacts_isActive', 1)){
 								contact.isActive = user.isActive;
-								API.Helper.set(dataset.relations,['contacts',contact.id,'isActive'],contact.isActive);
+								API.Helper.set(dataset,['relations','contacts',contact.id,'isActive'],contact.isActive);
 								contacts.find('[data-id="'+contact.id+'"] .card').prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">'+API.Contents.Language['Inactive']+'</div></div>');
 							}
 						});
