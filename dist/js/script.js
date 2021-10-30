@@ -548,7 +548,7 @@ API.Plugins.organizations = {
 									for(var [uid, relation] of Object.entries(relations)){
 										if(relation.relationship == "organizations"){
 											console.log(API.Helper.isSet(API.Plugins,[relation.relationship]));
-											console.log((API.Auth.validate('custom', 'organizations_'+relation.relationship, 1) || relation.owner == API.Contents.Auth.User.username) &&);
+											console.log((API.Auth.validate('custom', 'organizations_'+relation.relationship, 1) || relation.owner == API.Contents.Auth.User.username));
 											console.log(API.Helper.isSet(data,['relations',relation.relationship,relation.link_to]));
 										}
 										if(
