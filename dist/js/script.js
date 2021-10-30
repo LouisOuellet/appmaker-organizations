@@ -552,7 +552,13 @@ API.Plugins.organizations = {
 											if(typeof relation.statuses !== 'undefined'){ details.status = data.details.statuses.dom[relation.statuses].order; }
 											details.created = relation.created;
 											details.owner = relation.owner;
-											if(!API.Helper.isSet(details,['isActive'])||(API.Helper.isSet(details,['isActive']) && details.isActive)||(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relations.relationship+'_isActive', 1)||API.Auth.validate('custom', relations.relationship+'_isActive', 1)))){
+											console.log(API.Auth.validate('custom', 'organizations_'+relations.relationship+'_isActive', 1));
+											console.log(API.Auth.validate('custom', relations.relationship+'_isActive', 1));
+											if(
+												!API.Helper.isSet(details,['isActive'])||
+												(API.Helper.isSet(details,['isActive']) && details.isActive)||
+												(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relations.relationship+'_isActive', 1)||API.Auth.validate('custom', relations.relationship+'_isActive', 1)))
+											){
 												switch(relation.relationship){
 													case"statuses":
 														API.Builder.Timeline.add.status(layout.timeline,details);
