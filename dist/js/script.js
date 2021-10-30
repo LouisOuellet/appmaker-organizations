@@ -507,7 +507,7 @@ API.Plugins.organizations = {
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){ tr.find('time').timeago(); });
 								// Subscription
 								var icon = "fas fa-bell";
-								if(API.Helper.isSet(data.relations,['users',API.Contents.Auth.User.id])){ var icon = "fas fa-bell-slash"; }
+								if(API.Helper.isSet(data,['relations','users',API.Contents.Auth.User.id])){ var icon = "fas fa-bell-slash"; }
 								API.GUI.Layouts.details.button(data,layout,{icon:icon},function(data,layout,button){
 									button.off().click(function(){
 										if(button.find('i').hasClass( "fa-bell" )){
