@@ -1502,23 +1502,13 @@ API.Plugins.organizations = {
 					raw: dataset.details.calls.raw[tr.attr('data-id')],
 				};
 				switch(button.attr('data-action')){
-					case"start":
-						// API.Plugins.calls.Events.start(call,organization,issues,function(data,objects){
-						// 	call.raw.status = data.call.raw.status;
-						// 	call.dom.status = data.call.dom.status;
-						// 	// container.find('ul.nav li.nav-item a[href*="calls"]').tab('show');
-						// 	if(callback != null){ callback(data,objects); }
-						// });
-						break;
-					case"cancel":
-						// API.Plugins.calls.Events.cancel(call,organization,issues,function(data,objects){
+					case"end":
+						// API.Plugins.calls.Events.end(dataset,layout,call,function(data,objects){
 						// 	call.raw.status = data.call.raw.status;
 						// 	call.dom.status = data.call.dom.status;
 						// 	if(callback != null){ callback(data,objects); }
 						// });
-						break;
-					case"reschedule":
-						// API.Plugins.calls.Events.reschedule(call,organization,issues,function(data,objects){
+						// API.Plugins.calls.Events.end(call,organization,issues,function(data,objects){
 						// 	call.raw.status = data.call.raw.status;
 						// 	call.dom.status = data.call.dom.status;
 						// 	if(callback != null){ callback(data,objects); }
@@ -1545,6 +1535,55 @@ API.Plugins.organizations = {
 					calls.find('[data-csv*="'+$(this).val().toLowerCase()+'"]').each(function(){ $(this).show(); });
 				} else { calls.find('[data-csv]').show(); }
 			});
+			search.find('button[data-action="create"]').off().click(function(){
+				API.Builder.modal($('body'), {
+					title:'Create a callback',
+					icon:'callback',
+					zindex:'top',
+					css:{ dialog: "modal-lg", header: "bg-success", body: "p-3"},
+				}, function(modal){
+					modal.on('hide.bs.modal',function(){ modal.remove(); });
+					var dialog = modal.find('.modal-dialog');
+					var header = modal.find('.modal-header');
+					var body = modal.find('.modal-body');
+					var footer = modal.find('.modal-footer');
+					header.find('button[data-control="hide"]').remove();
+					header.find('button[data-control="update"]').remove();
+					body.html('<div class="row"></div>');
+					API.Builder.input(body.find('div.row'), 'date', null,{plugin:'organizations'}, function(input){
+						input.wrap('<div class="col-md-6"></div>');
+					});
+					API.Builder.input(body.find('div.row'), 'time', null,{plugin:'organizations'}, function(input){
+						input.wrap('<div class="col-md-6"></div>');
+					});
+					if(API.Helper.isSet(dataset,['relations','contacts'])){
+						API.Builder.input(body.find('div.row'), 'contact', null,{plugin:'organizations',list:{contacts:dataset.relations.contacts}}, function(input){
+							input.wrap('<div class="col-md-12 mt-3"></div>');
+						});
+					}
+					footer.append('<button class="btn btn-success" data-action="create"><i class="fas fa-phone-square mr-1"></i>'+API.Contents.Language['Create']+'</button>');
+					footer.find('button[data-action="create"]').click(function(){
+						var call = {
+							date:body.find('input[data-key="date"]').val(),
+							time:body.find('input.datetimepicker-input[data-key="time"]').val(),
+							contact:body.find('select').select2('val'),
+							status:1,
+							assigned_to:API.Contents.Auth.User.id,
+							relationship:'organizations',
+							link_to:dataset.this.raw.id,
+						};
+						API.request('calls','create',{data:call},function(result){
+							var response = JSON.parse(result);
+							if(typeof response.success !== 'undefined'){
+								API.Plugins.organizations.GUI.call(dataset,layout,response.output.dom);
+								API.Plugins.organizations.Events.calls(dataset,layout);
+							}
+						});
+						modal.modal('hide');
+					});
+					modal.modal('show');
+				});
+			});
 			calls.find('tr td.pointer').off().click(function(){
 				API.CRUD.read.show({ key:{id:$(this).parent().attr('data-id')}, title:$(this).parent().attr('data-phone'), href:"?p=calls&v=details&id="+$(this).parent().attr('data-id'), modal:true });
 			});
@@ -1556,13 +1595,23 @@ API.Plugins.organizations = {
 					raw: dataset.details.calls.raw[tr.attr('data-id')],
 				};
 				switch(button.attr('data-action')){
-					case"end":
-						// API.Plugins.calls.Events.end(dataset,layout,call,function(data,objects){
+					case"start":
+						// API.Plugins.calls.Events.start(call,organization,issues,function(data,objects){
+						// 	call.raw.status = data.call.raw.status;
+						// 	call.dom.status = data.call.dom.status;
+						// 	// container.find('ul.nav li.nav-item a[href*="calls"]').tab('show');
+						// 	if(callback != null){ callback(data,objects); }
+						// });
+						break;
+					case"cancel":
+						// API.Plugins.calls.Events.cancel(call,organization,issues,function(data,objects){
 						// 	call.raw.status = data.call.raw.status;
 						// 	call.dom.status = data.call.dom.status;
 						// 	if(callback != null){ callback(data,objects); }
 						// });
-						// API.Plugins.calls.Events.end(call,organization,issues,function(data,objects){
+						break;
+					case"reschedule":
+						// API.Plugins.calls.Events.reschedule(call,organization,issues,function(data,objects){
 						// 	call.raw.status = data.call.raw.status;
 						// 	call.dom.status = data.call.dom.status;
 						// 	if(callback != null){ callback(data,objects); }
@@ -1744,65 +1793,6 @@ API.Plugins.organizations = {
 		// 							container.find('#organizations_callbacks').find('[data-csv]').show();
 		// 						});
 		// 						container.find('#organizations_callbacks').find('div.row').first().find('[data-action="create"]').click(function(){
-		// 							API.Builder.modal($('body'), {
-		// 								title:'Create a callback',
-		// 								icon:'callback',
-		// 								zindex:'top',
-		// 								css:{ dialog: "modal-lg", header: "bg-success", body: "p-3"},
-		// 							}, function(modal){
-		// 								modal.on('hide.bs.modal',function(){ modal.remove(); });
-		// 								var dialog = modal.find('.modal-dialog');
-		// 								var header = modal.find('.modal-header');
-		// 								var body = modal.find('.modal-body');
-		// 								var footer = modal.find('.modal-footer');
-		// 								header.find('button[data-control="hide"]').remove();
-		// 								header.find('button[data-control="update"]').remove();
-		// 								body.html('<div class="row"></div>');
-		// 								API.Builder.input(body.find('div.row'), 'date', null,{plugin:'organizations'}, function(input){
-		// 									input.wrap('<div class="col-md-6"></div>');
-		// 								});
-		// 								API.Builder.input(body.find('div.row'), 'time', null,{plugin:'organizations'}, function(input){
-		// 									input.wrap('<div class="col-md-6"></div>');
-		// 								});
-		// 								if(API.Helper.isSet(dataset.output.details,['users','dom'])){
-		// 									var contacts = {};
-		// 									for(var [id, contact] of Object.entries(dataset.output.details.users.dom)){
-		// 										if(contact.isContact){
-		// 											contacts[id] = '';
-		// 											if(contact.first_name != ''){ contacts[id] += contact.first_name}
-		// 											if(contact.middle_name != ''){ if(contacts[id] != ''){contacts[id] += ' ';} contacts[id] += contact.middle_name}
-		// 											if(contact.last_name != ''){ if(contacts[id] != ''){contacts[id] += ' ';} contacts[id] += contact.last_name}
-		// 											if(contact.job_title != ''){ if(contacts[id] != ''){contacts[id] += ' - ';} contacts[id] += contact.job_title}
-		// 											if(contact.email != ''){ if(contacts[id] != ''){contacts[id] += ' - ';} contacts[id] += contact.email}
-		// 										}
-		// 									}
-		// 									if(!jQuery.isEmptyObject(contacts)){
-		// 										API.Builder.input(body.find('div.row'), 'contact', null,{plugin:'organizations',list:{contacts:contacts}}, function(input){
-		// 											input.wrap('<div class="col-md-12 mt-3"></div>');
-		// 										});
-		// 									}
-		// 								}
-		// 								footer.append('<button class="btn btn-success" data-action="create"><i class="fas fa-phone-square mr-1"></i>Create</button>');
-		// 								footer.find('button[data-action="create"]').click(function(){
-		// 									var call = {
-		// 										date:body.find('input[data-key="date"]').val(),
-		// 										time:body.find('input.datetimepicker-input[data-key="time"]').val(),
-		// 										contact:body.find('select').select2('val'),
-		// 										status:1,
-		// 										assigned_to:API.Contents.Auth.User.id,
-		// 										relationship:'organizations',
-		// 										link_to:dataset.output.this.raw.id,
-		// 									};
-		// 									API.request('calls','create',{data:call},function(result){
-		// 										var data = JSON.parse(result);
-		// 										if(typeof data.success !== 'undefined'){
-		// 											API.Plugins.organizations.GUI.calls.add(container,{dom:data.output.dom,raw:data.output.raw},dataset.output.this,dataset.output.details.issues,true);
-		// 										}
-		// 									});
-		// 									modal.modal('hide');
-		// 								});
-		// 								modal.modal('show');
-		// 							});
 		// 						});
 		// 						container.find('#organizations_callbacks').find('input#organizations_callbacks_search').on('input',function(){
 		// 							if($(this).val() != ''){
