@@ -760,7 +760,7 @@ API.Plugins.organizations = {
 			var csv = '';
 			for(var [key, value] of Object.entries(call)){
 				if(value == null){ value = '';call[key] = value; };
-				if(jQuery.inArray(key,['date','time','status','phone','contact','organization','assigned_to']) != -1){
+				if(jQuery.inArray(key,['date','time','status','phone','status','contact','organization','assigned_to']) != -1){
 					if(typeof value == 'string'){ csv += value.replace(',','').toLowerCase()+','; }
 					else { csv += value+','; }
 				}
@@ -1504,10 +1504,6 @@ API.Plugins.organizations = {
 				switch(button.attr('data-action')){
 					case"end":
 						// API.Plugins.calls.Events.end(dataset,layout,call,function(data,objects){
-						// 	call.raw.status = data.call.raw.status;
-						// 	call.dom.status = data.call.dom.status;
-						// 	if(callback != null){ callback(data,objects); }
-						// });
 						// API.Plugins.calls.Events.end(call,organization,issues,function(data,objects){
 						// 	call.raw.status = data.call.raw.status;
 						// 	call.dom.status = data.call.dom.status;
@@ -1617,6 +1613,7 @@ API.Plugins.organizations = {
 				};
 				switch(button.attr('data-action')){
 					case"start":
+						// API.Plugins.calls.Events.start(dataset,layout,call,function(data,objects){
 						// API.Plugins.calls.Events.start(call,organization,issues,function(data,objects){
 						// 	call.raw.status = data.call.raw.status;
 						// 	call.dom.status = data.call.dom.status;
@@ -1625,6 +1622,7 @@ API.Plugins.organizations = {
 						// });
 						break;
 					case"cancel":
+						// API.Plugins.calls.Events.cancel(dataset,layout,call,function(data,objects){
 						// API.Plugins.calls.Events.cancel(call,organization,issues,function(data,objects){
 						// 	call.raw.status = data.call.raw.status;
 						// 	call.dom.status = data.call.dom.status;
@@ -1632,6 +1630,7 @@ API.Plugins.organizations = {
 						// });
 						break;
 					case"reschedule":
+						// API.Plugins.calls.Events.reschedule(dataset,layout,call,function(data,objects){
 						// API.Plugins.calls.Events.reschedule(call,organization,issues,function(data,objects){
 						// 	call.raw.status = data.call.raw.status;
 						// 	call.dom.status = data.call.dom.status;
