@@ -468,12 +468,6 @@ API.Plugins.organizations = {
 										if(API.Helper.isSet(data,['relations','calls'])){
 											for(var [id, relation] of Object.entries(data.relations.calls)){
 												var raw = data.details.calls.raw[relation.id];
-												console.log({
-													data:data,
-													layout:layout,
-													raw:raw,
-													relation:relation,
-												});
 												if(raw.status > 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
 											}
 										}
@@ -706,13 +700,6 @@ API.Plugins.organizations = {
 		},
 		call:function(dataset,layout,call,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
-			console.log({
-				dataset:dataset,
-				layout:layout,
-				call:call,
-				options:options,
-				callback:callback,
-			});
 			var raw = dataset.details.calls.raw[call.id]
 			var csv = '';
 			for(var [key, value] of Object.entries(dataset)){
@@ -753,13 +740,6 @@ API.Plugins.organizations = {
 				}
 			html += '</tr>';
 			body.append(html);
-			console.log({
-				dataset:dataset,
-				layout:layout,
-				call:call,
-				body:body,
-				tr:body.find('tr').last(),
-			});
 			if(callback != null){ callback(dataset,layout,call,body.find('tr').last()); }
 		},
 		button:function(dataset,options = {}){
@@ -1227,7 +1207,6 @@ API.Plugins.organizations = {
 								if((typeof body.find('select').select2('val') !== "undefined")&&(body.find('select').select2('val') != '')){
 									API.request('organizations','assign',{data:{id:dataset.this.dom.id,user:body.find('select').select2('val')}},function(result){
 										var sub_dataset = JSON.parse(result);
-										console.log(sub_dataset);
 										if(sub_dataset.success != undefined){
 											for(var [key, user] of Object.entries(sub_dataset.output.organization.raw.assigned_to.split(';'))){
 												if(user != '' && td.find('div.btn-group[data-id="'+user+'"]').length <= 0){
