@@ -423,6 +423,11 @@ API.Plugins.organizations = {
 								// Calls
 								if(API.Helper.isSet(API.Plugins,['calls']) && API.Auth.validate('custom', 'organizations_calls', 1)){
 									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-phone-square",text:API.Contents.Language["Calls"]},function(data,layout,tab,content){
+										API.GUI.Layouts.details.control(data,layout,{color:"sucess",icon:"fas fa-phone",text:API.Contents.Language["Call"]},function(data,layout,button){
+											button.off().click(function(){
+												// API.request('organizations','clear',{ data:data.this.raw });
+											});
+										});
 										var html = '';
 										html += '<label class="btn btn-primary pointer" data-table="calls">';
 											html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Calls'];
@@ -460,6 +465,12 @@ API.Plugins.organizations = {
 					            html += '</table>';
 						        html += '</div>';
 										content.append(html);
+										if(API.Helper.isSet(data,['relations','calls'])){
+											for(var [id, relation] of Object.entries(data.relations.calls)){
+												var raw = dataset.details.calls.raw[call.id];
+												if(raw.status > 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
+											}
+										}
 									});
 								}
 								// Users
@@ -665,7 +676,7 @@ API.Plugins.organizations = {
 		contact:function(dataset,layout,plugin = 'contacts'){
 			var area = layout.content[plugin].find('div.row').eq(1);
 			area.prepend(API.Plugins.organizations.GUI.card(dataset));
-			card = area.find('div.col-sm-12.col-md-6').first();
+			var card = area.find('div.col-sm-12.col-md-6').first();
 			if(API.Auth.validate('custom', 'organizations_'+plugin+'_btn_details', 1)){
 				card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'primary',icon:'fas fa-eye',action:'details',content:API.Contents.Language['Details']}));
 			}
@@ -686,6 +697,50 @@ API.Plugins.organizations = {
 					card.find('div.btn-group').append(API.Plugins.organizations.GUI.button(dataset,{id:'id',color:'danger',icon:'fas fa-trash-alt',action:'delete',content:''}));
 				}
 			}
+		},
+		call:function(dataset,layout,call,options = {},callback = null){
+			if(options instanceof Function){ callback = options; options = {}; }
+			var raw = dataset.details.calls.raw[call.id]
+			var csv = '';
+			for(var [key, value] of Object.entries(dataset)){
+				if(value == null){ value = '';dataset[key] = value; };
+				if(jQuery.inArray(key,['date','time','status','phone','contact','organization','assigned_to']) != -1){
+					csv += value.replace(',','').toLowerCase()+',';
+				}
+			}
+			if(raw.status <= 2){ var body = layout.content.calls.find('tbody'); }
+			else { var body = layout.content.callbacks.find('tbody'); }
+			var html = '';
+			html += '<tr data-csv="'+csv+'" data-id="'+call.id+'">';
+				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-calendar-check mr-1"></i>'+call.date+API.Contents.Language[' at ']+call.time+'</span></td>';
+				html += '<td class="pointer">';
+					html += '<span class="mr-1 badge bg-'+API.Contents.Statuses.calls[raw.status].color+'">';
+						html += '<i class="'+API.Contents.Statuses.calls[raw.status].icon+' mr-1"></i>'+API.Contents.Statuses.calls[raw.status].name;
+					html += '</span>';
+				html += '</td>';
+				if(API.Auth.validate('custom', 'organizations_calls_phone', 1)){
+					html += '<td class="pointer"><span class="badge bg-success mx-1"><i class="fas fa-phone mr-1"></i>'+call.phone+'</span></td>';
+				}
+				html += '<td class="pointer"><span class="badge bg-secondary mx-1"><i class="fas fa-address-card mr-1"></i>'+call.contact+'</span></td>';
+				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-user mr-1"></i>'+call.assigned_to+'</span></td>';
+				if((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Settings.customization.showInlineCallsControls.value)||(API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Auth.Options.application.showInlineCallsControls.value)){
+					html += '<td data-showinlinecallscontrols="">';
+						if(raw.status <= 2){
+							html += '<div class="btn-group btn-block m-0">';
+								html += '<button class="btn btn-xs btn-success" data-action="start"><i class="fas fa-phone mr-1"></i>Start</button>';
+								html += '<button class="btn btn-xs btn-danger" data-action="cancel"><i class="fas fa-phone-slash mr-1"></i>Cancel</button>';
+								html += '<button class="btn btn-xs btn-primary" data-action="reschedule"><i class="fas fa-calendar-day mr-1"></i>Re-Schedule</button>';
+							html += '</div>';
+						} else if(raw.status <= 3){
+							html += '<div class="btn-group btn-block m-0">';
+								html += '<button class="btn btn-xs btn-danger" data-action="end"><i class="fas fa-phone-slash mr-1"></i>End</button>';
+							html += '</div>';
+						}
+					html += '</td>';
+				}
+			html += '</tr>';
+			body.append(html);
+			if(callback != null){ callback(dataset,layout,call,body.find('tr').last()); }
 		},
 		button:function(dataset,options = {}){
 			var defaults = {

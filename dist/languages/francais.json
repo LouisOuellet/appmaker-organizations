@@ -109,5 +109,6 @@
 		"Clear": "Clear",
 		"History": "History",
 		"Add Note": "Add Note",
-		"Inactive": "Inactive"
+		"Inactive": "Inactive",
+		" at ": " at "
 }
