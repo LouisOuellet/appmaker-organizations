@@ -631,7 +631,6 @@ API.Plugins.organizations = {
 																API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
 															});
 														});
-														if(raw.status > 2){} else {}
 														break;
 													case"users":
 														API.Builder.Timeline.add.subscription(layout.timeline,details,'bell','lightblue',function(item){
