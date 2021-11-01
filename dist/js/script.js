@@ -761,8 +761,10 @@ API.Plugins.organizations = {
 			for(var [key, value] of Object.entries(call)){
 				if(value == null){ value = '';call[key] = value; };
 				if(jQuery.inArray(key,['date','time','status','phone','status','contact','organization','assigned_to']) != -1){
-					if(typeof value == 'string'){ csv += value.replace(',','').toLowerCase()+','; }
-					else { csv += value+','; }
+					if(key == 'status'){ csv += API.Contents.Statuses.calls[raw.status].name+','; } else {
+						if(typeof value == 'string'){ csv += value.replace(',','').toLowerCase()+','; }
+						else { csv += value+','; }
+					}
 				}
 			}
 			if(raw.status > 2){ var body = layout.content.calls.find('tbody'); }
