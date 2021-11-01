@@ -756,25 +756,24 @@ API.Plugins.organizations = {
 		},
 		call:function(dataset,layout,call,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
-			var raw = dataset.details.calls.raw[call.id]
 			var csv = '';
 			for(var [key, value] of Object.entries(call)){
 				if(value == null){ value = '';call[key] = value; };
 				if(jQuery.inArray(key,['date','time','status','phone','status','contact','organization','assigned_to']) != -1){
-					if(key == 'status'){ csv += API.Contents.Statuses.calls[raw.status].name+','; } else {
+					if(key == 'status'){ csv += API.Contents.Statuses.calls[call.status].name+','; } else {
 						if(typeof value == 'string'){ csv += value.replace(',','').toLowerCase()+','; }
 						else { csv += value+','; }
 					}
 				}
 			}
-			if(raw.status > 2){ var body = layout.content.calls.find('tbody'); }
+			if(call.status > 2){ var body = layout.content.calls.find('tbody'); }
 			else { var body = layout.content.callbacks.find('tbody'); }
 			var html = '';
 			html += '<tr data-csv="'+csv+'" data-id="'+call.id+'" data-phone="'+call.phone+'">';
 				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-calendar-check mr-1"></i>'+call.date+API.Contents.Language[' at ']+call.time+'</span></td>';
 				html += '<td class="pointer">';
-					html += '<span class="mr-1 badge bg-'+API.Contents.Statuses.calls[raw.status].color+'">';
-						html += '<i class="'+API.Contents.Statuses.calls[raw.status].icon+' mr-1"></i>'+API.Contents.Statuses.calls[raw.status].name;
+					html += '<span class="mr-1 badge bg-'+API.Contents.Statuses.calls[call.status].color+'">';
+						html += '<i class="'+API.Contents.Statuses.calls[call.status].icon+' mr-1"></i>'+API.Contents.Statuses.calls[call.status].name;
 					html += '</span>';
 				html += '</td>';
 				if(API.Auth.validate('custom', 'organizations_calls_phone', 1)){
@@ -784,13 +783,13 @@ API.Plugins.organizations = {
 				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-user mr-1"></i>'+call.assigned_to+'</span></td>';
 				if((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Settings.customization.showInlineCallsControls.value)||(API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Auth.Options.application.showInlineCallsControls.value)){
 					html += '<td>';
-						if(raw.status <= 2){
+						if(call.status <= 2){
 							html += '<div class="btn-group btn-block m-0">';
 								html += '<button class="btn btn-xs btn-success" data-action="start"><i class="fas fa-phone mr-1"></i>'+API.Contents.Language['Start']+'</button>';
 								html += '<button class="btn btn-xs btn-danger" data-action="cancel"><i class="fas fa-phone-slash mr-1"></i>'+API.Contents.Language['Cancel']+'</button>';
 								html += '<button class="btn btn-xs btn-primary" data-action="reschedule"><i class="fas fa-calendar-day mr-1"></i>'+API.Contents.Language['Re-Schedule']+'</button>';
 							html += '</div>';
-						} else if(raw.status <= 3){
+						} else if(call.status <= 3){
 							html += '<div class="btn-group btn-block m-0">';
 								html += '<button class="btn btn-xs btn-danger" data-action="end"><i class="fas fa-phone-slash mr-1"></i>'+API.Contents.Language['End']+'</button>';
 							html += '</div>';
