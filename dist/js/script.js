@@ -1587,7 +1587,7 @@ API.Plugins.organizations = {
 								API.Helper.set(dataset,['details','calls','raw',response.output.raw.id],response.output.raw);
 								API.Helper.set(dataset,['relations','calls',response.output.dom.id],response.output.dom);
 								API.Plugins.organizations.GUI.call(dataset,layout,response.output.dom);
-								API.Plugins.organizations.Events.calls(dataset,layout);
+								API.Plugins.organizations.Events.callbacks(dataset,layout);
 								var details = {};
 								for(var [key, value] of Object.entries(dataset.relations.contacts)){ details[key] = value; }
 								details.status = response.output.raw.status;
