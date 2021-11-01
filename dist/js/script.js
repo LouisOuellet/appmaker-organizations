@@ -468,6 +468,11 @@ API.Plugins.organizations = {
 										if(API.Helper.isSet(data,['relations','calls'])){
 											for(var [id, relation] of Object.entries(data.relations.calls)){
 												var raw = data.details.calls.raw[relation.id];
+												console.log({
+													data:data,
+													layout:layout,
+													relation:relation,
+												});
 												if(raw.status > 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
 											}
 										}
@@ -740,6 +745,12 @@ API.Plugins.organizations = {
 				}
 			html += '</tr>';
 			body.append(html);
+			console.log({
+				dataset:dataset,
+				layout:layout,
+				call:call,
+				tr:body.find('tr').last(),
+			});
 			if(callback != null){ callback(dataset,layout,call,body.find('tr').last()); }
 		},
 		button:function(dataset,options = {}){
