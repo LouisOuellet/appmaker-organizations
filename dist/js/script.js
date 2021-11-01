@@ -423,7 +423,7 @@ API.Plugins.organizations = {
 								// Calls
 								if(API.Helper.isSet(API.Plugins,['calls']) && API.Auth.validate('custom', 'organizations_calls', 1)){
 									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-phone-square",text:API.Contents.Language["Calls"]},function(data,layout,tab,content){
-										API.GUI.Layouts.details.control(data,layout,{color:"sucess",icon:"fas fa-phone",text:API.Contents.Language["Call"]},function(data,layout,button){
+										API.GUI.Layouts.details.control(data,layout,{color:"success",icon:"fas fa-phone",text:API.Contents.Language["Call"]},function(data,layout,button){
 											button.off().click(function(){
 												// API.request('organizations','clear',{ data:data.this.raw });
 											});
@@ -733,7 +733,7 @@ API.Plugins.organizations = {
 				html += '<td class="pointer"><span class="badge bg-secondary mx-1"><i class="fas fa-address-card mr-1"></i>'+call.contact+'</span></td>';
 				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-user mr-1"></i>'+call.assigned_to+'</span></td>';
 				if((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Settings.customization.showInlineCallsControls.value)||(API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Auth.Options.application.showInlineCallsControls.value)){
-					html += '<td data-showinlinecallscontrols="">';
+					html += '<td>';
 						if(raw.status <= 2){
 							html += '<div class="btn-group btn-block m-0">';
 								html += '<button class="btn btn-xs btn-success" data-action="start"><i class="fas fa-phone mr-1"></i>Start</button>';
@@ -1432,7 +1432,7 @@ API.Plugins.organizations = {
 			var search = layout.content.calls.find('div.row').eq(0);
 			var skeleton = {};
 			for(var [field, settings] of Object.entries(API.Contents.Settings.Structure.calls)){ skeleton[field] = ''; }
-			calls.find('tr').off().click(function(){
+			calls.find('tr td.pointer').off().click(function(){
 				API.CRUD.read.show({ key:{id:$(this).attr('data-id')}, title:$(this).attr('data-phone'), href:"?p=calls&v=details&id="+$(this).attr('data-id'), modal:true });
 			});
 		},
