@@ -760,7 +760,7 @@ API.Plugins.organizations = {
 			for(var [key, value] of Object.entries(call)){
 				if(value == null){ value = '';call[key] = value; };
 				if(jQuery.inArray(key,['date','time','status','phone','status','contact','organization','assigned_to']) != -1){
-					if(key == 'status'){ csv += API.Contents.Statuses.calls[call.status].name+','; } else {
+					if(key == 'status'){ csv += API.Contents.Statuses.calls[call.status].name.replace(',','').toLowerCase()+','; } else {
 						if(typeof value == 'string'){ csv += value.replace(',','').toLowerCase()+','; }
 						else { csv += value+','; }
 					}
