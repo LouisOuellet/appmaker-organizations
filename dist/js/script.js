@@ -765,8 +765,8 @@ API.Plugins.organizations = {
 					else { csv += value+','; }
 				}
 			}
-			if(raw.status > 2){ var body = layout.content.calls.find('tbody'); }
-			else { var body = layout.content.callbacks.find('tbody'); }
+			if(API.Helper.isSet(layout,['content','callbacks']) && raw.status <= 2){ var body = layout.content.callbacks.find('tbody'); }
+			if(API.Helper.isSet(layout,['content','calls']) && raw.status > 2){ var body = layout.content.calls.find('tbody'); }
 			var html = '';
 			html += '<tr data-csv="'+csv+'" data-id="'+call.id+'" data-phone="'+call.phone+'">';
 				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-calendar-check mr-1"></i>'+call.date+API.Contents.Language[' at ']+call.time+'</span></td>';
