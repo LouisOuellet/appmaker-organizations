@@ -1560,10 +1560,10 @@ API.Plugins.organizations = {
 						var contacts = {};
 						for(var [id, values] of Object.entries(dataset.relations.contacts)){
 							contacts[id] = '';
-							if(values.name != ''){ if(contacts[id] != ''){ contacts[id] += values.name; } else { contacts[id] += ' - '+values.name; } }
-							if(values.title != ''){ if(contacts[id] != ''){ contacts[id] += values.title; } else { contacts[id] += ' - '+values.title; } }
-							if(values.phone != ''){ if(contacts[id] != ''){ contacts[id] += values.phone; } else { contacts[id] += ' - '+values.phone; } }
-							if(values.email != ''){ if(contacts[id] != ''){ contacts[id] += values.email; } else { contacts[id] += ' - '+values.email; } }
+							if(values.name != ''){ if(contacts[id] != ''){ contacts[id] += ' - '+values.name; } else { contacts[id] += values.name; } }
+							if(values.job_title != ''){ if(contacts[id] != ''){ contacts[id] += ' - '+values.job_title; } else { contacts[id] += values.job_title; } }
+							if(values.phone != ''){ if(contacts[id] != ''){ contacts[id] += ' - '+values.phone; } else { contacts[id] += values.phone; } }
+							if(values.email != ''){ if(contacts[id] != ''){ contacts[id] += ' - '+values.email; } else { contacts[id] += values.email; } }
 						}
 						API.Builder.input(body.find('div.row'), 'contact', null,{plugin:'organizations',list:{contacts:contacts}}, function(input){
 							input.wrap('<div class="col-md-12 mt-3"></div>');
