@@ -721,7 +721,7 @@ API.Plugins.organizations = {
 					csv += value.replace(',','').toLowerCase()+',';
 				}
 			}
-			if(raw.status <= 2){ var body = layout.content.calls.find('tbody'); }
+			if(raw.status > 2){ var body = layout.content.calls.find('tbody'); }
 			// else { var body = layout.content.callbacks.find('tbody'); }
 			var html = '';
 			html += '<tr data-csv="'+csv+'" data-id="'+call.id+'">';
@@ -757,6 +757,7 @@ API.Plugins.organizations = {
 				dataset:dataset,
 				layout:layout,
 				call:call,
+				body:body,
 				tr:body.find('tr').last(),
 			});
 			if(callback != null){ callback(dataset,layout,call,body.find('tr').last()); }
