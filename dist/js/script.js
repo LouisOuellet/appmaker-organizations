@@ -756,7 +756,11 @@ API.Plugins.organizations = {
 		},
 		call:function(dataset,layout,call,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
-			var raw = dataset.details.calls.raw[call.id]
+			var raw = dataset.details.calls.raw[call.id];
+			console.log({
+				dom:call,
+				raw:raw,
+			});
 			var csv = '';
 			for(var [key, value] of Object.entries(call)){
 				if(value == null){ value = '';call[key] = value; };
