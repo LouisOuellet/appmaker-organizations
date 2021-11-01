@@ -467,7 +467,7 @@ API.Plugins.organizations = {
 										content.append(html);
 										if(API.Helper.isSet(data,['relations','calls'])){
 											for(var [id, relation] of Object.entries(data.relations.calls)){
-												var raw = dataset.details.calls.raw[call.id];
+												var raw = dataset.details.calls.raw[relation.id];
 												if(raw.status > 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
 											}
 										}
