@@ -471,6 +471,7 @@ API.Plugins.organizations = {
 												if(raw.status > 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
 											}
 										}
+										API.Plugins.organizations.Events.calls(data,layout);
 									});
 								}
 								// Users
