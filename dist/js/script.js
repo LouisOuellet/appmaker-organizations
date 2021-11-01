@@ -711,8 +711,8 @@ API.Plugins.organizations = {
 			if(options instanceof Function){ callback = options; options = {}; }
 			var raw = dataset.details.calls.raw[call.id]
 			var csv = '';
-			for(var [key, value] of Object.entries(dataset)){
-				if(value == null){ value = '';dataset[key] = value; };
+			for(var [key, value] of Object.entries(call)){
+				if(value == null){ value = '';call[key] = value; };
 				if(jQuery.inArray(key,['date','time','status','phone','contact','organization','assigned_to']) != -1){
 					csv += value.replace(',','').toLowerCase()+',';
 				}
