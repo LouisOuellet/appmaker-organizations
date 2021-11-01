@@ -482,10 +482,10 @@ API.Plugins.organizations = {
 										var html = '';
 										html += '<div class="row p-3">';
 											html += '<div class="col-md-12">';
-												html += '<div class="btn-group mr-3">';
-													html += '<button data-action="create" class="btn btn-success"><i class="fas fa-plus-circle" aria-hidden="true"></i></button>';
-												html += '</div>';
 												html += '<div class="input-group">';
+													html += '<div class="btn-group mr-3">';
+														html += '<button data-action="create" class="btn btn-success"><i class="fas fa-plus-circle" aria-hidden="true"></i></button>';
+													html += '</div>';
 													html += '<input type="text" class="form-control">';
 													html += '<div class="input-group-append pointer" data-action="clear"><span class="input-group-text"><i class="fas fa-times"></i></span></div>';
 													html += '<div class="input-group-append"><span class="input-group-text"><i class="icon icon-search mr-1"></i>'+API.Contents.Language['Search']+'</span></div>';
