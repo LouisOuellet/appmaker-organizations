@@ -709,7 +709,7 @@ API.Plugins.organizations = {
 				}
 			}
 			if(raw.status <= 2){ var body = layout.content.calls.find('tbody'); }
-			else { var body = layout.content.callbacks.find('tbody'); }
+			// else { var body = layout.content.callbacks.find('tbody'); }
 			var html = '';
 			html += '<tr data-csv="'+csv+'" data-id="'+call.id+'">';
 				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-calendar-check mr-1"></i>'+call.date+API.Contents.Language[' at ']+call.time+'</span></td>';
