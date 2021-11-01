@@ -1432,9 +1432,20 @@ API.Plugins.organizations = {
 			var search = layout.content.calls.find('div.row').eq(0);
 			var skeleton = {};
 			for(var [field, settings] of Object.entries(API.Contents.Settings.Structure.calls)){ skeleton[field] = ''; }
+			search.find('div[data-action="clear"]').off().click(function(){
+				$(this).parent().find('input').val('');
+				calls.find('[data-csv]').show();
+			});
+			search.find('input').off().on('input',function(){
+				if($(this).val() != ''){
+					calls.find('[data-csv]').hide();
+					calls.find('[data-csv*="'+$(this).val().toLowerCase()+'"]').each(function(){ $(this).show(); });
+				} else { calls.find('[data-csv]').show(); }
+			});
 			calls.find('tr td.pointer').off().click(function(){
 				API.CRUD.read.show({ key:{id:$(this).parent().attr('data-id')}, title:$(this).parent().attr('data-phone'), href:"?p=calls&v=details&id="+$(this).parent().attr('data-id'), modal:true });
 			});
+			// $(".thumbs:not(.selected)").hover()
 		},
 	},
 		// 			// Settings
