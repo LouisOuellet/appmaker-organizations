@@ -714,7 +714,8 @@ API.Plugins.organizations = {
 			for(var [key, value] of Object.entries(call)){
 				if(value == null){ value = '';call[key] = value; };
 				if(jQuery.inArray(key,['date','time','status','phone','contact','organization','assigned_to']) != -1){
-					csv += value.replace(',','').toLowerCase()+',';
+					if(typeof value == 'string'){ csv += value.replace(',','').toLowerCase()+','; }
+					else { csv += value+','; }
 				}
 			}
 			if(raw.status > 2){ var body = layout.content.calls.find('tbody'); }
@@ -808,7 +809,8 @@ API.Plugins.organizations = {
 			for(var [key, value] of Object.entries(dataset)){
 				if(value == null){ value = '';dataset[key] = value; };
 				if(jQuery.inArray(key,['first_name','middle_name','last_name','name','email','phone','mobile','office_num','other_num','about','job_title']) != -1){
-					csv += value.replace(',','').toLowerCase()+',';
+					if(typeof value == 'string'){ csv += value.replace(',','').toLowerCase()+','; }
+					else { csv += value+','; }
 				}
 			}
 			var html = '';
