@@ -101,7 +101,7 @@ API.Plugins.organizations = {
 								var html = '';
 								html += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
 									html += '<label class="btn btn-primary pointer active" data-table="all">';
-										html += '<input type="checkbox" name="options" autocomplete="off" checked>'+API.Contents.Language['All'];
+										html += '<input type="checkbox" autocomplete="off" checked>'+API.Contents.Language['All'];
 									html += '</label>';
 								html += '</div>';
 								layout.timeline.find('.time-label').first().html(html);
@@ -163,7 +163,7 @@ API.Plugins.organizations = {
 										layout.details.prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
 									}
 									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="statuses">';
+									html += '<label class="btn btn-secondary pointer" data-table="statuses">';
 										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Status'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
@@ -217,7 +217,7 @@ API.Plugins.organizations = {
 								// Subsidiaries
 								if(API.Auth.validate('custom', 'organizations_organizations', 1)){
 									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="subsidiaries">';
+									html += '<label class="btn btn-secondary pointer" data-table="subsidiaries">';
 										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Subsidiaries'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
@@ -241,7 +241,7 @@ API.Plugins.organizations = {
 								// Services
 								if(API.Helper.isSet(API.Plugins,['services']) && API.Auth.validate('custom', 'organizations_services', 1)){
 									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="services">';
+									html += '<label class="btn btn-secondary pointer" data-table="services">';
 										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Services'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
@@ -263,7 +263,7 @@ API.Plugins.organizations = {
 								// Issues
 								if(API.Helper.isSet(API.Plugins,['issues']) && API.Auth.validate('custom', 'organizations_issues', 1)){
 									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="issues">';
+									html += '<label class="btn btn-secondary pointer" data-table="issues">';
 										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Issues'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
@@ -334,7 +334,7 @@ API.Plugins.organizations = {
 								if(API.Helper.isSet(API.Plugins,['notes']) && API.Auth.validate('custom', 'organizations_notes', 1)){
 									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-note",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
 										var html = '';
-										html += '<label class="btn btn-primary pointer" data-table="notes">';
+										html += '<label class="btn btn-secondary pointer" data-table="notes">';
 											html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Notes'];
 										html += '</label>';
 										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
@@ -373,7 +373,7 @@ API.Plugins.organizations = {
 								if(API.Helper.isSet(API.Plugins,['contacts']) && API.Auth.validate('custom', 'organizations_contacts', 1)){
 									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Contacts"]},function(data,layout,tab,content){
 										var html = '';
-										html += '<label class="btn btn-primary pointer" data-table="contacts">';
+										html += '<label class="btn btn-secondary pointer" data-table="contacts">';
 											html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Contacts'];
 										html += '</label>';
 										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
@@ -429,7 +429,7 @@ API.Plugins.organizations = {
 											});
 										});
 										var html = '';
-										html += '<label class="btn btn-primary pointer" data-table="calls">';
+										html += '<label class="btn btn-secondary pointer" data-table="calls">';
 											html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Calls'];
 										html += '</label>';
 										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
@@ -524,7 +524,7 @@ API.Plugins.organizations = {
 								// Users
 								if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
 									var html = '';
-									html += '<label class="btn btn-primary pointer" data-table="users">';
+									html += '<label class="btn btn-secondary pointer" data-table="users">';
 										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Users'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
