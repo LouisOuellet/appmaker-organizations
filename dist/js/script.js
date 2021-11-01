@@ -1583,8 +1583,21 @@ API.Plugins.organizations = {
 						API.request('calls','create',{data:call},function(result){
 							var response = JSON.parse(result);
 							if(typeof response.success !== 'undefined'){
+								API.Helper.set(dataset,['details','calls',response.output.dom.id],response.output.dom);
+								API.Helper.set(dataset,['details','calls',response.output.raw.id],response.output.raw);
+								API.Helper.set(dataset,['relations','calls',response.output.dom.id],response.output.dom);
 								API.Plugins.organizations.GUI.call(dataset,layout,response.output.dom);
 								API.Plugins.organizations.Events.calls(dataset,layout);
+								var details = {};
+								for(var [key, value] of Object.entries(dataset.relations.contacts)){ details[key] = value; }
+								details.status = response.output.raw.status;
+								details.organization = response.output.raw.organization;
+								API.Builder.Timeline.add.call(layout.timeline,details,'phone-square','olive',function(item){
+									item.find('i').first().addClass('pointer');
+									item.find('i').first().off().click(function(){
+										API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
+									});
+								});
 							}
 						});
 						modal.modal('hide');
