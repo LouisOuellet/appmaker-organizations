@@ -1433,7 +1433,7 @@ API.Plugins.organizations = {
 			var skeleton = {};
 			for(var [field, settings] of Object.entries(API.Contents.Settings.Structure.calls)){ skeleton[field] = ''; }
 			calls.find('tr').off().click(function(){
-				API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
+				API.CRUD.read.show({ key:{id:$(this).attr('data-id')}, title:$(this).attr('data-phone'), href:"?p=calls&v=details&id="+$(this).attr('data-id'), modal:true });
 			});
 		},
 	},
