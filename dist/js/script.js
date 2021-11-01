@@ -719,7 +719,7 @@ API.Plugins.organizations = {
 			if(raw.status > 2){ var body = layout.content.calls.find('tbody'); }
 			// else { var body = layout.content.callbacks.find('tbody'); }
 			var html = '';
-			html += '<tr data-csv="'+csv+'" data-id="'+call.id+'">';
+			html += '<tr data-csv="'+csv+'" data-id="'+call.id+'" data-phone="'+call.phone+'">';
 				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-calendar-check mr-1"></i>'+call.date+API.Contents.Language[' at ']+call.time+'</span></td>';
 				html += '<td class="pointer">';
 					html += '<span class="mr-1 badge bg-'+API.Contents.Statuses.calls[raw.status].color+'">';
@@ -748,7 +748,8 @@ API.Plugins.organizations = {
 				}
 			html += '</tr>';
 			body.append(html);
-			if(callback != null){ callback(dataset,layout,call,body.find('tr').last()); }
+			var tr = body.find('tr').last();
+			if(callback != null){ callback(dataset,layout,call,tr); }
 		},
 		button:function(dataset,options = {}){
 			var defaults = {
@@ -1421,6 +1422,18 @@ API.Plugins.organizations = {
 				}
 			});
 			if(callback != null){ callback(dataset,layout); }
+		},
+		calls:function(dataset,layout,options = {},callback = null){
+			if(options instanceof Function){ callback = options; options = {}; }
+			var defaults = {field: "name"};
+			if(API.Helper.isSet(options,['field'])){ defaults.field = options.field; }
+			var calls = layout.content.calls.find('div.row').eq(1);
+			var search = layout.content.calls.find('div.row').eq(0);
+			var skeleton = {};
+			for(var [field, settings] of Object.entries(API.Contents.Settings.Structure.calls)){ skeleton[field] = ''; }
+			calls.find('tr').off().click(function(){
+				API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
+			});
 		},
 	},
 		// 			// Settings
