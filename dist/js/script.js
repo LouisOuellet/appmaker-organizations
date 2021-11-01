@@ -682,6 +682,8 @@ API.Plugins.organizations = {
 											if((icon != '')&&(typeof icon !== 'undefined')){ layout.timeline.find('[data-type="'+icon+'"]').show(); }
 										});
 									} else {
+										filters.find('button').removeClass('btn-primary').addClass('btn-secondary');
+										all.removeClass('btn-secondary').addClass('btn-primary');
 										layout.timeline.find('[data-type]').show();
 									}
 								});
