@@ -5,56 +5,6 @@ class organizationsAPI extends CRUDAPI {
 		return parent::update("organizations", $data);
 	}
 
-	public function clear($request = null, $data = null){
-		if(isset($data)){
-			if(!is_array($data)){ $data = json_decode($data, true); }
-			$this->Auth->setLimit(0);
-			$organization = $this->Auth->read($request, $data['id']);
-			if($organization != null){
-				$organization = $organization->all()[0];
-				$organizationRelationships = $this->getRelationships($request, $data['id']);
-				foreach($organizationRelationships as $relationshipID => $relationships){
-					foreach($relationships as $relationship){
-						switch($relationship['relationship']){
-							case"issues":
-							case"services":
-							case"users":
-							case"organizations":
-							case"statuses":
-								$this->Auth->delete('relationships',['id'=>$relationshipID]);
-								break;
-							case"contacts":
-							case"calls":
-							case"notes":
-							case"comments":
-								parent::delete($relationship['relationship'],['id'=>$relationship['link_to']]);
-								break;
-						}
-					}
-				}
-				// Return
-				return [
-					"success" => $this->Language->Field["Record successfully cleared"],
-					"request" => $request,
-					"data" => $data,
-					"output" => [
-						'organization' => [
-							'raw' => $organization,
-							'dom' => $this->convertToDOM($organization),
-						],
-					],
-				];
-			} else {
-				// Return
-				return [
-					"error" => $this->Language->Field["Unable to complete the request"],
-					"request" => $request,
-					"data" => $data,
-				];
-			}
-		}
-	}
-
 	public function get($request = null, $data = null){
 		if(isset($data)){
 			if(!is_array($data)){ $data = json_decode($data, true); }

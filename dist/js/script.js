@@ -101,7 +101,7 @@ API.Plugins.organizations = {
 								var html = '';
 								html += '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
 									html += '<label class="btn btn-primary pointer active" data-table="all">';
-										html += '<input type="radio" name="options" autocomplete="off" checked>'+API.Contents.Language['All'];
+										html += '<input type="checkbox" name="options" autocomplete="off" checked>'+API.Contents.Language['All'];
 									html += '</label>';
 								html += '</div>';
 								layout.timeline.find('.time-label').first().html(html);
@@ -164,7 +164,7 @@ API.Plugins.organizations = {
 									}
 									var html = '';
 									html += '<label class="btn btn-primary pointer" data-table="statuses">';
-										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Status'];
+										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Status'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									options.field = "status";
@@ -218,7 +218,7 @@ API.Plugins.organizations = {
 								if(API.Auth.validate('custom', 'organizations_organizations', 1)){
 									var html = '';
 									html += '<label class="btn btn-primary pointer" data-table="subsidiaries">';
-										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Subsidiaries'];
+										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Subsidiaries'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									options.field = "subsidiaries";
@@ -242,7 +242,7 @@ API.Plugins.organizations = {
 								if(API.Helper.isSet(API.Plugins,['services']) && API.Auth.validate('custom', 'organizations_services', 1)){
 									var html = '';
 									html += '<label class="btn btn-primary pointer" data-table="services">';
-										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Services'];
+										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Services'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									options.field = "services";
@@ -264,7 +264,7 @@ API.Plugins.organizations = {
 								if(API.Helper.isSet(API.Plugins,['issues']) && API.Auth.validate('custom', 'organizations_issues', 1)){
 									var html = '';
 									html += '<label class="btn btn-primary pointer" data-table="issues">';
-										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Issues'];
+										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Issues'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									options.field = "issues";
@@ -335,7 +335,7 @@ API.Plugins.organizations = {
 									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-sticky-note",text:API.Contents.Language["Notes"]},function(data,layout,tab,content){
 										var html = '';
 										html += '<label class="btn btn-primary pointer" data-table="notes">';
-											html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Notes'];
+											html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Notes'];
 										html += '</label>';
 										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 										layout.content.notes = content;
@@ -374,7 +374,7 @@ API.Plugins.organizations = {
 									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-address-book",text:API.Contents.Language["Contacts"]},function(data,layout,tab,content){
 										var html = '';
 										html += '<label class="btn btn-primary pointer" data-table="contacts">';
-											html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Contacts'];
+											html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Contacts'];
 										html += '</label>';
 										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 										layout.content.contacts = content;
@@ -430,7 +430,7 @@ API.Plugins.organizations = {
 										});
 										var html = '';
 										html += '<label class="btn btn-primary pointer" data-table="calls">';
-											html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Calls'];
+											html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Calls'];
 										html += '</label>';
 										layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 										layout.content.calls = content;
@@ -525,7 +525,7 @@ API.Plugins.organizations = {
 								if(API.Helper.isSet(API.Plugins,['users']) && API.Auth.validate('custom', 'organizations_users', 1)){
 									var html = '';
 									html += '<label class="btn btn-primary pointer" data-table="users">';
-										html += '<input type="radio" name="options" autocomplete="off">'+API.Contents.Language['Users'];
+										html += '<input type="checkbox" name="options" autocomplete="off">'+API.Contents.Language['Users'];
 									html += '</label>';
 									layout.timeline.find('.time-label').first().find('div.btn-group').append(html);
 									options.field = "assigned_to";
