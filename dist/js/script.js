@@ -471,6 +471,7 @@ API.Plugins.organizations = {
 												console.log({
 													data:data,
 													layout:layout,
+													raw:raw,
 													relation:relation,
 												});
 												if(raw.status > 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
@@ -705,6 +706,13 @@ API.Plugins.organizations = {
 		},
 		call:function(dataset,layout,call,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
+			console.log({
+				dataset:dataset,
+				layout:layout,
+				call:call,
+				options:options,
+				callback:callback,
+			});
 			var raw = dataset.details.calls.raw[call.id]
 			var csv = '';
 			for(var [key, value] of Object.entries(dataset)){
