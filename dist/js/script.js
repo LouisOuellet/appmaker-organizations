@@ -756,11 +756,7 @@ API.Plugins.organizations = {
 		},
 		call:function(dataset,layout,call,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
-			var raw = dataset.details.calls.raw[call.id];
-			console.log({
-				dom:call,
-				raw:raw,
-			});
+			var raw = dataset.details.calls.raw[call.id]
 			var csv = '';
 			for(var [key, value] of Object.entries(call)){
 				if(value == null){ value = '';call[key] = value; };
@@ -769,8 +765,8 @@ API.Plugins.organizations = {
 					else { csv += value+','; }
 				}
 			}
-			if(API.Helper.isSet(layout,['content','callbacks']) && raw.status <= 2){ var body = layout.content.callbacks.find('tbody'); }
-			if(API.Helper.isSet(layout,['content','calls']) && raw.status > 2){ var body = layout.content.calls.find('tbody'); }
+			if(raw.status > 2){ var body = layout.content.calls.find('tbody'); }
+			else { var body = layout.content.callbacks.find('tbody'); }
 			var html = '';
 			html += '<tr data-csv="'+csv+'" data-id="'+call.id+'" data-phone="'+call.phone+'">';
 				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-calendar-check mr-1"></i>'+call.date+API.Contents.Language[' at ']+call.time+'</span></td>';
@@ -1587,8 +1583,8 @@ API.Plugins.organizations = {
 						API.request('calls','create',{data:call},function(result){
 							var response = JSON.parse(result);
 							if(typeof response.success !== 'undefined'){
-								API.Helper.set(dataset,['details','calls',response.output.dom.id],response.output.dom);
-								API.Helper.set(dataset,['details','calls',response.output.raw.id],response.output.raw);
+								API.Helper.set(dataset,['details','calls','dom',response.output.dom.id],response.output.dom);
+								API.Helper.set(dataset,['details','calls','raw',response.output.raw.id],response.output.raw);
 								API.Helper.set(dataset,['relations','calls',response.output.dom.id],response.output.dom);
 								API.Plugins.organizations.GUI.call(dataset,layout,response.output.dom);
 								API.Plugins.organizations.Events.calls(dataset,layout);
