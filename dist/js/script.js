@@ -434,8 +434,7 @@ API.Plugins.organizations = {
 										content.append(html);
 										if(API.Helper.isSet(data,['relations','calls'])){
 											for(var [id, relation] of Object.entries(data.relations.calls)){
-												var raw = data.details.calls.raw[relation.id];
-												if(raw.status > 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
+												if(relation.status > 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
 											}
 										}
 										API.Plugins.organizations.Events.calls(data,layout);
@@ -481,8 +480,7 @@ API.Plugins.organizations = {
 										content.append(html);
 										if(API.Helper.isSet(data,['relations','calls'])){
 											for(var [id, relation] of Object.entries(data.relations.calls)){
-												var raw = data.details.calls.raw[relation.id];
-												if(raw.status <= 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
+												if(relation.status <= 2){ API.Plugins.organizations.GUI.call(data,layout,relation); }
 											}
 										}
 										API.Plugins.organizations.Events.callbacks(data,layout);
