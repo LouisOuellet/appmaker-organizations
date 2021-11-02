@@ -68,25 +68,25 @@ API.Plugins.organizations = {
 				var dataset = JSON.parse(result);
 				if(dataset.success != undefined){
 					container.attr('data-id',dataset.output.this.raw.id);
-					// Configure Relations
-					for(var [rid, relations] of Object.entries(dataset.output.relationships)){
-						for(var [uid, relation] of Object.entries(relations)){
-							if(API.Helper.isSet(dataset.output.details,[relation.relationship,'dom',relation.link_to])){
-								var detail = {};
-								for(var [key, value] of Object.entries(dataset.output.details[relation.relationship].dom[relation.link_to])){ detail[key] = value; }
-								detail.owner = relation.owner;
-								detail.created = relation.created;
-								if(API.Helper.isSet(relation,['statuses']) && !API.Helper.isSet(detail,['status'])){ detail.status = dataset.output.details.statuses.dom[relation.statuses].order; }
-								if(!API.Helper.isSet(detail,['name']) && API.Helper.isSet(detail,['first_name'])){
-									detail.name = '';
-									if((detail.first_name != '')&&(detail.first_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.first_name; }
-									if((detail.middle_name != '')&&(detail.middle_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.middle_name; }
-									if((detail.last_name != '')&&(detail.last_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.last_name; }
-								}
-								API.Helper.set(dataset.output,['relations',relation.relationship,relation.link_to],detail);
-							}
-						}
-					}
+					// // Configure Relations
+					// for(var [rid, relations] of Object.entries(dataset.output.relationships)){
+					// 	for(var [uid, relation] of Object.entries(relations)){
+					// 		if(API.Helper.isSet(dataset.output.details,[relation.relationship,'dom',relation.link_to])){
+					// 			var detail = {};
+					// 			for(var [key, value] of Object.entries(dataset.output.details[relation.relationship].dom[relation.link_to])){ detail[key] = value; }
+					// 			detail.owner = relation.owner;
+					// 			detail.created = relation.created;
+					// 			if(API.Helper.isSet(relation,['statuses']) && !API.Helper.isSet(detail,['status'])){ detail.status = dataset.output.details.statuses.dom[relation.statuses].order; }
+					// 			if(!API.Helper.isSet(detail,['name']) && API.Helper.isSet(detail,['first_name'])){
+					// 				detail.name = '';
+					// 				if((detail.first_name != '')&&(detail.first_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.first_name; }
+					// 				if((detail.middle_name != '')&&(detail.middle_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.middle_name; }
+					// 				if((detail.last_name != '')&&(detail.last_name != null)){ if(detail.name != ''){detail.name += ' ';} detail.name += detail.last_name; }
+					// 			}
+					// 			API.Helper.set(dataset.output,['relations',relation.relationship,relation.link_to],detail);
+					// 		}
+					// 	}
+					// }
 					// GUI
 					// Adding Layout
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
