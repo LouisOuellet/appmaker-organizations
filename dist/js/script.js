@@ -1410,6 +1410,12 @@ API.Plugins.organizations = {
 								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
 								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
 								API.Plugins.calls.GUI.widget(dataset,record.output.raw);
+								API.Builder.Timeline.add.call(layout.timeline,record.output.dom.id,'phone-square','olive',function(item){
+									item.find('i').first().addClass('pointer');
+									item.find('i').first().off().click(function(){
+										API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
+									});
+								});
 							}
 						});
 						break;
