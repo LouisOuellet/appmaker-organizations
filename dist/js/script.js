@@ -393,13 +393,7 @@ API.Plugins.organizations = {
 														API.Helper.set(data,['details','calls','dom',record.output.dom.id],record.output.dom);
 														API.Helper.set(data,['details','calls','raw',record.output.raw.id],record.output.raw);
 														API.Helper.set(data,['relations','calls',record.output.dom.id],record.output.dom);
-														API.Plugins.calls.GUI.widget(data,record.output.raw);
-														API.Builder.Timeline.add.call(layout.timeline,record.output.dom,'phone-square','olive',function(item){
-															item.find('i').first().addClass('pointer');
-															item.find('i').first().off().click(function(){
-																API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
-															});
-														});
+														API.Plugins.calls.Events.start(data,record.output.raw);
 													}
 												});
 											});
@@ -1419,13 +1413,7 @@ API.Plugins.organizations = {
 								API.Helper.set(dataset,['details','calls','dom',record.output.dom.id],record.output.dom);
 								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
 								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
-								API.Plugins.calls.GUI.widget(dataset,record.output.raw);
-								API.Builder.Timeline.add.call(layout.timeline,record.output.dom,'phone-square','olive',function(item){
-									item.find('i').first().addClass('pointer');
-									item.find('i').first().off().click(function(){
-										API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
-									});
-								});
+								API.Plugins.calls.Events.start(data,record.output.raw);
 							}
 						});
 						break;
@@ -1595,13 +1583,7 @@ API.Plugins.organizations = {
 				};
 				switch(button.attr('data-action')){
 					case"start":
-						// API.Plugins.calls.Events.start(dataset,layout,call,function(data,objects){
-						// API.Plugins.calls.Events.start(call,organization,issues,function(data,objects){
-						// 	call.raw.status = data.call.raw.status;
-						// 	call.dom.status = data.call.dom.status;
-						// 	// container.find('ul.nav li.nav-item a[href*="calls"]').tab('show');
-						// 	if(callback != null){ callback(data,objects); }
-						// });
+						API.Plugins.calls.Events.start(dataset,call);
 						break;
 					case"cancel":
 						// API.Plugins.calls.Events.cancel(dataset,layout,call,function(data,objects){
