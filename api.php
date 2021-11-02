@@ -52,7 +52,7 @@ class organizationsAPI extends CRUDAPI {
 						$get['output']['relations'][$relation['relationship']][$relation['link_to']] = $get['output']['details'][$relation['relationship']]['dom'][$relation['link_to']];
 						$get['output']['relations'][$relation['relationship']][$relation['link_to']]['owner'] = $relation['owner'];
 						$get['output']['relations'][$relation['relationship']][$relation['link_to']]['created'] = $relation['created'];
-						if(isset($get['output']['relations'][$relation['relationship']][$relation['link_to']]['status'])){
+						if(isset($get['output']['relations'][$relation['relationship']][$relation['link_to']]['status'],$relation['statuses'])){
 							$get['output']['relations'][$relation['relationship']][$relation['link_to']]['status'] = $get['output']['details']['statuses']['dom'][$relation['statuses']]['order'];
 						}
 						if(!isset($get['output']['relations'][$relation['relationship']][$relation['link_to']]['name']) && isset($get['output']['relations'][$relation['relationship']][$relation['link_to']]['first_name'])){
