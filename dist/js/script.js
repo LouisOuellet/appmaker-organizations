@@ -378,7 +378,24 @@ API.Plugins.organizations = {
 									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-phone-square",text:API.Contents.Language["Calls"]},function(data,layout,tab,content){
 										API.GUI.Layouts.details.control(data,layout,{color:"success",icon:"fas fa-phone",text:API.Contents.Language["Call"]},function(data,layout,button){
 											button.off().click(function(){
-												// API.request('organizations','clear',{ data:data.this.raw });
+												var now = new Date();
+												var call = {
+													date:now,
+													time:now,
+													status:3,
+													assigned_to:API.Contents.Auth.User.id,
+													relationship:'organizations',
+													link_to:data.this.raw.id,
+												};
+												API.request('calls','create',{data:call},function(result){
+													var record = JSON.parse(result);
+													if(typeof record.success !== 'undefined'){
+														API.Helper.set(data,['details','calls','dom',record.output.dom.id],record.output.dom);
+														API.Helper.set(data,['details','calls','raw',record.output.raw.id],record.output.raw);
+														API.Helper.set(data,['relations','calls',record.output.dom.id],record.output.dom);
+														API.Plugins.calls.GUI.widget(data,record.output.dom);
+													}
+												});
 											});
 										});
 										layout.timeline.find('.time-label').first().find('div.btn-group').append('<button class="btn btn-secondary" data-table="calls">'+API.Contents.Language['Calls']+'</button>');
@@ -1389,7 +1406,10 @@ API.Plugins.organizations = {
 						API.request('calls','create',{data:call},function(result){
 							var record = JSON.parse(result);
 							if(typeof record.success !== 'undefined'){
-								API.Plugins.calls.Widgets.toast({dom:record.output.dom,raw:record.output.raw},dataset.this,dataset.details.issues);
+								API.Helper.set(dataset,['details','calls','dom',record.output.dom.id],record.output.dom);
+								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
+								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
+								API.Plugins.calls.GUI.widget(dataset,record.output.dom);
 							}
 						});
 						break;
