@@ -394,6 +394,12 @@ API.Plugins.organizations = {
 														API.Helper.set(data,['details','calls','raw',record.output.raw.id],record.output.raw);
 														API.Helper.set(data,['relations','calls',record.output.dom.id],record.output.dom);
 														API.Plugins.calls.GUI.widget(data,record.output.raw);
+														API.Builder.Timeline.add.call(layout.timeline,record.output.dom,'phone-square','olive',function(item){
+															item.find('i').first().addClass('pointer');
+															item.find('i').first().off().click(function(){
+																API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
+															});
+														});
 													}
 												});
 											});
@@ -745,7 +751,11 @@ API.Plugins.organizations = {
 				if(API.Auth.validate('custom', 'organizations_calls_phone', 1)){
 					html += '<td class="pointer"><span class="badge bg-success mx-1"><i class="fas fa-phone mr-1"></i>'+call.phone+'</span></td>';
 				}
-				html += '<td class="pointer"><span class="badge bg-secondary mx-1"><i class="fas fa-address-card mr-1"></i>'+call.contact+'</span></td>';
+				if(call.contact != ''){
+					html += '<td class="pointer"><span class="badge bg-secondary mx-1"><i class="fas fa-address-card mr-1"></i>'+call.contact+'</span></td>';
+				} else {
+					html += '<td class="pointer"></td>';
+				}
 				html += '<td class="pointer"><span class="badge bg-primary mx-1"><i class="fas fa-user mr-1"></i>'+call.assigned_to+'</span></td>';
 				if((!API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Settings.customization.showInlineCallsControls.value)||(API.Helper.isSet(API.Contents.Auth.Options,['application','showInlineCallsControls','value']) && API.Contents.Auth.Options.application.showInlineCallsControls.value)){
 					html += '<td>';
@@ -1410,7 +1420,7 @@ API.Plugins.organizations = {
 								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
 								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
 								API.Plugins.calls.GUI.widget(dataset,record.output.raw);
-								API.Builder.Timeline.add.call(layout.timeline,record.output.dom.id,'phone-square','olive',function(item){
+								API.Builder.Timeline.add.call(layout.timeline,record.output.dom,'phone-square','olive',function(item){
 									item.find('i').first().addClass('pointer');
 									item.find('i').first().off().click(function(){
 										API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
