@@ -393,7 +393,7 @@ API.Plugins.organizations = {
 														API.Helper.set(data,['details','calls','dom',record.output.dom.id],record.output.dom);
 														API.Helper.set(data,['details','calls','raw',record.output.raw.id],record.output.raw);
 														API.Helper.set(data,['relations','calls',record.output.dom.id],record.output.dom);
-														API.Plugins.calls.Events.start(data,record.output.dom);
+														API.Plugins.calls.Events.create(data,record.output.dom);
 													}
 												});
 											});
@@ -1413,7 +1413,7 @@ API.Plugins.organizations = {
 								API.Helper.set(dataset,['details','calls','dom',record.output.dom.id],record.output.dom);
 								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
 								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
-								API.Plugins.calls.Events.start(dataset,record.output.dom);
+								API.Plugins.calls.Events.create(dataset,record.output.dom);
 							}
 						});
 						break;
@@ -1577,50 +1577,16 @@ API.Plugins.organizations = {
 			calls.find('tr td button').off().click(function(){
 				var button = $(this);
 				var tr = button.parents().eq(2);
-				var call = {
-					dom: dataset.details.calls.dom[tr.attr('data-id')],
-					raw: dataset.details.calls.raw[tr.attr('data-id')],
-				};
+				var call = dataset.relations.calls[tr.attr('data-id')];
 				switch(button.attr('data-action')){
 					case"start":
-						call.dom.status = 3;
-						call.raw.status = 3;
-						API.request('calls','start',{data:call.raw},function(result){
-							var record = JSON.parse(result);
-							if(typeof record.success !== 'undefined'){
-								API.Helper.set(dataset,['details','calls','dom',record.output.dom.id],record.output.dom);
-								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
-								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
-								API.Plugins.calls.Events.start(dataset,record.output.raw);
-							}
-						});
+						API.Plugins.calls.Events.start(dataset,call);
 						break;
 					case"cancel":
-						call.dom.status = 6;
-						call.raw.status = 6;
-						API.request('calls','cancel',{data:call.raw},function(result){
-							var record = JSON.parse(result);
-							if(typeof record.success !== 'undefined'){
-								API.Helper.set(dataset,['details','calls','dom',record.output.dom.id],record.output.dom);
-								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
-								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
-								API.Plugins.calls.Events.cancel(dataset,record.output.raw);
-							}
-						});
-						// API.Plugins.calls.Events.cancel(dataset,layout,call,function(data,objects){
-						// API.Plugins.calls.Events.cancel(call,organization,issues,function(data,objects){
-						// 	call.raw.status = data.call.raw.status;
-						// 	call.dom.status = data.call.dom.status;
-						// 	if(callback != null){ callback(data,objects); }
-						// });
+						API.Plugins.calls.Events.cancel(dataset,call);
 						break;
 					case"reschedule":
-						// API.Plugins.calls.Events.reschedule(dataset,layout,call,function(data,objects){
-						// API.Plugins.calls.Events.reschedule(call,organization,issues,function(data,objects){
-						// 	call.raw.status = data.call.raw.status;
-						// 	call.dom.status = data.call.dom.status;
-						// 	if(callback != null){ callback(data,objects); }
-						// });
+						// API.Plugins.calls.Events.reschedule(dataset,call);
 						break;
 				}
 			});
