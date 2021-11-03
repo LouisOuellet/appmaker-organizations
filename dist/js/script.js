@@ -393,7 +393,7 @@ API.Plugins.organizations = {
 														API.Helper.set(data,['details','calls','dom',record.output.dom.id],record.output.dom);
 														API.Helper.set(data,['details','calls','raw',record.output.raw.id],record.output.raw);
 														API.Helper.set(data,['relations','calls',record.output.dom.id],record.output.dom);
-														API.Plugins.calls.Events.start(data,record.output.raw);
+														API.Plugins.calls.Events.start(data,record.output.dom);
 													}
 												});
 											});
@@ -1413,7 +1413,7 @@ API.Plugins.organizations = {
 								API.Helper.set(dataset,['details','calls','dom',record.output.dom.id],record.output.dom);
 								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
 								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
-								API.Plugins.calls.Events.start(dataset,record.output.raw);
+								API.Plugins.calls.Events.start(dataset,record.output.dom);
 							}
 						});
 						break;
@@ -1583,7 +1583,7 @@ API.Plugins.organizations = {
 				};
 				switch(button.attr('data-action')){
 					case"start":
-						API.Plugins.calls.Events.start(dataset,call.raw);
+						API.Plugins.calls.Events.start(dataset,call.dom);
 						break;
 					case"cancel":
 						// API.Plugins.calls.Events.cancel(dataset,layout,call,function(data,objects){
