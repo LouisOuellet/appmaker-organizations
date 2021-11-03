@@ -1586,7 +1586,7 @@ API.Plugins.organizations = {
 						API.Plugins.calls.Events.cancel(dataset,call);
 						break;
 					case"reschedule":
-						// API.Plugins.calls.Events.reschedule(dataset,call);
+						API.Plugins.calls.Events.reschedule(dataset,call);
 						break;
 				}
 			});
