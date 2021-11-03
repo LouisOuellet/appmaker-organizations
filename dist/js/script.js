@@ -1588,9 +1588,9 @@ API.Plugins.organizations = {
 						API.request('calls','start',{data:call.raw},function(result){
 							var record = JSON.parse(result);
 							if(typeof record.success !== 'undefined'){
-								API.Helper.set(data,['details','calls','dom',record.output.dom.id],record.output.dom);
-								API.Helper.set(data,['details','calls','raw',record.output.raw.id],record.output.raw);
-								API.Helper.set(data,['relations','calls',record.output.dom.id],record.output.dom);
+								API.Helper.set(dataset,['details','calls','dom',record.output.dom.id],record.output.dom);
+								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
+								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
 								API.Plugins.calls.Events.start(dataset,record.output.dom);
 							}
 						});
