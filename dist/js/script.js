@@ -1591,7 +1591,7 @@ API.Plugins.organizations = {
 								API.Helper.set(dataset,['details','calls','dom',record.output.dom.id],record.output.dom);
 								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
 								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
-								API.Plugins.calls.Events.start(dataset,record.output.dom);
+								API.Plugins.calls.Events.start(dataset,record.output.raw);
 							}
 						});
 						break;
