@@ -1583,7 +1583,7 @@ API.Plugins.organizations = {
 				};
 				switch(button.attr('data-action')){
 					case"start":
-						API.Plugins.calls.Events.start(dataset,call);
+						API.Plugins.calls.Events.start(dataset,call.raw);
 						break;
 					case"cancel":
 						// API.Plugins.calls.Events.cancel(dataset,layout,call,function(data,objects){
