@@ -1596,6 +1596,17 @@ API.Plugins.organizations = {
 						});
 						break;
 					case"cancel":
+						call.dom.status = 6;
+						call.raw.status = 6;
+						API.request('calls','cancel',{data:call.raw},function(result){
+							var record = JSON.parse(result);
+							if(typeof record.success !== 'undefined'){
+								API.Helper.set(dataset,['details','calls','dom',record.output.dom.id],record.output.dom);
+								API.Helper.set(dataset,['details','calls','raw',record.output.raw.id],record.output.raw);
+								API.Helper.set(dataset,['relations','calls',record.output.dom.id],record.output.dom);
+								API.Plugins.calls.Events.cancel(dataset,record.output.raw);
+							}
+						});
 						// API.Plugins.calls.Events.cancel(dataset,layout,call,function(data,objects){
 						// API.Plugins.calls.Events.cancel(call,organization,issues,function(data,objects){
 						// 	call.raw.status = data.call.raw.status;
