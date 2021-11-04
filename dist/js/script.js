@@ -1381,6 +1381,8 @@ API.Plugins.organizations = {
 							if((user.dom.first_name != '')&&(user.dom.first_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.first_name; }
 							if((user.dom.middle_name != '')&&(user.dom.middle_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.middle_name; }
 							if((user.dom.last_name != '')&&(user.dom.last_name != null)){ if(user.dom.name != ''){user.dom.name += ' ';} user.dom.name += user.dom.last_name; }
+							API.Helper.set(dataset,['details','contacts','dom',user.dom.id],user.dom);
+							API.Helper.set(dataset,['details','contacts','raw',user.raw.id],user.raw);
 							API.Helper.set(dataset,['relations','contacts',user.dom.id],user.dom);
 							API.Plugins.organizations.GUI.contact(user.dom,layout);
 							API.Plugins.organizations.Events.contacts(dataset,layout);
