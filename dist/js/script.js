@@ -1075,6 +1075,7 @@ API.Plugins.organizations = {
 											API.Helper.set(API.Contents,['data','raw','issues',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['issues','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['issues','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											sub_dataset.output.dom.status = 1;
 											API.Helper.set(dataset.relations,['issues',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											var html = API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{
 												remove:API.Auth.validate('custom', 'organizations_issues', 4),
