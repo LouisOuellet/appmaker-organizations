@@ -915,6 +915,7 @@ API.Plugins.organizations = {
 											API.Helper.set(API.Contents,['data','raw','organizations',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['organizations','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['organizations','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											API.Helper.set(dataset.relations,['organizations',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											var html = API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{remove:API.Auth.validate('custom', 'organizations_organizations', 4)});
 											if(td.find('button[data-action="link"]').length > 0){
 												td.find('button[data-action="link"]').before(html);
@@ -991,6 +992,7 @@ API.Plugins.organizations = {
 											API.Helper.set(API.Contents,['data','raw','services',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['services','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['services','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											API.Helper.set(dataset.relations,['services',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											var html = API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{remove:API.Auth.validate('custom', 'organizations_services', 4),icon:{details:"fas fa-hand-holding-usd"}});
 											if(td.find('button[data-action="link"]').length > 0){
 												td.find('button[data-action="link"]').before(html);
@@ -1073,6 +1075,7 @@ API.Plugins.organizations = {
 											API.Helper.set(API.Contents,['data','raw','issues',sub_dataset.output.raw.id],sub_dataset.output.raw);
 											API.Helper.set(dataset.details,['issues','dom',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											API.Helper.set(dataset.details,['issues','raw',sub_dataset.output.raw.id],sub_dataset.output.raw);
+											API.Helper.set(dataset.relations,['issues',sub_dataset.output.dom.id],sub_dataset.output.dom);
 											var html = API.Plugins.organizations.GUI.buttons.details(sub_dataset.output.dom,{
 												remove:API.Auth.validate('custom', 'organizations_issues', 4),
 												content:sub_dataset.output.dom.id+' - '+sub_dataset.output.dom.name+' - '+API.Contents.Statuses.issues['1'].name,
