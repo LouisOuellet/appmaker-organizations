@@ -96,7 +96,9 @@ API.Plugins.organizations = {
 								if(API.Auth.validate('custom', 'organizations_clear', 1)){
 									API.GUI.Layouts.details.control(data,layout,{color:"danger",icon:"fas fa-snowplow",text:API.Contents.Language["Clear"]},function(data,layout,button){
 										button.off().click(function(){
-											API.request('organizations','clear',{ data:data.this.raw });
+											API.request('organizations','clear',{ data:data.this.raw },function(){
+												API.Plugins.organizations.load.details();
+											});
 										});
 									});
 								}
