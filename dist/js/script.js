@@ -241,16 +241,16 @@ API.Plugins.organizations = {
 									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
 										var td = tr.find('td[data-plugin="organizations"][data-key="issues"]');
 										if(API.Helper.isSet(data.details,['issues'])){
-											for(var [subKey, subDetails] of Object.entries(data.details.issues.dom)){
+											for(var [subKey, subDetails] of Object.entries(data.relations.issues)){
 												td.append(
 													API.Plugins.organizations.GUI.buttons.details(subDetails,{
 														remove:API.Auth.validate('custom', 'organizations_issues', 4),
-														content:subDetails.id+' - '+subDetails.name+' - '+API.Contents.Language[data.details.statuses.raw[issues[subDetails.id]].name],
+														content:subDetails.id+' - '+subDetails.name+' - '+API.Contents.Language[API.Contents.Statuses.[subDetails.status].name],
 														color:{
-															details:data.details.statuses.raw[issues[subDetails.id]].color
+															details:API.Contents.Statuses.[subDetails.status].color
 														},
 														icon:{
-															details:data.details.statuses.raw[issues[subDetails.id]].icon
+															details:API.Contents.Statuses.[subDetails.status].icon
 														},
 													})
 												);
