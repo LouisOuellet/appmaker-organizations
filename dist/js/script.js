@@ -153,6 +153,7 @@ API.Plugins.organizations = {
 									options.td += '</td>';
 									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 								}
+								// Address
 								options.field = "address";
 								options.td = '<td data-plugin="organizations" data-key="address">'+data.this.dom.address+', '+data.this.dom.city+', '+data.this.dom.zipcode+'</td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
