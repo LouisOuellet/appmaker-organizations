@@ -521,6 +521,16 @@ API.Plugins.organizations = {
 										API.Plugins.organizations.Events.users(data,layout);
 									});
 								}
+								// Settings
+								if(API.Auth.validate('custom', 'organizations_settings', 1)){
+									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-cog",text:API.Contents.Language["Settings"]},function(data,layout,tab,content){
+										layout.content.settings = content;
+										layout.tabs.settings = tab;
+										html = '';
+										content.append(html);
+										// API.Plugins.organizations.Events.settings(data,layout);
+									});
+								}
 								// Created
 								options.field = "created";
 								options.td = '<td><time class="timeago" datetime="'+data.this.raw.created.replace(/ /g, "T")+'" title="'+data.this.raw.created+'">'+data.this.raw.created+'</time></td>';
