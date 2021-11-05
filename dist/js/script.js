@@ -61,9 +61,9 @@ API.Plugins.organizations = {
 			});
 		},
 		details:function(){
-			var container = $('div[data-plugin="organizations"][data-id]').last();
 			var url = new URL(window.location.href);
 			var id = url.searchParams.get("id");
+			var container = $('div[data-plugin="organizations"][data-id="'+id+'"]').last();
 			API.request(url.searchParams.get("p"),'get',{data:{id:id,key:'name'}},function(result){
 				var dataset = JSON.parse(result);
 				if(dataset.success != undefined){
