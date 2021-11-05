@@ -245,12 +245,12 @@ API.Plugins.organizations = {
 												td.append(
 													API.Plugins.organizations.GUI.buttons.details(subDetails,{
 														remove:API.Auth.validate('custom', 'organizations_issues', 4),
-														content:subDetails.id+' - '+subDetails.name+' - '+API.Contents.Language[API.Contents.Statuses[subDetails.status].name],
+														content:subDetails.id+' - '+subDetails.name+' - '+API.Contents.Language[API.Contents.Statuses.issues[subDetails.status].name],
 														color:{
-															details:API.Contents.Statuses[subDetails.status].color
+															details:API.Contents.Statuses.issues[subDetails.status].color
 														},
 														icon:{
-															details:API.Contents.Statuses[subDetails.status].icon
+															details:API.Contents.Statuses.issues[subDetails.status].icon
 														},
 													})
 												);
