@@ -1490,10 +1490,9 @@ API.Plugins.organizations = {
 			calls.find('tr td button').off().click(function(){
 				var button = $(this);
 				var tr = button.parents().eq(2);
-				var call = {
-					dom: dataset.details.calls.dom[tr.attr('data-id')],
-					raw: dataset.details.calls.raw[tr.attr('data-id')],
-				};
+				var call = dataset.relations.calls[tr.attr('data-id')];
+				console.log(dataset);
+				console.log(call);
 				switch(button.attr('data-action')){
 					case"end":
 						API.Plugins.calls.Events.end(dataset,call);
@@ -1592,6 +1591,8 @@ API.Plugins.organizations = {
 				var button = $(this);
 				var tr = button.parents().eq(2);
 				var call = dataset.relations.calls[tr.attr('data-id')];
+				console.log(dataset);
+				console.log(call);
 				switch(button.attr('data-action')){
 					case"start":
 						API.Plugins.calls.Events.start(dataset,call);
