@@ -247,10 +247,10 @@ API.Plugins.organizations = {
 														remove:API.Auth.validate('custom', 'organizations_issues', 4),
 														content:subDetails.id+' - '+subDetails.name+' - '+API.Contents.Language[API.Contents.Statuses[subDetails.status].name],
 														color:{
-															details:API.Contents.Statuses.[subDetails.status].color
+															details:API.Contents.Statuses[subDetails.status].color
 														},
 														icon:{
-															details:API.Contents.Statuses.[subDetails.status].icon
+															details:API.Contents.Statuses[subDetails.status].icon
 														},
 													})
 												);
