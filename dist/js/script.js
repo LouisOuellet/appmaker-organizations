@@ -1491,8 +1491,6 @@ API.Plugins.organizations = {
 				var button = $(this);
 				var tr = button.parents().eq(2);
 				var call = dataset.relations.calls[tr.attr('data-id')];
-				console.log(dataset);
-				console.log(call);
 				switch(button.attr('data-action')){
 					case"end":
 						API.Plugins.calls.Events.end(dataset,call);
@@ -1591,8 +1589,6 @@ API.Plugins.organizations = {
 				var button = $(this);
 				var tr = button.parents().eq(2);
 				var call = dataset.relations.calls[tr.attr('data-id')];
-				console.log(dataset);
-				console.log(call);
 				switch(button.attr('data-action')){
 					case"start":
 						API.Plugins.calls.Events.start(dataset,call);
