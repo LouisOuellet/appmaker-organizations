@@ -73,6 +73,7 @@ API.Plugins.organizations = {
 					// Adding Layout
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
 						console.log(layout);
+						console.log(layout.main.parents().eq(2).parent('.modal-body'));
 						if(container.parent('.modal-body').length > 0){
 							var modal = container.parent('.modal-body').parent().parent().parent();
 							modal.find('.modal-header').find('.btn-group').find('[data-control="update"]').off().click(function(){
