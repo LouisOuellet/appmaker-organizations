@@ -16,9 +16,8 @@ API.Plugins.organizations = {
 			},
 		},
 		update:{
-			0:"id",
-			1:"name",
-			2:"business_num",
+			0:"name",
+			1:"business_num",
 			company_information:{
 				0:"address",
 				1:"city",
@@ -73,6 +72,12 @@ API.Plugins.organizations = {
 					// GUI
 					// Adding Layout
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
+						if(container.parent('.modal-body').length > 0){
+							var modal = container.parent('.modal-body').parent().parent().parent();
+							modal.find('.modal-header').find('.btn-group').find('[data-control="update"]').off().click(function(){
+								API.CRUD.update.show({ container:container, keys:data.this.raw });
+							});
+						}
 						if(data.this.dom.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
 							// History
 							API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-history",text:API.Contents.Language["History"]},function(data,layout,tab,content){
