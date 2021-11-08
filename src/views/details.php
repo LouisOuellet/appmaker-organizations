@@ -1,5 +1,4 @@
 <div data-plugin="organizations" data-id="">
-  <span data-plugin="organizations" data-key="id" style="display:none;"></span>
 	<!-- <div class="row">
 		<div class="col-md-8">
 			<div class="card" id="organizations_main_card">

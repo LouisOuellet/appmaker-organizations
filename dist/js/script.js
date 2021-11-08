@@ -68,7 +68,6 @@ API.Plugins.organizations = {
 				var dataset = JSON.parse(result);
 				if(dataset.success != undefined){
 					container.attr('data-id',dataset.output.this.raw.id);
-					container.find('span[data-plugin="organizations"][data-key="id"]').html(dataset.output.this.raw.id);
 					// GUI
 					// Adding Layout
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
