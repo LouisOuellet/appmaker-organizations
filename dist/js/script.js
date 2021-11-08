@@ -16,9 +16,8 @@ API.Plugins.organizations = {
 			},
 		},
 		update:{
-			0:"id",
-			1:"name",
-			2:"business_num",
+			0:"name",
+			1:"business_num",
 			company_information:{
 				0:"address",
 				1:"city",
@@ -69,6 +68,7 @@ API.Plugins.organizations = {
 				var dataset = JSON.parse(result);
 				if(dataset.success != undefined){
 					container.attr('data-id',dataset.output.this.raw.id);
+					container.find('span[data-plugin="organizations"][data-key="id"]').html(dataset.output.this.raw.id);
 					// GUI
 					// Adding Layout
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
@@ -156,7 +156,11 @@ API.Plugins.organizations = {
 								}
 								// Address
 								options.field = "address";
-								options.td = '<td data-plugin="organizations" data-key="address">'+data.this.dom.address+', '+data.this.dom.city+', '+data.this.dom.zipcode+'</td>';
+								options.td = '<td data-plugin="organizations">';
+									options.td += '<span data-plugin="organizations" data-key="address">'+data.this.dom.address+'</span>, ';
+									options.td += '<span data-plugin="organizations" data-key="city">'+data.this.dom.city+'</span>, ';
+									options.td += '<span data-plugin="organizations" data-key="zipcode">'+data.this.dom.zipcode+'</span>';
+								options.td += '</td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
 								// Phone
 								if(API.Auth.validate('custom', 'organizations_phone', 1)){
