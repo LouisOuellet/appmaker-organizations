@@ -2,8 +2,7 @@
 class organizationsAPI extends CRUDAPI {
 
 	public function update($request = null, $data = null){
-		var_dump($data);
-		// return parent::update("organizations", $data);
+		return parent::update("organizations", $data);
 	}
 
 	public function get($request = null, $data = null){

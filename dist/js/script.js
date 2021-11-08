@@ -71,8 +71,6 @@ API.Plugins.organizations = {
 					// GUI
 					// Adding Layout
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
-						console.log(layout);
-						console.log(layout.main.parents().eq(2).parent('.modal-body'));
 						if(layout.main.parents().eq(2).parent('.modal-body').length > 0){
 							var modal = layout.main.parents().eq(2).parent('.modal-body').parents().eq(2);
 							if(API.Auth.validate('plugin', 'organizations', 3)){
