@@ -74,11 +74,15 @@ API.Plugins.organizations = {
 					API.GUI.Layouts.details.build(dataset.output,container,{title:"Organization Details",image:"/dist/img/building.png"},function(data,layout){
 						console.log(layout);
 						console.log(layout.main.parents().eq(2).parent('.modal-body'));
-						if(container.parent('.modal-body').length > 0){
-							var modal = container.parent('.modal-body').parent().parent().parent();
-							modal.find('.modal-header').find('.btn-group').find('[data-control="update"]').off().click(function(){
-								API.CRUD.update.show({ container:container, keys:data.this.raw });
-							});
+						if(layout.main.parents().eq(2).parent('.modal-body').length > 0){
+							var modal = layout.main.parents().eq(2).parent('.modal-body').parents().eq(2);
+							if(API.Auth.validate('plugins', 'organizations', 3)){
+								modal.find('.modal-header').find('.btn-group').find('[data-control="update"]').off().click(function(){
+									API.CRUD.update.show({ container:container, keys:data.this.raw });
+								});
+							} else {
+								modal.find('.modal-header').find('.btn-group').find('[data-control="update"]').remove();
+							}
 						}
 						if(data.this.dom.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
 							// History
