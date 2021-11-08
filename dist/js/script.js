@@ -16,8 +16,9 @@ API.Plugins.organizations = {
 			},
 		},
 		update:{
-			0:"name",
-			1:"business_num",
+			0:"id",
+			1:"name",
+			2:"business_num",
 			company_information:{
 				0:"address",
 				1:"city",
