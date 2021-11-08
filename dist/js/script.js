@@ -75,7 +75,7 @@ API.Plugins.organizations = {
 							var modal = layout.main.parents().eq(2).parent('.modal-body').parents().eq(2);
 							if(API.Auth.validate('plugin', 'organizations', 3)){
 								modal.find('.modal-header').find('.btn-group').find('[data-control="update"]').off().click(function(){
-									API.CRUD.update.show({ container:container, keys:data.this.raw });
+									API.CRUD.update.show({ container:layout.main.parents().eq(2), keys:data.this.raw });
 								});
 							} else {
 								modal.find('.modal-header').find('.btn-group').find('[data-control="update"]').remove();
