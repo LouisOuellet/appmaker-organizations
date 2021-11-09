@@ -11,6 +11,10 @@ class Compiler {
   protected $QueryClosed = TRUE;
 
   public function __construct(){
+
+    // Increase PHP memory limit
+    ini_set('memory_limit', '1024M');
+    
     if(!is_dir(dirname(__FILE__) . '/dist')){ mkdir(dirname(__FILE__) . '/dist'); }
     if(!is_dir(dirname(__FILE__) . '/dist/data')){ mkdir(dirname(__FILE__) . '/dist/data'); }
     if(!is_file(dirname(__FILE__) . '/dist/data/manifest.json')){
@@ -33,7 +37,7 @@ class Compiler {
       $this->buildGitIgnore();
     }
     if(is_file(dirname(__FILE__) . '/settings.json')){ $this->Settings=json_decode(file_get_contents(dirname(__FILE__) . '/settings.json'),true); }
-    if(isset($this->Manifest['table'])){ $this->configDB(); }
+    if(isset($this->Manifest['requirements']['table'])){ $this->configDB(); }
   }
 
   public function Compile(){
