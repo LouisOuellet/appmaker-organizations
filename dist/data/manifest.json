@@ -1,19 +1,14 @@
 {
     "repository": {
         "name": "appmaker-organizations",
-        "branch": "pre-release",
+        "branch": "dev",
         "manifest": "\/dist\/data\/manifest.json",
         "host": {
             "git": "https:\/\/github.com\/LouisOuellet\/",
             "raw": "https:\/\/raw.githubusercontent.com\/LouisOuellet\/"
         }
     },
-    "requirements": {
-        "table": [
-            "organizations"
-        ]
-    },
     "name": "organizations",
-    "build": 505,
-    "version": "21.11-pre-release"
+    "build": 506,
+    "version": "21.11-dev"
 }
