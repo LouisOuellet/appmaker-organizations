@@ -1,7 +1,7 @@
 {
     "repository": {
         "name": "appmaker-organizations",
-        "branch": "dev",
+        "branch": "stable",
         "manifest": "\/dist\/data\/manifest.json",
         "host": {
             "git": "https:\/\/github.com\/LouisOuellet\/",
@@ -9,6 +9,6 @@
         }
     },
     "name": "organizations",
-    "build": 528,
-    "version": "21.11-dev"
+    "build": 529,
+    "version": "21.11-stable"
 }
