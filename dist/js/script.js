@@ -142,6 +142,11 @@ API.Plugins.organizations = {
 													options.td += '<strong><b>'+API.Contents.Language.setCodeHVS+': </b></strong><span data-plugin="organizations" data-key="setCodeHVS">'+data.this.dom.setCodeHVS+'</span>';
 												options.td += '</div>';
 											}
+											if(API.Auth.validate('custom', 'organizations_code_lvs', 1) && data.this.dom.setCodeLVS != ''){
+												options.td += '<div class="col-lg-4 col-md-6 p-1">';
+													options.td += '<strong><b>'+API.Contents.Language.setCodeLVS+': </b></strong><span data-plugin="organizations" data-key="setCodeLVS">'+data.this.dom.setCodeLVS+'</span>';
+												options.td += '</div>';
+											}
 										options.td += '</div>';
 									options.td += '</td>';
 									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
