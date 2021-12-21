@@ -637,31 +637,6 @@ API.Plugins.organizations = {
 															}
 														});
 														break;
-													case"notes":
-														API.Builder.Timeline.add.card(layout.timeline,details,'sticky-note','warning',function(item){
-															item.find('.timeline-footer').remove();
-															if(API.Auth.validate('custom', 'organizations_notes', 4)){
-																$('<a class="time bg-warning pointer"><i class="fas fa-trash-alt"></i></a>').insertAfter(item.find('span.time.bg-warning'));
-																item.find('a.pointer').off().click(function(){
-																	API.CRUD.delete.show({ keys:data.relations.notes[item.attr('data-id')],key:'id', modal:true, plugin:'notes' },function(note){
-																		item.remove();
-																	});
-																});
-															}
-														});
-														break;
-													case"contacts":
-														API.Builder.Timeline.add.contact(layout.timeline,details,'address-card','secondary',function(item){
-															item.find('i').first().addClass('pointer');
-															item.find('i').first().off().click(function(){
-																value = item.attr('data-name').toLowerCase();
-																layout.content.contacts.find('input').val(value);
-																layout.tabs.contacts.find('a').tab('show');
-																layout.content.contacts.find('[data-csv]').hide();
-																layout.content.contacts.find('[data-csv*="'+value+'"]').each(function(){ $(this).show(); });
-															});
-														});
-														break;
 													case"calls":
 														details.status = data.details.statuses.raw[relation.statuses].order;
 														details.organization = data.details.calls.raw[details.id].organization;
@@ -682,6 +657,10 @@ API.Plugins.organizations = {
 															}
 														});
 														break;
+													default:
+														if(API.Helper.isSet(API,['Plugins',relation.relationship,'Timeline','object'])){
+															API.Plugins[relation.relationship].Timeline.object(details,layout);
+														}
 												}
 											}
 										}
