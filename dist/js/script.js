@@ -520,98 +520,99 @@ API.Plugins.organizations = {
 									});
 								});
 								// Timeline
-								for(var [rid, relations] of Object.entries(data.relationships)){
-									for(var [uid, relation] of Object.entries(relations)){
-										if(API.Helper.isSet(API.Plugins,[relation.relationship]) && (API.Auth.validate('custom', 'organizations_'+relation.relationship, 1) || relation.owner == API.Contents.Auth.User.username) && API.Helper.isSet(data,['relations',relation.relationship,relation.link_to])){
-											var details = {};
-											for(var [key, value] of Object.entries(data.relations[relation.relationship][relation.link_to])){ details[key] = value; }
-											if(typeof relation.statuses !== 'undefined'){ details.status = data.details.statuses.dom[relation.statuses].order; }
-											details.created = relation.created;
-											details.owner = relation.owner;
-											if(!API.Helper.isSet(details,['isActive'])||(API.Helper.isSet(details,['isActive']) && details.isActive)||(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relation.relationship+'_isActive', 1)||API.Auth.validate('custom', relation.relationship+'_isActive', 1)))){
-												switch(relation.relationship){
-													case"statuses":
-														API.Builder.Timeline.add.status(layout.timeline,details);
-														break;
-													case"services":
-														API.Builder.Timeline.add.service(layout.timeline,details,'hand-holding-usd','success',function(item){
-															if((API.Auth.validate('plugin','services',1))&&(API.Auth.validate('view','details',1,'services'))){
-																item.find('i').first().addClass('pointer');
-																item.find('i').first().off().click(function(){
-																	API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=services&v=details&id="+data.details.services.dom[item.attr('data-id')].name, modal:true });
-																});
-															}
-														});
-														break;
-													case"issues":
-														API.Builder.Timeline.add.issue(layout.timeline,details,'gavel','indigo',function(item){
-															if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
-																item.find('i').first().addClass('pointer');
-																item.find('i').first().off().click(function(){
-																	API.CRUD.read.show({ key:'id',keys:data.details.issues.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.issues.dom[item.attr('data-id')].id, modal:true });
-																});
-															}
-														});
-														break;
-													case"calls":
-														details.status = data.details.statuses.raw[relation.statuses].order;
-														details.organization = data.details.calls.raw[details.id].organization;
-														API.Builder.Timeline.add.call(layout.timeline,details,'phone-square','olive',function(item){
-															item.find('i').first().addClass('pointer');
-															item.find('i').first().off().click(function(){
-																API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
-															});
-														});
-														break;
-													case"users":
-														API.Builder.Timeline.add.subscription(layout.timeline,details,'bell','lightblue',function(item){
-															if((API.Auth.validate('plugin','users',1))&&(API.Auth.validate('view','details',1,'users'))){
-																item.find('i').first().addClass('pointer');
-																item.find('i').first().off().click(function(){
-																	API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
-																});
-															}
-														});
-														break;
-													default:
-														if(API.Helper.isSet(API,['Plugins',relation.relationship,'Timeline','object'])){
-															API.Plugins[relation.relationship].Timeline.object(details,layout);
-														}
-														break;
-												}
-											}
-										}
-									}
-								}
-								layout.timeline.find('.time-label').first().find('div.btn-group button').off().click(function(){
-									var filters = layout.timeline.find('.time-label').first().find('div.btn-group');
-									var all = filters.find('button').first();
-									if($(this).attr('data-table') != 'all'){
-										if(all.hasClass("btn-primary")){ all.removeClass('btn-primary').addClass('btn-secondary'); }
-										if($(this).hasClass("btn-secondary")){ $(this).removeClass('btn-secondary').addClass('btn-primary'); }
-										else { $(this).removeClass('btn-primary').addClass('btn-secondary'); }
-										layout.timeline.find('[data-type]').hide();
-										layout.timeline.find('.time-label').first().find('div.btn-group button.btn-primary').each(function(){
-											switch($(this).attr('data-table')){
-												case"notes":var icon = 'sticky-note';break;
-												case"comments":var icon = 'comment';break;
-												case"statuses":var icon = 'info';break;
-												case"users":var icon = 'bell';break;
-												case"subsidiaries":var icon = 'building';break;
-												case"employees":var icon = 'id-card';break;
-												case"contacts":var icon = 'address-card';break;
-												case"calls":var icon = 'phone-square';break;
-												case"services":var icon = 'hand-holding-usd';break;
-												case"issues":var icon = 'gavel';break;
-											}
-											if((icon != '')&&(typeof icon !== 'undefined')){ layout.timeline.find('[data-type="'+icon+'"]').show(); }
-										});
-									} else {
-										filters.find('button').removeClass('btn-primary').addClass('btn-secondary');
-										all.removeClass('btn-secondary').addClass('btn-primary');
-										layout.timeline.find('[data-type]').show();
-									}
-								});
+								API.Builder.Timeline.render(data,layout,{prefix:"organizations_"});
+								// for(var [rid, relations] of Object.entries(data.relationships)){
+								// 	for(var [uid, relation] of Object.entries(relations)){
+								// 		if(API.Helper.isSet(API.Plugins,[relation.relationship]) && (API.Auth.validate('custom', 'organizations_'+relation.relationship, 1) || relation.owner == API.Contents.Auth.User.username) && API.Helper.isSet(data,['relations',relation.relationship,relation.link_to])){
+								// 			var details = {};
+								// 			for(var [key, value] of Object.entries(data.relations[relation.relationship][relation.link_to])){ details[key] = value; }
+								// 			if(typeof relation.statuses !== 'undefined'){ details.status = data.details.statuses.dom[relation.statuses].order; }
+								// 			details.created = relation.created;
+								// 			details.owner = relation.owner;
+								// 			if(!API.Helper.isSet(details,['isActive'])||(API.Helper.isSet(details,['isActive']) && details.isActive)||(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relation.relationship+'_isActive', 1)||API.Auth.validate('custom', relation.relationship+'_isActive', 1)))){
+								// 				switch(relation.relationship){
+								// 					case"statuses":
+								// 						API.Builder.Timeline.add.status(layout.timeline,details);
+								// 						break;
+								// 					case"services":
+								// 						API.Builder.Timeline.add.service(layout.timeline,details,'hand-holding-usd','success',function(item){
+								// 							if((API.Auth.validate('plugin','services',1))&&(API.Auth.validate('view','details',1,'services'))){
+								// 								item.find('i').first().addClass('pointer');
+								// 								item.find('i').first().off().click(function(){
+								// 									API.CRUD.read.show({ key:'name',keys:data.details.services.dom[item.attr('data-id')], href:"?p=services&v=details&id="+data.details.services.dom[item.attr('data-id')].name, modal:true });
+								// 								});
+								// 							}
+								// 						});
+								// 						break;
+								// 					case"issues":
+								// 						API.Builder.Timeline.add.issue(layout.timeline,details,'gavel','indigo',function(item){
+								// 							if((API.Auth.validate('plugin','issues',1))&&(API.Auth.validate('view','details',1,'issues'))){
+								// 								item.find('i').first().addClass('pointer');
+								// 								item.find('i').first().off().click(function(){
+								// 									API.CRUD.read.show({ key:'id',keys:data.details.issues.dom[item.attr('data-id')], href:"?p=issues&v=details&id="+data.details.issues.dom[item.attr('data-id')].id, modal:true });
+								// 								});
+								// 							}
+								// 						});
+								// 						break;
+								// 					case"calls":
+								// 						details.status = data.details.statuses.raw[relation.statuses].order;
+								// 						details.organization = data.details.calls.raw[details.id].organization;
+								// 						API.Builder.Timeline.add.call(layout.timeline,details,'phone-square','olive',function(item){
+								// 							item.find('i').first().addClass('pointer');
+								// 							item.find('i').first().off().click(function(){
+								// 								API.CRUD.read.show({ key:{id:item.attr('data-id')}, title:item.attr('data-phone'), href:"?p=calls&v=details&id="+item.attr('data-id'), modal:true });
+								// 							});
+								// 						});
+								// 						break;
+								// 					case"users":
+								// 						API.Builder.Timeline.add.subscription(layout.timeline,details,'bell','lightblue',function(item){
+								// 							if((API.Auth.validate('plugin','users',1))&&(API.Auth.validate('view','details',1,'users'))){
+								// 								item.find('i').first().addClass('pointer');
+								// 								item.find('i').first().off().click(function(){
+								// 									API.CRUD.read.show({ key:'username',keys:data.details.users.dom[item.attr('data-id')], href:"?p=users&v=details&id="+data.details.users.dom[item.attr('data-id')].username, modal:true });
+								// 								});
+								// 							}
+								// 						});
+								// 						break;
+								// 					default:
+								// 						if(API.Helper.isSet(API,['Plugins',relation.relationship,'Timeline','object'])){
+								// 							API.Plugins[relation.relationship].Timeline.object(details,layout);
+								// 						}
+								// 						break;
+								// 				}
+								// 			}
+								// 		}
+								// 	}
+								// }
+								// layout.timeline.find('.time-label').first().find('div.btn-group button').off().click(function(){
+								// 	var filters = layout.timeline.find('.time-label').first().find('div.btn-group');
+								// 	var all = filters.find('button').first();
+								// 	if($(this).attr('data-table') != 'all'){
+								// 		if(all.hasClass("btn-primary")){ all.removeClass('btn-primary').addClass('btn-secondary'); }
+								// 		if($(this).hasClass("btn-secondary")){ $(this).removeClass('btn-secondary').addClass('btn-primary'); }
+								// 		else { $(this).removeClass('btn-primary').addClass('btn-secondary'); }
+								// 		layout.timeline.find('[data-type]').hide();
+								// 		layout.timeline.find('.time-label').first().find('div.btn-group button.btn-primary').each(function(){
+								// 			switch($(this).attr('data-table')){
+								// 				case"notes":var icon = 'sticky-note';break;
+								// 				case"comments":var icon = 'comment';break;
+								// 				case"statuses":var icon = 'info';break;
+								// 				case"users":var icon = 'bell';break;
+								// 				case"subsidiaries":var icon = 'building';break;
+								// 				case"employees":var icon = 'id-card';break;
+								// 				case"contacts":var icon = 'address-card';break;
+								// 				case"calls":var icon = 'phone-square';break;
+								// 				case"services":var icon = 'hand-holding-usd';break;
+								// 				case"issues":var icon = 'gavel';break;
+								// 			}
+								// 			if((icon != '')&&(typeof icon !== 'undefined')){ layout.timeline.find('[data-type="'+icon+'"]').show(); }
+								// 		});
+								// 	} else {
+								// 		filters.find('button').removeClass('btn-primary').addClass('btn-secondary');
+								// 		all.removeClass('btn-secondary').addClass('btn-primary');
+								// 		layout.timeline.find('[data-type]').show();
+								// 	}
+								// });
 							});
 						} else {
 							var container = layout.details.parents().eq(2);
