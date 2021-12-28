@@ -91,7 +91,7 @@ API.Plugins.organizations = {
 								var today = new Date();
 								API.Builder.Timeline.add.date(layout.timeline,today);
 								layout.timeline.find('.time-label').first().html('<div class="btn-group"></div>');
-								layout.timeline.find('.time-label').first().find('div.btn-group').append('<button class="btn btn-primary" data-table="all">'+API.Contents.Language['All']+'</button>');
+								layout.timeline.find('.time-label').first().find('div.btn-group').append('<button class="btn btn-primary" data-trigger="all">'+API.Contents.Language['All']+'</button>');
 								var options = {plugin:"organizations"}
 								// Debug
 								if(API.debug){
