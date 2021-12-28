@@ -719,7 +719,7 @@ API.Plugins.organizations = {
 				var checkExist = setInterval(function() {
 					if(layout.timeline.find('div.time-label[data-dateus="'+dateUS+'"]').length > 0){
 						clearInterval(checkExist);
-						if(layout.timeline.lenght > 0 && layout.timeline.find('.time-label').first().find('div.btn-group').find('button[data-trigger="organizations"]').length <= 0){
+						if(API.Helper.isSet(layout,['timeline']) && layout.timeline.find('.time-label').first().find('div.btn-group').find('button[data-trigger="organizations"]').length <= 0){
 							layout.timeline.find('.time-label').first().find('div.btn-group').append('<button class="btn btn-secondary" data-trigger="organizations">'+API.Contents.Language['Organizations']+'</button>');
 						}
 						var html = '';
