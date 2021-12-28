@@ -531,9 +531,6 @@ API.Plugins.organizations = {
 								// 			details.owner = relation.owner;
 								// 			if(!API.Helper.isSet(details,['isActive'])||(API.Helper.isSet(details,['isActive']) && details.isActive)||(API.Helper.isSet(details,['isActive']) && !details.isActive && (API.Auth.validate('custom', 'organizations_'+relation.relationship+'_isActive', 1)||API.Auth.validate('custom', relation.relationship+'_isActive', 1)))){
 								// 				switch(relation.relationship){
-								// 					case"statuses":
-								// 						API.Builder.Timeline.add.status(layout.timeline,details);
-								// 						break;
 								// 					case"services":
 								// 						API.Builder.Timeline.add.service(layout.timeline,details,'hand-holding-usd','success',function(item){
 								// 							if((API.Auth.validate('plugin','services',1))&&(API.Auth.validate('view','details',1,'services'))){
