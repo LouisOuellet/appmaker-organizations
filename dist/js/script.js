@@ -606,7 +606,7 @@ API.Plugins.organizations = {
 			detail:function(data,layout,options = {},callback = null){
 				if(options instanceof Function){ callback = options; options = {}; }
 				var url = new URL(window.location.href);
-				var defaults = {field: "organizations"};
+				var defaults = {field: "organizations", plugin:url.searchParams.get("p")};
 				for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 				API.Builder.Timeline.add.filter(layout,'organizations','Organizations');
 				API.GUI.Layouts.details.data(data,layout,defaults,function(data,layout,tr){
