@@ -113,9 +113,7 @@ API.Plugins.organizations = {
 									});
 								}
 								// Name
-								options.field = "name";
-								if(API.Helper.isSet(options,['td'])){ delete options.td; }
-								API.GUI.Layouts.details.data(data,layout,options);
+								API.GUI.Layouts.details.data(data,layout,{field:"name"});
 								// Business Number
 								if(API.Auth.validate('custom', 'organizations_business_num', 1)){
 									options.field = "business_num";
