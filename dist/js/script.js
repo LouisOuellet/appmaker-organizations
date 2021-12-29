@@ -613,7 +613,7 @@ API.Plugins.organizations = {
 					var td = tr.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="organizations"]');
 					if(API.Helper.isSet(data,['relations','organizations'])){
 						for(var [id, organization] of Object.entries(data.relations.organizations)){
-							if(subDetails.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
+							if(organization.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
 								td.append(API.Plugins.organizations.Layouts.details.GUI.button(organization,{remove:API.Auth.validate('custom', url.searchParams.get("p")+'_organizations', 4)}));
 							}
 						}
