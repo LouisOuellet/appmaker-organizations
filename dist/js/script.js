@@ -156,17 +156,7 @@ API.Plugins.organizations = {
 									if(!data.this.dom.isActive){
 										layout.details.prepend('<div class="ribbon-wrapper ribbon-xl"><div class="ribbon bg-danger text-xl">Inactive</div></div>');
 									}
-									layout.timeline.find('.time-label').first().find('div.btn-group').append('<button class="btn btn-secondary" data-table="statuses">'+API.Contents.Language['Status']+'</button>');
-									options.field = "status";
-									options.td = '';
-									options.td += '<td data-plugin="organizations" data-key="'+options.field+'">';
-										if(API.Helper.isSet(API.Contents.Statuses,['organizations',data.this.raw.status])){
-											options.td += '<span class="badge bg-'+API.Contents.Statuses.organizations[data.this.raw.status].color+'">';
-												options.td += '<i class="'+API.Contents.Statuses.organizations[data.this.raw.status].icon+' mr-1" aria-hidden="true"></i>'+API.Contents.Statuses.organizations[data.this.raw.status].name+'';
-											options.td += '</span>';
-										}
-									options.td += '</td>';
-									API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
+									API.Plugins.statuses.Layouts.details.detail(data,layout);
 								}
 								// Address
 								options.field = "address";
