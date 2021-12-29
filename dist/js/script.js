@@ -609,7 +609,7 @@ API.Plugins.organizations = {
 				var defaults = {field: "organizations"};
 				for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 				API.Builder.Timeline.add.filter(layout,'organizations','Organizations');
-				API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){
+				API.GUI.Layouts.details.data(data,layout,defaults,function(data,layout,tr){
 					var td = tr.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="organizations"]');
 					if(API.Helper.isSet(data,['relations','organizations'])){
 						for(var [id, organization] of Object.entries(data.relations.organizations)){
