@@ -611,6 +611,7 @@ API.Plugins.organizations = {
 				API.Builder.Timeline.add.filter(layout,'organizations','Organizations');
 				API.GUI.Layouts.details.data(data,layout,defaults,function(data,layout,tr){
 					var td = tr.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="organizations"]');
+					td.html('');
 					if(API.Helper.isSet(data,['relations','organizations'])){
 						for(var [id, organization] of Object.entries(data.relations.organizations)){
 							if(organization.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
@@ -626,7 +627,7 @@ API.Plugins.organizations = {
 				});
 			},
 			GUI:{
-				button:function(dataset,layout,options = {},callback = null){
+				button:function(dataset,options = {},callback = null){
 					var url = new URL(window.location.href);
 					if(options instanceof Function){ callback = options; options = {}; }
 					var defaults = {remove: false};
@@ -637,7 +638,7 @@ API.Plugins.organizations = {
 							html += '<button type="button" class="btn btn-xs bg-danger" data-id="'+dataset.id+'" data-name="'+dataset.name+'" data-action="unlink"><i class="fas fa-unlink"></i></button>';
 						}
 					html += '</div>';
-					if(callback != null){ callback(dataset,layout,html); }
+					if(callback != null){ callback(dataset,html); }
 					return html;
 				},
 			},
