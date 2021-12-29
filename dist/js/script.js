@@ -199,7 +199,7 @@ API.Plugins.organizations = {
 								options.field = "website";
 								options.td = '<td><strong><i class="fas fa-globe mr-1"></i></strong><a href="'+data.this.dom.website+'" data-plugin="organizations" data-key="'+options.field+'">'+data.this.dom.website+'</a></td>';
 								API.GUI.Layouts.details.data(data,layout,options,function(data,layout,tr){});
-								// Subsidiaries
+								// Organizations
 								if(API.Auth.validate('custom', 'organizations_organizations', 1)){
 									API.Plugins.organizations.Layouts.details.detail(data,layout);
 								}
