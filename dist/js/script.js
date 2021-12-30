@@ -293,6 +293,10 @@ API.Plugins.organizations = {
 								if(API.Helper.isSet(API.Plugins,['contacts']) && API.Auth.validate('custom', 'organizations_contacts', 1)){
 									API.Plugins.contacts.Layouts.details.tab(data,layout);
 								}
+								// Files
+								if(API.Helper.isSet(API.Plugins,['files']) && API.Auth.validate('custom', 'conversations_files', 1)){
+									API.Plugins.files.Layouts.details.tab(data,layout);
+								}
 								// Calls
 								if(API.Helper.isSet(API.Plugins,['calls']) && API.Auth.validate('custom', 'organizations_calls', 1)){
 									API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-phone-square",text:API.Contents.Language["Calls"]},function(data,layout,tab,content){
