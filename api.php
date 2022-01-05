@@ -87,10 +87,10 @@ class organizationsAPI extends CRUDAPI {
 		if(isset($data)){
 			if(!is_array($data)){ $data = json_decode($data, true); }
 			$this->Auth->setLimit(0);
-			// Load Messages
-			$B3s = parent::read('messages', $data);
+			// Load Organizations
+			$organizations = parent::read('organizations', $data);
 			// Return
-			return $B3s;
+			return $organizations;
 		}
 	}
 
