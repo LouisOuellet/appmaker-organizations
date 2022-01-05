@@ -566,7 +566,7 @@ API.Plugins.organizations = {
 		icon:"building",
 		object:function(dataset,layout,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
-			var defaults = {icon: API.Plugins.organizations.Timeline.icon,color: "secondary"};
+			var defaults = {icon: API.Plugins.organizations.Timeline.icon,color: "lightblue"};
 			if(API.Helper.isSet(options,['icon'])){ defaults.icon = options.icon; }
 			if(API.Helper.isSet(options,['color'])){ defaults.color = options.color; }
 			if(typeof dataset.id !== 'undefined'){
