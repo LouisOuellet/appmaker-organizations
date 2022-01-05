@@ -84,65 +84,14 @@ class organizationsAPI extends CRUDAPI {
 	}
 
 	public function read($request = null, $data = null){
-		if(($data != null)||($data == null)){
+		if(isset($data)){
 			if(!is_array($data)){ $data = json_decode($data, true); }
 			$this->Auth->setLimit(0);
-			if((isset($data['options'],$data['options']['link_to'],$data['options']['plugin'],$data['options']['view']))&&(!empty($data['options']))){
-				$filters = $this->Auth->query(
-					'SELECT * FROM options WHERE user = ? AND type = ? AND link_to = ? AND plugin = ? AND view = ? AND record = ?',
-					$this->Auth->User['id'],
-					'filter',
-					$data['options']['link_to'],
-					$data['options']['plugin'],
-					$data['options']['view'],
-					'any'
-				)->fetchAll()->all();
-			}
-			if(isset($data['filters'])){ $filters = $data['filters']; }
-			if($this->Auth->valid('custom','organizations_isActive',1)){
-				$db = $this->Auth->query('SELECT * FROM `organizations`')->fetchAll();
-			} else {
-				$db = $this->Auth->query('SELECT * FROM `organizations` WHERE `isActive` = ?','true')->fetchAll();
-			}
-			$raw = [];
-			$results = [];
-			if($db != null){
-				if((isset($filters))&&(!empty($filters))){ $db = $db->filter($filters); }
-				$raw = $db->all();
-			}
-			foreach($raw as $row => $result){
-				$results[$row] = $this->convertToDOM($result);
-			}
-			$raw = array_values($raw);
-			$result = array_values($results);
-			$headers = $this->Auth->getHeaders($request);
-			foreach($headers as $key => $header){
-				if(!$this->Auth->valid('field',$header,1,$request)){
-					foreach($raw as $row => $values){
-						unset($raw[$row][$header]);
-						unset($result[$row][$header]);
-					}
-					unset($headers[$key]);
-				}
-			}
-			$results = [
-				"success" => $this->Language->Field["This request was successfull"],
-				"request" => $request,
-				"data" => $data,
-				"output" => [
-					'headers' => $headers,
-					'raw' => $raw,
-					'dom' => $result,
-				],
-			];
-		} else {
-			$results = [
-				"error" => $this->Language->Field["Unable to complete the request"],
-				"request" => $request,
-				"data" => $data,
-			];
+			// Load Messages
+			$B3s = parent::read('messages', $data);
+			// Return
+			return $B3s;
 		}
-		return $results;
 	}
 
 	public function assign($request = null, $data = null){
