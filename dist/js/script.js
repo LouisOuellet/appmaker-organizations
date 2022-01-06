@@ -611,22 +611,33 @@ API.Plugins.organizations = {
 				var defaults = {field: "organizations", plugin:url.searchParams.get("p")};
 				for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 				API.Builder.Timeline.add.filter(layout,'organizations','Organizations');
-				API.GUI.Layouts.details.data(data,layout,defaults,function(data,layout,tr){
-					var td = tr.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="organizations"]');
-					td.html('');
+				if(!API.Helper.isSet(layout,['details','organizations'])){
+					API.GUI.Layouts.details.data(data,layout,defaults,function(data,layout,tr){
+						var td = tr.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="organizations"]');
+						td.html('');
+						if(API.Helper.isSet(data,['relations','organizations'])){
+							for(var [id, organization] of Object.entries(data.relations.organizations)){
+								if(organization.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
+									td.append(API.Plugins.organizations.Layouts.details.GUI.button(organization,{remove:API.Auth.validate('custom', url.searchParams.get("p")+'_organizations', 4)}));
+								}
+							}
+						}
+						if(API.Auth.validate('custom', url.searchParams.get("p")+'_organizations', 2)){
+							td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
+						}
+						API.Plugins.organizations.Layouts.details.Events(data,layout);
+						if(callback != null){ callback(data,layout,tr); }
+					});
+				} else {
+					var td = layout.details.organizations.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="organizations"]');
 					if(API.Helper.isSet(data,['relations','organizations'])){
 						for(var [id, organization] of Object.entries(data.relations.organizations)){
 							if(organization.isActive || API.Auth.validate('custom', 'organizations_isActive', 1)){
-								td.append(API.Plugins.organizations.Layouts.details.GUI.button(organization,{remove:API.Auth.validate('custom', url.searchParams.get("p")+'_organizations', 4)}));
+								td.prepend(API.Plugins.organizations.Layouts.details.GUI.button(organization,{remove:API.Auth.validate('custom', url.searchParams.get("p")+'_organizations', 4)}));
 							}
 						}
 					}
-					if(API.Auth.validate('custom', url.searchParams.get("p")+'_organizations', 2)){
-						td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="link"><i class="fas fa-link"></i></button>');
-					}
-					API.Plugins.organizations.Layouts.details.Events(data,layout);
-					if(callback != null){ callback(data,layout,tr); }
-				});
+				}
 			},
 			GUI:{
 				button:function(dataset,options = {},callback = null){
