@@ -49,11 +49,11 @@ Engine.Plugins.organizations = {
 							headers:dataset.output.headers,
 							id:'OrganizationsIndex',
 							modal:true,
-							key:'name',
+							key:'id',
 							clickable:{ enable:true, view:'details'},
 							set:{isActive:"true"},
 							controls:{ toolbar:true},
-							import:{ key:'name', },
+							import:{ key:'id', },
 							load:false,
 						});
 					}
@@ -64,7 +64,7 @@ Engine.Plugins.organizations = {
 			var container = $('div[data-plugin="organizations"][data-id]').last();
 			var url = new URL(window.location.href);
 			var id = url.searchParams.get("id");
-			Engine.request(url.searchParams.get("p"),'get',{data:{id:id,key:'name'}},function(result){
+			Engine.request(url.searchParams.get("p"),'get',{data:{id:id,key:'id'}},function(result){
 				var dataset = JSON.parse(result);
 				if(dataset.success != undefined){
 					container.attr('data-id',dataset.output.this.raw.id);
