@@ -668,7 +668,7 @@ Engine.Plugins.organizations = {
 					if(button.attr('data-action') != "link"){ var organization = data.relations.organizations[button.attr('data-id')]; }
 					switch(button.attr('data-action')){
 						case"details":
-							Engine.CRUD.read.show({ key:'name',keys:organization, href:"?p=organizations&v=details&id="+organization.name, modal:true });
+							Engine.CRUD.read.show({ key:'name',keys:organization, href:"?p=organizations&v=details&id="+organization.id, modal:true });
 							break;
 						case"unlink":
 							Engine.request('organizations','unlink',{data:{id:data.this.raw.id,relationship:{relationship:'organizations',link_to:organization.id}}},function(result){
